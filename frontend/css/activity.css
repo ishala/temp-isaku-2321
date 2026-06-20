@@ -1,0 +1,124 @@
+/* ════════════════════════════════════════════════════════
+   Log Aktivitas — gaya khusus halaman (melengkapi dashboard.css & users.css)
+   ════════════════════════════════════════════════════════ */
+
+/* ── Action chip (badge per jenis aksi) ── */
+.act-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.act-chip .act-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Warna per aksi */
+.act-login      { background: rgba(96,165,250,.10);  color: #60A5FA; }
+.act-login      .act-dot { background: #60A5FA; }
+.act-logout     { background: rgba(148,163,184,.12); color: #94A3B8; }
+.act-logout     .act-dot { background: #94A3B8; }
+.act-create     { background: rgba(74,222,128,.10);  color: #4ADE80; }
+.act-create     .act-dot { background: #4ADE80; }
+.act-update     { background: rgba(251,191,36,.10);  color: #FBBF24; }
+.act-update     .act-dot { background: #FBBF24; }
+.act-delete     { background: rgba(248,113,113,.10); color: #F87171; }
+.act-delete     .act-dot { background: #F87171; }
+.act-predict    { background: rgba(108,99,255,.12);  color: #8B83FF; }
+.act-predict    .act-dot { background: #8B83FF; }
+.act-preprocess { background: rgba(45,212,191,.10);  color: #2DD4BF; }
+.act-preprocess .act-dot { background: #2DD4BF; }
+.act-scrape     { background: rgba(167,139,250,.10); color: #A78BFA; }
+.act-scrape     .act-dot { background: #A78BFA; }
+.act-approve    { background: rgba(74,222,128,.10);  color: #4ADE80; }
+.act-approve    .act-dot { background: #4ADE80; }
+.act-reject     { background: rgba(248,113,113,.10); color: #F87171; }
+.act-reject     .act-dot { background: #F87171; }
+.act-correct    { background: rgba(251,146,60,.10);  color: #FB923C; }
+.act-correct    .act-dot { background: #FB923C; }
+.act-default    { background: var(--surface3);       color: var(--c2); }
+.act-default    .act-dot { background: var(--c3); }
+
+/* ── Entity tag ── */
+.entity-tag {
+  font-size: 11px;
+  color: var(--c2);
+  text-transform: capitalize;
+}
+
+/* ── Status dot badge ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.status-badge .st-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.status-success { color: #4ADE80; }
+.status-success .st-dot { background: #4ADE80; }
+.status-failed  { color: #F87171; }
+.status-failed  .st-dot { background: #F87171; }
+
+/* ── Description cell ── */
+.act-desc {
+  color: var(--c2);
+  max-width: 460px;
+  line-height: 1.5;
+}
+
+/* ── IP mono ── */
+.ip-mono {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 11px;
+  color: var(--c3);
+}
+
+/* ── Time cell ── */
+.act-time-rel { font-size: 12px; color: var(--c1); }
+.act-time-abs { font-size: 10px; color: var(--c3); margin-top: 1px; }
+
+/* ── Pagination ── */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 4px;
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  color: var(--c2);
+  cursor: pointer;
+  transition: background .15s, color .15s, opacity .15s;
+}
+.page-btn:hover:not(:disabled) { background: var(--surface3); color: var(--c1); }
+.page-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* date input look-alike with selects */
+input[type="date"].filter-sel-users {
+  color: var(--c2);
+  appearance: none;
+}
+input[type="date"].filter-sel-users::-webkit-calendar-picker-indicator {
+  filter: invert(.6);
+  cursor: pointer;
+}

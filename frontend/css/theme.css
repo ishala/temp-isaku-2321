@@ -1,0 +1,37 @@
+/* ════════════════════════════════════════════════════════
+   theme.css — TOKEN TEMA (dark default & light)
+   Ditautkan di semua halaman sebelum CSS lain.
+   ════════════════════════════════════════════════════════ */
+:root {
+  /* channel R G B — dipakai utility Tailwind & alpha */
+  --c-page:     8 8 16;
+  --c-surface:  16 16 30;
+  --c-surface2: 23 23 42;
+  --c-surface3: 30 30 53;
+  --c-c1:       238 236 255;
+  --c-c2:       152 150 200;
+  --c-c3:       92 90 138;
+  /* overlay garis/border */
+  --line-rgb:   255 255 255;
+  /* warna solid turunan (dipakai di file CSS) */
+  --page:     rgb(var(--c-page));
+  --surface:  rgb(var(--c-surface));
+  --surface2: rgb(var(--c-surface2));
+  --surface3: rgb(var(--c-surface3));
+  --c1:       rgb(var(--c-c1));
+  --c2:       rgb(var(--c-c2));
+  --c3:       rgb(var(--c-c3));
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  --c-page:     244 245 250;
+  --c-surface:  255 255 255;
+  --c-surface2: 237 240 248;
+  --c-surface3: 226 230 241;
+  --c-c1:       26 26 46;
+  --c-c2:       74 73 104;
+  --c-c3:       124 122 150;
+  --line-rgb:   17 17 40;
+  color-scheme: light;
+}

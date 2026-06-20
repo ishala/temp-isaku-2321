@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full" style="background:#080810">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laporan — Sentimen i.saku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){try{var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.background=(t==="light")?"#F4F5FA":"#080810";}catch(e){}})();</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            page:     'rgb(var(--c-page) / <alpha-value>)',
+            surface:  'rgb(var(--c-surface) / <alpha-value>)',
+            surface2: 'rgb(var(--c-surface2) / <alpha-value>)',
+            surface3: 'rgb(var(--c-surface3) / <alpha-value>)',
+            accent:   '#6C63FF',
+            'accent-dim': 'rgba(108,99,255,0.12)',
+            c1:       'rgb(var(--c-c1) / <alpha-value>)',
+            c2:       'rgb(var(--c-c2) / <alpha-value>)',
+            c3:       'rgb(var(--c-c3) / <alpha-value>)',
+            positive: '#4ADE80',
+            negative: '#F87171',
+            warn:     '#FBBF24',
+            line:     'rgb(var(--line-rgb) / <alpha-value>)',
+            info:     '#60A5FA',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/laporan.css" />
+</head>
+<body class="h-full font-sans bg-page text-c1 overflow-hidden">
+
+<!-- ─────────────────────────────────────────────── -->
+<!--  APP SHELL                                       -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="app-shell flex h-screen">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════ -->
+  <aside class="sidebar flex flex-col w-[220px] shrink-0 bg-surface border-r border-line/[0.05] z-30">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-[22px] border-b border-line/[0.05]">
+      <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white tracking-[-0.5px] shrink-0">iS</div>
+      <div class="flex flex-col leading-none">
+        <span class="text-[13px] font-semibold text-c1">i.saku Sentiment</span>
+        <span class="text-[9px] text-c3 tracking-[0.08em] uppercase mt-[3px]">Analytics Tool</span>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 overflow-y-auto">
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2">Menu</div>
+
+      <a href="dashboard.html" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.75" y="2.75" width="6" height="6" rx="1.5"/><rect x="11.25" y="2.75" width="6" height="6" rx="1.5"/><rect x="2.75" y="11.25" width="6" height="6" rx="1.5"/><rect x="11.25" y="11.25" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="analisis.html" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 6v4l2.5 2.5" stroke-linecap="round"/></svg>
+        Analisis Ulasan
+      </a>
+      <a href="perbandingan.html" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14l5-5 3.5 3.5L17 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Perbandingan Model
+      </a>
+      <a href="laporan.html" class="nav-item active">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.75" y="2.75" width="10.5" height="14.5" rx="2"/><path d="M7.5 7h5m-5 3h5m-5 3h3" stroke-linecap="round"/></svg>
+        Laporan
+      </a>
+
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5">Dataset</div>
+      <a href="ulasan.html" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="6" rx="7" ry="2.75"/><path d="M3 6v4c0 1.52 3.134 2.75 7 2.75S17 11.52 17 10V6"/><path d="M3 10v4c0 1.52 3.134 2.75 7 2.75S17 15.52 17 14v-4"/></svg>
+        Data Ulasan
+      </a>
+      <a href="preprocessing.html" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h12M4 10h8M4 15h10" stroke-linecap="round"/></svg>
+        Preprocessing
+      </a>
+
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5" id="admin-section">Admin</div>
+      <a href="users.html" class="nav-item" id="nav-pengguna">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6.5" r="2.75"/><path d="M2.5 16c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5"/><circle cx="15" cy="7" r="2.25"/><path d="M13.5 16h4c0-2.485-1.567-4.5-3.5-4.5"/></svg>
+        Pengguna
+      </a>
+      <a href="activity.html" class="nav-item" id="nav-aktivitas">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 5.75V10l2.75 1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Log Aktivitas
+      </a>
+    </nav>
+
+    <!-- User card -->
+    <div class="px-3 py-3 border-t border-line/[0.05]">
+      <div class="flex items-center gap-3 px-2 py-2 rounded-[8px] hover:bg-surface2 transition-colors duration-150 cursor-pointer group">
+        <div class="avatar w-7 h-7 rounded-full bg-accent flex items-center justify-center text-[11px] font-semibold text-white shrink-0" id="user-avatar">A</div>
+        <div class="flex flex-col flex-1 min-w-0">
+          <span class="text-[12px] font-medium text-c1 truncate" id="user-name">Admin</span>
+          <span class="text-[10px] text-c3 capitalize" id="user-role">admin</span>
+        </div>
+        <button id="theme-toggle" class="text-c3 hover:text-accent transition-colors duration-150 p-1 shrink-0" title="Ganti tema terang/gelap"><svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+        <button id="logout-btn" class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-c3 hover:text-negative p-1" title="Keluar">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 7V4.75A2 2 0 0 0 11.5 2.75h-7A2 2 0 0 0 2.5 4.75v10.5A2 2 0 0 0 4.5 17.25h7a2 2 0 0 0 2-2V13" stroke-linecap="round"/><path d="M17.5 10h-9m6-3 3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ══ MAIN ══════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Topbar -->
+    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <div>
+        <h1 class="text-[15px] font-semibold text-c1">Laporan</h1>
+        <p class="text-[11px] text-c3 mt-[2px]">Generate dan cetak laporan sentimen dalam berbagai format</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Cetak Semua -->
+        <div class="relative" id="cetak-semua-wrap">
+          <button id="btn-cetak-semua" class="flex items-center gap-[6px] px-3 py-[7px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 active:scale-[0.98] transition-all duration-150">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+            Cetak Semua
+            <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <!-- Dropdown -->
+          <div id="cetak-semua-dropdown" class="cetak-semua-dropdown hidden">
+            <div class="cetak-semua-title">Pilih laporan yang akan dicetak</div>
+            <button class="cetak-semua-item" data-target="1">
+              <span class="report-card-num">1</span>
+              <span>Data Mentah</span>
+            </button>
+            <button class="cetak-semua-item" data-target="2">
+              <span class="report-card-num">2</span>
+              <span>Hasil Analisis Sentimen</span>
+            </button>
+            <button class="cetak-semua-item" data-target="3">
+              <span class="report-card-num">3</span>
+              <span>Perbandingan NB vs SVM</span>
+            </button>
+            <button class="cetak-semua-item" data-target="4">
+              <span class="report-card-num">4</span>
+              <span>Ringkasan Eksekutif</span>
+            </button>
+            <button class="cetak-semua-item" data-target="5">
+              <span class="report-card-num">5</span>
+              <span>Laporan per Rentang Tanggal</span>
+            </button>
+            <button class="cetak-semua-item" data-target="6">
+              <span class="report-card-num">6</span>
+              <span>Kosakata Berpengaruh</span>
+            </button>
+          </div>
+        </div>
+        <!-- Model aktif chip -->
+        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+          <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
+          <span class="text-c2">Model aktif</span>
+        </div>
+        <!-- Date display -->
+        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+      </div>
+    </header>
+
+    <!-- Page content area -->
+    <main class="flex-1 overflow-y-auto px-7 py-6">
+
+      <div class="report-layout">
+
+        <!-- ══ LEFT: FILTER PANEL ══════════════════ -->
+        <div class="filter-panel">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Filter Laporan</div>
+                <div class="panel-sub">Tentukan rentang dan sumber data</div>
+              </div>
+            </div>
+
+            <!-- Tanggal Dari -->
+            <div class="filter-field">
+              <label class="filter-label" for="filter-dari">Tanggal Dari</label>
+              <input type="date" id="filter-dari" class="filter-input-date" />
+            </div>
+
+            <!-- Tanggal Sampai -->
+            <div class="filter-field">
+              <label class="filter-label" for="filter-sampai">Tanggal Sampai</label>
+              <input type="date" id="filter-sampai" class="filter-input-date" />
+            </div>
+
+            <!-- Source -->
+            <div class="filter-field">
+              <label class="filter-label" for="filter-source">Source</label>
+              <div class="filter-select-wrap">
+                <select id="filter-source" class="filter-select-lap">
+                  <option value="">Semua Source</option>
+                  <option value="scraping">Google Play (Scraping)</option>
+                  <option value="manual">Manual</option>
+                  <option value="csv">CSV</option>
+                </select>
+                <svg class="filter-select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="filter-field">
+              <label class="filter-label" for="filter-status">Status</label>
+              <div class="filter-select-wrap">
+                <select id="filter-status" class="filter-select-lap">
+                  <option value="">Semua Status</option>
+                  <option value="approved">Disetujui</option>
+                  <option value="pending">Pending</option>
+                  <option value="rejected">Ditolak</option>
+                </select>
+                <svg class="filter-select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <!-- Model -->
+            <div class="filter-field">
+              <label class="filter-label" for="filter-model">Model</label>
+              <div class="filter-select-wrap">
+                <select id="filter-model" class="filter-select-lap">
+                  <option value="both">NB + SVM</option>
+                  <option value="nb">Naive Bayes</option>
+                  <option value="svm">SVM</option>
+                </select>
+                <svg class="filter-select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <button id="btn-apply-filter" class="filter-apply-btn">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h14M6 10h8M9 15h2" stroke-linecap="round"/></svg>
+              Terapkan Filter
+            </button>
+            <a id="link-reset-filter" class="filter-reset-link">Reset</a>
+
+            <!-- Summary stats -->
+            <div class="filter-stats">
+              <div class="mini-stat">
+                <span class="mini-stat-label">Total Ulasan</span>
+                <span class="mini-stat-val" id="stat-total">12.480</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Periode</span>
+                <span class="mini-stat-val" id="stat-periode">Jan – Jun 2025</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Source Aktif</span>
+                <span class="mini-stat-val" id="stat-source">3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ RIGHT: REPORT CARDS ═════════════════ -->
+        <div class="report-cards">
+
+          <!-- Card 1: Data Mentah -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">1</span>
+                <div>
+                  <div class="panel-title">Data Mentah</div>
+                  <div class="panel-sub" id="card-sub-1">Tabel ulasan asli beserta metadata lengkap</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-1">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Tabel ulasan asli beserta metadata: source, bintang, tanggal, dan status persetujuan.</p>
+            <div class="report-preview">
+              <table class="report-preview-table w-full">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Teks Ulasan</th>
+                    <th>Bintang</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="card1-tbody">
+                  <tr>
+                    <td>1</td>
+                    <td>Aplikasi sangat membantu, transfer cepat…</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                    <td><span class="badge positive">Disetujui</span></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Sering error saat login, tolong diperbaiki…</td>
+                    <td>⭐⭐</td>
+                    <td><span class="badge negative">Ditolak</span></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Biasa saja, fitur standar seperti app lain…</td>
+                    <td>⭐⭐⭐</td>
+                    <td><span class="badge warn">Pending</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card 2: Hasil Analisis -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">2</span>
+                <div>
+                  <div class="panel-title">Hasil Analisis Sentimen</div>
+                  <div class="panel-sub" id="card-sub-2">Label prediksi NB dan SVM dengan tingkat keyakinan</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-2">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Tabel ulasan beserta label prediksi NB dan SVM, tingkat keyakinan, dan status koreksi manual.</p>
+            <div class="report-preview">
+              <table class="report-preview-table w-full">
+                <thead>
+                  <tr>
+                    <th>Teks</th>
+                    <th>NB</th>
+                    <th>SVM</th>
+                    <th>Conf.</th>
+                  </tr>
+                </thead>
+                <tbody id="card2-tbody">
+                  <tr>
+                    <td>Aplikasi sangat membantu…</td>
+                    <td><span class="badge positive">Positif</span></td>
+                    <td><span class="badge positive">Positif</span></td>
+                    <td>94%</td>
+                  </tr>
+                  <tr>
+                    <td>Sering error saat login…</td>
+                    <td><span class="badge negative">Negatif</span></td>
+                    <td><span class="badge negative">Negatif</span></td>
+                    <td>89%</td>
+                  </tr>
+                  <tr>
+                    <td>Biasa saja, fitur standar…</td>
+                    <td><span class="badge negative">Negatif</span></td>
+                    <td><span class="badge negative">Negatif</span></td>
+                    <td>72%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card 3: Perbandingan Model -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">3</span>
+                <div>
+                  <div class="panel-title">Perbandingan Model NB vs SVM</div>
+                  <div class="panel-sub" id="card-sub-3">Akurasi, precision, recall, F1 · agreement rate</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-3">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Visualisasi perbandingan akurasi, precision, recall, dan F1. Termasuk agreement rate antar model.</p>
+            <div class="report-preview" style="height:200px; padding:8px;">
+              <canvas id="canvas-compare-preview" style="width:100%;height:100%;display:block;"></canvas>
+            </div>
+          </div>
+
+          <!-- Card 4: Ringkasan Eksekutif -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">4</span>
+                <div>
+                  <div class="panel-title">Ringkasan Eksekutif</div>
+                  <div class="panel-sub" id="card-sub-4">Distribusi sentimen, statistik utama, temuan kunci</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-4">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Ikhtisar menyeluruh: distribusi sentimen (pie chart), statistik utama, dan temuan kunci.</p>
+            <div class="report-preview">
+              <div class="flex items-center gap-4">
+                <canvas id="canvas-pie-preview" style="width:160px;height:160px;flex-shrink:0;"></canvas>
+                <div class="flex flex-col gap-2 flex-1">
+                  <span class="stat-chip" id="chip-pos">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ADE80;margin-right:5px;vertical-align:middle;"></span>
+                    Positif —
+                  </span>
+                  <span class="stat-chip" id="chip-neg">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F87171;margin-right:5px;vertical-align:middle;"></span>
+                    Negatif —
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Laporan per Rentang Tanggal -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">5</span>
+                <div>
+                  <div class="panel-title">Laporan per Rentang Tanggal</div>
+                  <div class="panel-sub" id="card-sub-5">Tren sentimen bulanan dalam rentang yang dipilih</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-5">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Tren sentimen bulanan dalam rentang tanggal yang dipilih, termasuk perubahan distribusi.</p>
+            <div class="report-preview" style="height:120px; padding:8px;">
+              <canvas id="canvas-trend-preview" style="width:100%;height:100%;display:block;"></canvas>
+            </div>
+          </div>
+
+          <!-- Card 6: Kosakata Berpengaruh -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-3">
+                <span class="report-card-num">6</span>
+                <div>
+                  <div class="panel-title">Kosakata Berpengaruh</div>
+                  <div class="panel-sub" id="card-sub-6">Kata dengan bobot sentimen tertinggi saat prediksi</div>
+                </div>
+              </div>
+              <button class="cetak-btn" id="btn-cetak-6">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+                Cetak Halaman Ini
+              </button>
+            </div>
+            <p class="text-[12px] text-c3 leading-[1.6] mb-3">Kosakata yang paling kuat menentukan sebuah ulasan tergolong positif atau negatif, diperingkat berdasarkan bobotnya pada model.</p>
+            <div class="report-preview">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <div class="text-[11px] font-semibold text-positive mb-2 flex items-center gap-[6px]">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ADE80;"></span>
+                    Mendorong Positif
+                  </div>
+                  <div id="topwords-pos" class="flex flex-col gap-[6px]">
+                    <div class="text-[11px] text-c3">Memuat…</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="text-[11px] font-semibold text-negative mb-2 flex items-center gap-[6px]">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F87171;"></span>
+                    Mendorong Negatif
+                  </div>
+                  <div id="topwords-neg" class="flex flex-col gap-[6px]">
+                    <div class="text-[11px] text-c3">Memuat…</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /report-cards -->
+
+      </div>
+      <!-- /report-layout -->
+
+    </main>
+  </div>
+  <!-- /main -->
+
+</div>
+<!-- /app-shell -->
+
+<!-- ═══════════════════════════════════════════════════════
+     PRINTABLE DOCUMENTS (hidden on screen)
+     ═══════════════════════════════════════════════════════ -->
+
+<!-- #print-doc-1: Data Mentah -->
+<div id="print-doc-1" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Data Mentah Ulasan</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-1"></div>
+  <h2 class="print-section-title">Daftar Ulasan</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th style="width:36px;">No</th>
+        <th>Teks Ulasan</th>
+        <th style="width:80px;">Source</th>
+        <th style="width:55px;">Bintang</th>
+        <th style="width:80px;">Tanggal</th>
+        <th style="width:80px;">Status</th>
+      </tr>
+    </thead>
+    <tbody id="pd1-tbody">
+      <tr><td>1</td><td>Aplikasi sangat membantu, transfer uang jadi lebih mudah dan cepat sekali.</td><td>Google Play</td><td>5</td><td>01 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>2</td><td>Sering error saat mau login, tolong segera diperbaiki ya tim developer.</td><td>Google Play</td><td>2</td><td>03 Jan 2025</td><td>Ditolak</td></tr>
+      <tr><td>3</td><td>Biasa saja, fitur-fiturnya standar seperti aplikasi dompet digital lainnya.</td><td>App Store</td><td>3</td><td>05 Jan 2025</td><td>Pending</td></tr>
+      <tr><td>4</td><td>Mantap banget, top up pulsa dan bayar tagihan listrik jadi gampang.</td><td>Google Play</td><td>5</td><td>08 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>5</td><td>Tampilan UI sudah bagus, tapi performa masih perlu ditingkatkan lagi.</td><td>App Store</td><td>4</td><td>10 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>6</td><td>Lambat banget loadingnya, sudah coba uninstall dan install ulang tetap sama.</td><td>Google Play</td><td>1</td><td>14 Jan 2025</td><td>Ditolak</td></tr>
+      <tr><td>7</td><td>Senang pakai i.saku, promo cashback sering ada dan lumayan besar hasilnya.</td><td>Google Play</td><td>5</td><td>17 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>8</td><td>Tidak bisa bayar BPJS, padahal sebelumnya bisa. Tolong dicek lagi sistemnya.</td><td>App Store</td><td>2</td><td>20 Jan 2025</td><td>Pending</td></tr>
+      <tr><td>9</td><td>OKE lah untuk sehari-hari, fitur split bill lumayan berguna untuk kami.</td><td>Manual</td><td>4</td><td>22 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>10</td><td>Customer service responsif, masalah saya diselesaikan dalam waktu 2 jam.</td><td>Google Play</td><td>5</td><td>25 Jan 2025</td><td>Disetujui</td></tr>
+      <tr><td>11</td><td>Aplikasi crash terus saat buka menu tabungan, sangat mengganggu aktivitas.</td><td>Google Play</td><td>1</td><td>28 Jan 2025</td><td>Ditolak</td></tr>
+      <tr><td>12</td><td>Fitur QRIS-nya praktis banget, tinggal scan langsung bayar tanpa ribet sama sekali.</td><td>App Store</td><td>5</td><td>01 Feb 2025</td><td>Disetujui</td></tr>
+      <tr><td>13</td><td>Limit transfer masih terlalu kecil, perlu ditingkatkan untuk pengguna premium.</td><td>Manual</td><td>3</td><td>04 Feb 2025</td><td>Pending</td></tr>
+      <tr><td>14</td><td>Aplikasi update terbaru malah bikin baterai lebih boros dari sebelumnya.</td><td>Google Play</td><td>2</td><td>07 Feb 2025</td><td>Pending</td></tr>
+      <tr><td>15</td><td>Suka dengan fitur investasi reksadana, mudah dimengerti oleh pemula seperti saya.</td><td>App Store</td><td>5</td><td>10 Feb 2025</td><td>Disetujui</td></tr>
+      <tr><td>16</td><td>Notifikasi transaksi kadang terlambat masuk, membuat saya khawatir keamanannya.</td><td>Google Play</td><td>3</td><td>13 Feb 2025</td><td>Disetujui</td></tr>
+      <tr><td>17</td><td>Proses verifikasi KTP berhasil dalam 5 menit, jauh lebih cepat dari ekspektasi.</td><td>App Store</td><td>5</td><td>16 Feb 2025</td><td>Disetujui</td></tr>
+      <tr><td>18</td><td>Tidak ada fitur cicilan 0%, padahal kompetitor sudah ada dari lama sekali.</td><td>Manual</td><td>3</td><td>19 Feb 2025</td><td>Pending</td></tr>
+      <tr><td>19</td><td>Sangat membantu untuk pembayaran tagihan bulanan, semua bisa diselesaikan disini.</td><td>Google Play</td><td>5</td><td>22 Feb 2025</td><td>Disetujui</td></tr>
+      <tr><td>20</td><td>Antarmuka kurang intuitif untuk pengguna baru, perlu panduan yang lebih jelas lagi.</td><td>App Store</td><td>3</td><td>25 Feb 2025</td><td>Pending</td></tr>
+    </tbody>
+  </table>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- #print-doc-2: Hasil Analisis -->
+<div id="print-doc-2" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Laporan Hasil Analisis Sentimen</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-2"></div>
+  <h2 class="print-section-title">Tabel Prediksi NB &amp; SVM</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th style="width:30px;">No</th>
+        <th>Teks Ulasan</th>
+        <th style="width:70px;">NB Label</th>
+        <th style="width:60px;">NB Conf.</th>
+        <th style="width:70px;">SVM Label</th>
+        <th style="width:65px;">SVM Conf.</th>
+        <th style="width:70px;">Status</th>
+      </tr>
+    </thead>
+    <tbody id="pd2-tbody">
+      <tr><td>1</td><td>Aplikasi sangat membantu, transfer cepat dan mudah sekali.</td><td>Positif</td><td>94%</td><td>Positif</td><td>96%</td><td>Disetujui</td></tr>
+      <tr><td>2</td><td>Sering error saat login, tolong segera diperbaiki.</td><td>Negatif</td><td>91%</td><td>Negatif</td><td>93%</td><td>Ditolak</td></tr>
+      <tr><td>3</td><td>Biasa saja, fitur standar seperti app lain pada umumnya.</td><td>Negatif</td><td>74%</td><td>Negatif</td><td>71%</td><td>Pending</td></tr>
+      <tr><td>4</td><td>Mantap banget, top up pulsa jadi sangat gampang sekarang.</td><td>Positif</td><td>92%</td><td>Positif</td><td>95%</td><td>Disetujui</td></tr>
+      <tr><td>5</td><td>Tampilan bagus tapi performa masih perlu ditingkatkan lagi.</td><td>Negatif</td><td>68%</td><td>Positif</td><td>61%</td><td>Disetujui</td></tr>
+      <tr><td>6</td><td>Lambat banget loadingnya, coba reinstall tetap sama saja.</td><td>Negatif</td><td>88%</td><td>Negatif</td><td>91%</td><td>Ditolak</td></tr>
+      <tr><td>7</td><td>Senang pakai i.saku, promo cashback sering ada dan besar.</td><td>Positif</td><td>96%</td><td>Positif</td><td>97%</td><td>Disetujui</td></tr>
+      <tr><td>8</td><td>Tidak bisa bayar BPJS, padahal sebelumnya bisa. Tolong dicek.</td><td>Negatif</td><td>85%</td><td>Negatif</td><td>87%</td><td>Pending</td></tr>
+      <tr><td>9</td><td>OKE untuk sehari-hari, fitur split bill lumayan berguna.</td><td>Positif</td><td>77%</td><td>Positif</td><td>79%</td><td>Disetujui</td></tr>
+      <tr><td>10</td><td>Customer service responsif, masalah diselesaikan dalam 2 jam.</td><td>Positif</td><td>93%</td><td>Positif</td><td>95%</td><td>Disetujui</td></tr>
+      <tr><td>11</td><td>Aplikasi crash terus saat buka menu tabungan, sangat mengganggu.</td><td>Negatif</td><td>90%</td><td>Negatif</td><td>92%</td><td>Ditolak</td></tr>
+      <tr><td>12</td><td>Fitur QRIS-nya praktis, tinggal scan langsung bayar tanpa ribet.</td><td>Positif</td><td>95%</td><td>Positif</td><td>96%</td><td>Disetujui</td></tr>
+      <tr><td>13</td><td>Limit transfer masih kecil, perlu ditingkatkan untuk pengguna premium.</td><td>Negatif</td><td>72%</td><td>Negatif</td><td>65%</td><td>Pending</td></tr>
+      <tr><td>14</td><td>Update terbaru malah bikin baterai lebih boros dari sebelumnya.</td><td>Negatif</td><td>86%</td><td>Negatif</td><td>88%</td><td>Pending</td></tr>
+      <tr><td>15</td><td>Suka fitur reksadana, mudah dimengerti oleh pemula seperti saya.</td><td>Positif</td><td>91%</td><td>Positif</td><td>93%</td><td>Disetujui</td></tr>
+    </tbody>
+  </table>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- #print-doc-3: Perbandingan Model -->
+<div id="print-doc-3" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Perbandingan Model NB vs SVM</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-3"></div>
+  <h2 class="print-section-title">Metrik Evaluasi</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th>Metrik</th>
+        <th>Naive Bayes</th>
+        <th>SVM</th>
+        <th>Selisih</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Akurasi</td><td>81,53%</td><td>88,11%</td><td>+6,58%</td></tr>
+      <tr><td>Precision</td><td>81,56%</td><td>88,13%</td><td>+6,57%</td></tr>
+      <tr><td>Recall</td><td>81,53%</td><td>88,11%</td><td>+6,58%</td></tr>
+      <tr><td>F1 Score</td><td>81,48%</td><td>88,10%</td><td>+6,62%</td></tr>
+    </tbody>
+  </table>
+  <h2 class="print-section-title">Agreement Rate</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th>Kategori</th>
+        <th>Jumlah Sepakat</th>
+        <th>Persentase</th>
+      </tr>
+    </thead>
+    <tbody id="pd3-tbody">
+      <tr><td>Positif</td><td>7.842</td><td>94,7%</td></tr>
+      <tr><td>Negatif</td><td>2.140</td><td>92,6%</td></tr>
+      <tr><td><strong>Total Agreement</strong></td><td><strong>9.982</strong></td><td><strong>93,4%</strong></td></tr>
+    </tbody>
+  </table>
+  <h2 class="print-section-title">Kesimpulan</h2>
+  <p class="print-body">Model SVM mengungguli Naive Bayes di semua metrik evaluasi. SVM mencapai akurasi 88,11% dibandingkan 81,53% untuk Naive Bayes, dengan selisih F1 Score sebesar 6,62%. Rekomendasi: gunakan SVM sebagai model utama untuk analisis sentimen i.saku, dengan Naive Bayes sebagai model pembanding untuk validasi.</p>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- #print-doc-4: Ringkasan Eksekutif -->
+<div id="print-doc-4" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Ringkasan Eksekutif</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-4"></div>
+  <h2 class="print-section-title">Statistik Utama</h2>
+  <div class="print-stats-grid">
+    <div class="print-stat-item">
+      <div class="print-stat-val" id="pd4-total">10.683</div>
+      <div class="print-stat-label">Total Ulasan</div>
+    </div>
+    <div class="print-stat-item positive">
+      <div class="print-stat-val" id="pd4-pos">8.399</div>
+      <div class="print-stat-label" id="pd4-pos-label">Positif (78,6%)</div>
+    </div>
+    <div class="print-stat-item negative">
+      <div class="print-stat-val" id="pd4-neg">2.284</div>
+      <div class="print-stat-label" id="pd4-neg-label">Negatif (21,4%)</div>
+    </div>
+  </div>
+  <h2 class="print-section-title">Distribusi per Source</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>Total</th>
+        <th>Positif</th>
+        <th>Negatif</th>
+      </tr>
+    </thead>
+    <tbody id="pd4-source-tbody">
+      <tr><td colspan="4" style="text-align:center">—</td></tr>
+    </tbody>
+  </table>
+  <h2 class="print-section-title">Temuan Kunci</h2>
+  <p class="print-body">
+    1. Sentimen positif mendominasi dengan 78,6% dari total ulasan, menunjukkan tingkat kepuasan pengguna yang baik secara keseluruhan.<br/>
+    2. Sentimen negatif sebesar 21,4% perlu menjadi perhatian, terutama terkait isu performa aplikasi dan fitur pembayaran.<br/>
+    3. Google Play memiliki distribusi sentimen positif tertinggi (80,0%), sementara sumber Manual menunjukkan negatif lebih tinggi (30,8%).<br/>
+    4. Tren sentimen positif meningkat 5,6 poin dari Januari ke Juni 2025, menunjukkan perbaikan persepsi pengguna yang konsisten.<br/>
+    5. Model SVM memiliki performa lebih baik (akurasi 88,11%) dibanding Naive Bayes (81,53%) pada seluruh metrik evaluasi.
+  </p>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- #print-doc-5: Laporan per Rentang Tanggal -->
+<div id="print-doc-5" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Laporan per Rentang Tanggal</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-5"></div>
+  <h2 class="print-section-title">Tren Sentimen Bulanan</h2>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th>Bulan</th>
+        <th>Total</th>
+        <th>Positif</th>
+        <th>% Positif</th>
+        <th>Negatif</th>
+        <th>% Negatif</th>
+      </tr>
+    </thead>
+    <tbody id="pd5-tbody">
+      <tr><td>Januari 2025</td><td>1.608</td><td>1.166</td><td>72,5%</td><td>442</td><td>27,5%</td></tr>
+      <tr><td>Februari 2025</td><td>1.624</td><td>1.228</td><td>75,6%</td><td>396</td><td>24,4%</td></tr>
+      <tr><td>Maret 2025</td><td>1.806</td><td>1.398</td><td>77,4%</td><td>408</td><td>22,6%</td></tr>
+      <tr><td>April 2025</td><td>1.706</td><td>1.269</td><td>74,4%</td><td>437</td><td>25,6%</td></tr>
+      <tr><td>Mei 2025</td><td>1.904</td><td>1.501</td><td>78,8%</td><td>403</td><td>21,2%</td></tr>
+      <tr><td>Juni 2025</td><td>1.737</td><td>1.357</td><td>78,1%</td><td>380</td><td>21,9%</td></tr>
+      <tr style="font-weight:600;"><td>Total</td><td>10.385</td><td>7.919</td><td>76,3%</td><td>2.466</td><td>23,7%</td></tr>
+    </tbody>
+  </table>
+  <h2 class="print-section-title">Perubahan Signifikan</h2>
+  <p class="print-body">
+    Tren sentimen positif meningkat dari 72,5% di Januari menjadi 78,1% di Juni 2025, peningkatan sebesar 5,6 poin persentase. Sentimen negatif turun dari 27,5% menjadi 21,9% dalam periode yang sama. Puncak ulasan terjadi di bulan Mei 2025 dengan 1.904 ulasan, bersamaan dengan peluncuran fitur QRIS baru.
+  </p>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- #print-doc-6: Kosakata Berpengaruh -->
+<div id="print-doc-6" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Kosakata Berpengaruh</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span class="print-date-span"></span></p>
+    </div>
+  </div>
+  <div class="print-filter-badge" id="print-filter-6"></div>
+  <p class="print-body">Daftar kosakata yang paling kuat menentukan sebuah ulasan tergolong positif atau negatif, diperingkat berdasarkan bobot fitur model. Bobot makin besar berarti kata makin kuat mengarahkan prediksi ke kelas terkait.</p>
+  <div style="display:flex; gap:24px;">
+    <div style="flex:1;">
+      <h2 class="print-section-title">Mendorong Positif</h2>
+      <table class="print-table">
+        <thead><tr><th style="width:36px;">No</th><th>Kata</th><th style="width:70px;">Bobot</th></tr></thead>
+        <tbody id="pd6-pos-tbody"><tr><td colspan="3" style="text-align:center">—</td></tr></tbody>
+      </table>
+    </div>
+    <div style="flex:1;">
+      <h2 class="print-section-title">Mendorong Negatif</h2>
+      <table class="print-table">
+        <thead><tr><th style="width:36px;">No</th><th>Kata</th><th style="width:70px;">Bobot</th></tr></thead>
+        <tbody id="pd6-neg-tbody"><tr><td colspan="3" style="text-align:center">—</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- Logout confirm modal -->
+<div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
+  <div class="modal-box w-[340px]">
+    <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
+    <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
+    <div class="flex gap-2">
+      <button id="modal-cancel" class="flex-1 py-2 rounded-[8px] bg-surface2 text-[12px] text-c2 font-medium hover:bg-surface3 transition-colors duration-150">Batal</button>
+      <button id="modal-confirm" class="flex-1 py-2 rounded-[8px] bg-negative/90 text-[12px] text-white font-semibold hover:bg-negative transition-colors duration-150">Ya, keluar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/laporan.js"></script>
+<script src="js/laporan-report.js"></script>
+<script src="js/theme.js"></script>
+</body>
+</html>

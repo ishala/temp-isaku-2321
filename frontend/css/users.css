@@ -1,0 +1,497 @@
+/* ── User table wrapper ── */
+.user-table-wrap {
+  overflow-x: auto;
+  border: 0.5px solid rgb(var(--line-rgb) / .06);
+  border-radius: 10px;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.user-table th {
+  background: var(--surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 0.5px solid rgb(var(--line-rgb) / .06);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.user-table td {
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--c2);
+  border-bottom: 0.5px solid rgb(var(--line-rgb) / .04);
+  vertical-align: middle;
+}
+
+.user-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tbody tr:hover td {
+  background: rgb(var(--line-rgb) / .018);
+}
+
+/* ── User cell layout ── */
+.user-avatar-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar-sm {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.user-avatar-sm.admin {
+  background: #6C63FF;
+}
+
+.user-avatar-sm.analyst {
+  background: var(--surface2);
+  border: 0.5px solid rgba(96,165,250,.3);
+  color: #60A5FA;
+}
+
+.user-fullname {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c1);
+  line-height: 1.3;
+}
+
+.user-username {
+  font-size: 11px;
+  color: var(--c3);
+  margin-top: 1px;
+}
+
+/* ── Info badge (analyst role) ── */
+.badge.info {
+  background: rgba(96,165,250,.1);
+  color: #60A5FA;
+  border: 0.5px solid rgba(96,165,250,.2);
+}
+
+/* ── Action buttons ── */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--c3);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  background: var(--surface3);
+  color: var(--c1);
+}
+
+.action-btn.danger:hover {
+  color: #F87171;
+  background: rgba(248,113,113,.08);
+}
+
+.action-btn.activate:hover {
+  color: #4ADE80;
+  background: rgba(74,222,128,.08);
+}
+
+/* ── Search bar ── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-icon-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon-pos {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c3);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-users {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px 0 34px;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c1);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.search-input-users::placeholder { color: var(--c3); }
+
+.search-input-users:focus {
+  border-color: rgba(108,99,255,.5);
+  box-shadow: 0 0 0 3px rgba(108,99,255,.12);
+}
+
+/* ── Filter selects ── */
+.select-wrap-users {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.filter-sel-users {
+  height: 34px;
+  padding: 0 28px 0 10px;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  border-radius: 8px;
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c2);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  min-width: 130px;
+}
+
+.filter-sel-users:focus {
+  border-color: rgba(108,99,255,.5);
+  box-shadow: 0 0 0 3px rgba(108,99,255,.12);
+}
+
+.filter-sel-users option { background: var(--surface2); }
+
+.sel-chevron {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--c3);
+}
+
+/* ── Modal form fields ── */
+.modal-form-field {
+  margin-bottom: 16px;
+}
+
+.modal-form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+
+.modal-form-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c1);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  box-sizing: border-box;
+}
+
+.modal-form-input::placeholder { color: var(--c3); }
+
+.modal-form-input:focus {
+  border-color: rgba(108,99,255,.5);
+  box-shadow: 0 0 0 3px rgba(108,99,255,.12);
+}
+
+.modal-form-input.err {
+  border-color: rgba(248,113,113,.5);
+}
+
+.modal-form-hint {
+  font-size: 10px;
+  color: var(--c3);
+  margin-top: 3px;
+}
+
+.modal-form-err {
+  font-size: 10px;
+  color: #F87171;
+  margin-top: 3px;
+  display: none;
+}
+
+.modal-form-err.show {
+  display: block;
+}
+
+/* ── Role selector ── */
+.role-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.role-opt {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: var(--c3);
+  cursor: pointer;
+  transition: all .15s;
+  background: transparent;
+}
+
+.role-opt:hover {
+  background: rgb(var(--line-rgb) / .04);
+  color: var(--c2);
+  border-color: rgb(var(--line-rgb) / .12);
+}
+
+.role-opt.selected[data-role="admin"] {
+  background: rgba(108,99,255,.15);
+  border-color: rgba(108,99,255,.4);
+  color: #6C63FF;
+}
+
+.role-opt.selected[data-role="analyst"] {
+  background: rgba(96,165,250,.1);
+  border-color: rgba(96,165,250,.3);
+  color: #60A5FA;
+}
+
+/* ── Modal user preview header ── */
+.modal-user-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface2);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 0.5px solid rgb(var(--line-rgb) / .06);
+}
+
+/* ── Modal button row ── */
+.modal-btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 9px 16px;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / .07);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: var(--c2);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+
+.btn-cancel:hover { background: var(--surface3); color: var(--c1); }
+
+.btn-accent {
+  flex: 1;
+  padding: 9px 16px;
+  background: #6C63FF;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+
+.btn-accent:hover { opacity: 0.88; }
+.btn-accent:active { transform: scale(0.98); }
+
+.btn-danger {
+  flex: 1;
+  padding: 9px 16px;
+  background: rgba(248,113,113,.9);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-danger:hover { background: #F87171; }
+
+.btn-warn {
+  flex: 1;
+  padding: 9px 16px;
+  background: rgba(251,191,36,.9);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: #000;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-warn:hover { background: #FBBF24; }
+
+/* ── Modal overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.hidden { display: none; }
+
+/* ── Modal close button ── */
+.modal-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--c3);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  flex-shrink: 0;
+}
+.modal-close-btn:hover { color: var(--c1); background: var(--surface3); }
+
+/* ── modal-box max-height scroll ── */
+.modal-box {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ── Empty state ── */
+.table-empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--c3);
+  font-size: 12px;
+}
+.table-empty-state svg {
+  display: block;
+  margin: 0 auto 10px;
+  opacity: 0.4;
+}
+
+/* ── Toast notifications ── */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  background: var(--surface3);
+  border: 0.5px solid rgb(var(--line-rgb) / .1);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c1);
+  min-width: 240px;
+  max-width: 340px;
+  pointer-events: auto;
+  animation: toastIn .25s cubic-bezier(.16,1,.3,1);
+  transition: opacity .2s, transform .2s;
+}
+
+.toast.toast-out {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+.toast-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-icon.positive { background: rgba(74,222,128,.15); color: #4ADE80; }
+.toast-icon.negative { background: rgba(248,113,113,.15); color: #F87171; }
+.toast-icon.warn     { background: rgba(251,191,36,.15);  color: #FBBF24; }
+.toast-icon.info     { background: rgba(96,165,250,.15);  color: #60A5FA; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .chip-dot { animation: none; }
+  .action-btn,
+  .btn-accent,
+  .btn-cancel,
+  .modal-form-input { transition: none; }
+  .toast { animation: none; }
+}

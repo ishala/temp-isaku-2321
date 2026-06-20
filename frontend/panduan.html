@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full" style="background:#080810">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panduan Penggunaan — Sentimen i.saku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){try{var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.background=(t==="light")?"#F4F5FA":"#080810";}catch(e){}})();</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        page:'rgb(var(--c-page) / <alpha-value>)', surface:'rgb(var(--c-surface) / <alpha-value>)',
+        surface2:'rgb(var(--c-surface2) / <alpha-value>)', surface3:'rgb(var(--c-surface3) / <alpha-value>)',
+        accent:'#6C63FF', c1:'rgb(var(--c-c1) / <alpha-value>)', c2:'rgb(var(--c-c2) / <alpha-value>)',
+        c3:'rgb(var(--c-c3) / <alpha-value>)', positive:'#4ADE80', negative:'#F87171', warn:'#FBBF24',
+        line:'rgb(var(--line-rgb) / <alpha-value>)', info:'#60A5FA',
+      }, fontFamily:{ sans:['Inter','sans-serif'] } } },
+    }
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="h-full font-sans bg-page text-c1 overflow-y-auto">
+
+<!-- Topbar -->
+<header class="sticky top-0 z-20 flex items-center justify-between px-6 py-[14px] border-b border-line/[0.06] bg-surface">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white shrink-0">iS</div>
+    <div class="flex flex-col leading-none">
+      <span class="text-[13px] font-semibold text-c1">Panduan Penggunaan</span>
+      <span class="text-[10px] text-c3 mt-[3px]">Alur kerja: scraping → cetak laporan</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <button id="theme-toggle" class="w-9 h-9 rounded-full bg-surface2 border border-line/[0.08] text-c2 hover:text-accent flex items-center justify-center transition-colors duration-150" title="Ganti tema">
+      <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+    <a href="dashboard.html" class="flex items-center gap-[6px] px-3 py-[8px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 transition-opacity">
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.5 5l-5 5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Kembali ke Dashboard
+    </a>
+  </div>
+</header>
+
+<main class="max-w-[820px] mx-auto px-6 py-10">
+
+  <div class="mb-8">
+    <h1 class="text-[24px] font-semibold text-c1 mb-2">Cara Menggunakan i.saku Sentiment</h1>
+    <p class="text-[13px] text-c2 leading-[1.7]">
+      Ikuti alur berikut secara berurutan — dari mengambil ulasan (scraping) sampai mencetak laporan lengkap.
+      Setiap langkah memakai halaman yang berbeda agar fungsinya tidak tumpang tindih.
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-4" id="guide-steps"></div>
+
+  <div class="panel mt-6" style="border-color:rgba(108,99,255,.3)">
+    <div class="flex items-start gap-3">
+      <div class="w-8 h-8 rounded-[8px] bg-accent/15 text-accent flex items-center justify-center shrink-0">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.25"/><path d="M10 6.5v.01M10 9v4.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-semibold text-c1 mb-1">Catatan penting</div>
+        <p class="text-[12px] text-c2 leading-[1.7]">
+          Urutan wajib: <b>Data Mentah → Preprocessing → Prediksi</b>. Tombol prediksi/preprocessing hanya
+          memproses data yang belum diproses, jadi aman dijalankan berkali-kali. Pastikan backend berjalan
+          di <code class="text-accent">http://localhost:8000</code> dan App ID Google Play sudah benar saat scraping.
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const STEPS = [
+    { n: 1, t: 'Login', d: 'Masuk memakai akun yang diberikan administrator. Role Admin dapat mengelola pengguna & menghapus data.', page: 'login.html', link: 'Halaman Login' },
+    { n: 2, t: 'Scraping Data Mentah', d: 'Buka <b>Data Ulasan</b>. Pada panel Scraping, pilih <b>Tahun</b> & <b>Bulan</b>, lalu klik <b>Mulai Scraping</b>. Ulasan tersimpan ke database sebagai data mentah.', page: 'ulasan.html', link: 'Buka Data Ulasan' },
+    { n: 3, t: 'Preprocessing', d: 'Buka <b>Preprocessing</b>, klik <b>Jalankan Preprocessing</b>. Sistem membersihkan teks: cleaning → normalisasi slang → stopword removal → stemming. Klik satu baris untuk melihat tahapannya.', page: 'preprocessing.html', link: 'Buka Preprocessing' },
+    { n: 4, t: 'Prediksi Sentimen', d: 'Buka <b>Analisis Ulasan → tab Prediksi Dataset</b>, klik <b>Jalankan Prediksi NB & SVM</b>. Model memprediksi memakai teks hasil preprocessing. (Untuk uji cepat satu kalimat, gunakan tab Teks Tunggal.)', page: 'analisis.html', link: 'Buka Analisis Ulasan' },
+    { n: 5, t: 'Verifikasi & Koreksi', d: 'Kembali ke <b>Data Ulasan</b>. Label NB/SVM kini muncul. Gunakan tombol <b>Setujui</b>, <b>Tolak</b>, atau <b>Koreksi Label</b> untuk memvalidasi hasil.', page: 'ulasan.html', link: 'Buka Data Ulasan' },
+    { n: 6, t: 'Pantau Ringkasan', d: 'Lihat <b>Dashboard</b> untuk KPI, distribusi sentimen, tren bulanan, dan ulasan terbaru — semua otomatis mengikuti data di database.', page: 'dashboard.html', link: 'Buka Dashboard' },
+    { n: 7, t: 'Bandingkan Model', d: 'Buka <b>Perbandingan Model</b> untuk melihat metrik evaluasi NB vs SVM dan agreement rate. Klik <b>Cetak Halaman Ini</b> untuk mencetak.', page: 'perbandingan.html', link: 'Buka Perbandingan Model' },
+    { n: 8, t: 'Cetak Laporan Lengkap', d: 'Buka <b>Laporan</b>, atur <b>filter</b> (rentang tanggal, source, status, model) lalu <b>Terapkan Filter</b>. Cetak per kartu dengan <b>Cetak Halaman Ini</b>, atau semua sekaligus lewat <b>Cetak Semua</b>.', page: 'laporan.html', link: 'Buka Laporan' },
+  ];
+  document.getElementById('guide-steps').innerHTML = STEPS.map(s => `
+    <div class="panel flex gap-4 items-start">
+      <div class="w-9 h-9 rounded-[10px] bg-accent text-white flex items-center justify-center text-[14px] font-bold shrink-0">${s.n}</div>
+      <div class="flex-1">
+        <div class="text-[14px] font-semibold text-c1 mb-1">${s.t}</div>
+        <p class="text-[12px] text-c2 leading-[1.7]">${s.d}</p>
+        <a href="${s.page}" class="inline-flex items-center gap-1 text-[11px] text-accent hover:underline mt-2">
+          ${s.link}
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.5 5l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>`).join('');
+</script>
+<script src="js/theme.js"></script>
+</body>
+</html>

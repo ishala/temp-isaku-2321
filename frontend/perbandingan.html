@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full" style="background:#080810">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perbandingan Model — Sentimen i.saku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){try{var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.background=(t==="light")?"#F4F5FA":"#080810";}catch(e){}})();</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            page:     'rgb(var(--c-page) / <alpha-value>)',
+            surface:  'rgb(var(--c-surface) / <alpha-value>)',
+            surface2: 'rgb(var(--c-surface2) / <alpha-value>)',
+            surface3: 'rgb(var(--c-surface3) / <alpha-value>)',
+            accent:   '#6C63FF',
+            'accent-dim': 'rgba(108,99,255,0.12)',
+            c1:       'rgb(var(--c-c1) / <alpha-value>)',
+            c2:       'rgb(var(--c-c2) / <alpha-value>)',
+            c3:       'rgb(var(--c-c3) / <alpha-value>)',
+            positive: '#4ADE80',
+            negative: '#F87171',
+            warn:     '#FBBF24',
+            line:     'rgb(var(--line-rgb) / <alpha-value>)',
+            info:     '#60A5FA',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/laporan.css" />
+</head>
+<body class="h-full font-sans bg-page text-c1 overflow-hidden">
+
+<div class="app-shell flex h-screen">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar flex flex-col w-[220px] shrink-0 bg-surface border-r border-line/[0.05] z-30">
+    <div class="flex items-center gap-3 px-5 py-[22px] border-b border-line/[0.05]">
+      <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white tracking-[-0.5px] shrink-0">iS</div>
+      <div class="flex flex-col leading-none">
+        <span class="text-[13px] font-semibold text-c1">i.saku Sentiment</span>
+        <span class="text-[9px] text-c3 tracking-[0.08em] uppercase mt-[3px]">Analytics Tool</span>
+      </div>
+    </div>
+    <nav class="flex-1 px-3 py-4 overflow-y-auto">
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2">Menu</div>
+      <a href="dashboard.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.75" y="2.75" width="6" height="6" rx="1.5"/><rect x="11.25" y="2.75" width="6" height="6" rx="1.5"/><rect x="2.75" y="11.25" width="6" height="6" rx="1.5"/><rect x="11.25" y="11.25" width="6" height="6" rx="1.5"/></svg>Dashboard</a>
+      <a href="analisis.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 6v4l2.5 2.5" stroke-linecap="round"/></svg>Analisis Ulasan</a>
+      <a href="perbandingan.html" class="nav-item active"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14l5-5 3.5 3.5L17 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Perbandingan Model</a>
+      <a href="laporan.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.75" y="2.75" width="10.5" height="14.5" rx="2"/><path d="M7.5 7h5m-5 3h5m-5 3h3" stroke-linecap="round"/></svg>Laporan</a>
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5">Dataset</div>
+      <a href="ulasan.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="6" rx="7" ry="2.75"/><path d="M3 6v4c0 1.52 3.134 2.75 7 2.75S17 11.52 17 10V6"/><path d="M3 10v4c0 1.52 3.134 2.75 7 2.75S17 15.52 17 14v-4"/></svg>Data Ulasan</a>
+      <a href="preprocessing.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h12M4 10h8M4 15h10" stroke-linecap="round"/></svg>Preprocessing</a>
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5" id="admin-section">Admin</div>
+      <a href="users.html" class="nav-item" id="nav-pengguna"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6.5" r="2.75"/><path d="M2.5 16c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5"/><circle cx="15" cy="7" r="2.25"/><path d="M13.5 16h4c0-2.485-1.567-4.5-3.5-4.5"/></svg>Pengguna</a>
+      <a href="activity.html" class="nav-item" id="nav-aktivitas"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 5.75V10l2.75 1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Log Aktivitas</a>
+    </nav>
+    <div class="px-3 py-3 border-t border-line/[0.05]">
+      <div class="flex items-center gap-3 px-2 py-2 rounded-[8px] hover:bg-surface2 transition-colors duration-150 cursor-pointer group">
+        <div class="avatar w-7 h-7 rounded-full bg-accent flex items-center justify-center text-[11px] font-semibold text-white shrink-0" id="user-avatar">A</div>
+        <div class="flex flex-col flex-1 min-w-0">
+          <span class="text-[12px] font-medium text-c1 truncate" id="user-name">Admin</span>
+          <span class="text-[10px] text-c3 capitalize" id="user-role">admin</span>
+        </div>
+        <button id="theme-toggle" class="text-c3 hover:text-accent transition-colors duration-150 p-1 shrink-0" title="Ganti tema terang/gelap"><svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+        <button id="logout-btn" class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-c3 hover:text-negative p-1" title="Keluar">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 7V4.75A2 2 0 0 0 11.5 2.75h-7A2 2 0 0 0 2.5 4.75v10.5A2 2 0 0 0 4.5 17.25h7a2 2 0 0 0 2-2V13" stroke-linecap="round"/><path d="M17.5 10h-9m6-3 3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <div>
+        <h1 class="text-[15px] font-semibold text-c1">Perbandingan Model NB vs SVM</h1>
+        <p class="text-[11px] text-c3 mt-[2px]">Metrik evaluasi, visualisasi, dan agreement rate antar model</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-cetak-compare" class="flex items-center gap-[6px] px-3 py-[7px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 active:scale-[0.98] transition-all duration-150">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+          Cetak Halaman Ini
+        </button>
+        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-7 py-6">
+
+      <!-- Bar chart -->
+      <div class="panel mb-4">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Perbandingan Akurasi</div>
+            <div class="panel-sub">Naive Bayes vs Support Vector Machine</div>
+          </div>
+        </div>
+        <div class="report-preview" style="height:280px; padding:10px;">
+          <canvas id="canvas-compare" style="width:100%;height:100%;display:block;"></canvas>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-[1fr_1fr] gap-4 mb-4">
+        <!-- Metrik evaluasi -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Metrik Evaluasi</div>
+              <div class="panel-sub">Akurasi · Precision · Recall · F1</div>
+            </div>
+          </div>
+          <div class="report-preview">
+            <table class="report-preview-table w-full">
+              <thead>
+                <tr><th>Metrik</th><th>Naive Bayes</th><th>SVM</th><th>Selisih</th></tr>
+              </thead>
+              <tbody id="metric-tbody"><!-- diisi JS --></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Agreement -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Agreement Rate</div>
+              <div class="panel-sub" id="agree-sub">Kesepakatan NB &amp; SVM dari data</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="mini-stat">
+              <span class="mini-stat-label">Total Dianalisis</span>
+              <span class="mini-stat-val" id="cmp-total">—</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Sepakat (NB = SVM)</span>
+              <span class="mini-stat-val text-positive" id="cmp-agree">—</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Tidak Sepakat</span>
+              <span class="mini-stat-val text-negative" id="cmp-disagree">—</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Agreement Rate</span>
+              <span class="mini-stat-val text-accent" id="cmp-rate">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kesimpulan -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Kesimpulan</div>
+            <div class="panel-sub">Rekomendasi model</div>
+          </div>
+        </div>
+        <p class="text-[12px] text-c2 leading-[1.7]" id="cmp-kesimpulan">
+          SVM mengungguli Naive Bayes pada seluruh metrik evaluasi dengan selisih F1 sekitar 3,1 poin.
+          Direkomendasikan memakai SVM sebagai model utama, dengan Naive Bayes sebagai pembanding validasi.
+        </p>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══ PRINTABLE: PERBANDINGAN MODEL ═══ -->
+<div id="print-doc-compare" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Perbandingan Model NB vs SVM</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span id="print-date-compare"></span></p>
+    </div>
+  </div>
+
+  <h2 class="print-section-title">Metrik Evaluasi</h2>
+  <table class="print-table">
+    <thead><tr><th>Metrik</th><th>Naive Bayes</th><th>SVM</th><th>Selisih</th></tr></thead>
+    <tbody id="pcmp-metric-tbody"></tbody>
+  </table>
+
+  <h2 class="print-section-title">Agreement Rate</h2>
+  <table class="print-table">
+    <thead><tr><th>Kategori</th><th>Jumlah</th><th>Persentase</th></tr></thead>
+    <tbody id="pcmp-agree-tbody"></tbody>
+  </table>
+
+  <h2 class="print-section-title">Kesimpulan</h2>
+  <p class="print-body" id="pcmp-kesimpulan"></p>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<!-- Logout confirm modal -->
+<div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
+  <div class="modal-box w-[340px]">
+    <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
+    <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
+    <div class="flex gap-2">
+      <button id="modal-cancel" class="flex-1 py-2 rounded-[8px] bg-surface2 text-[12px] text-c2 font-medium hover:bg-surface3 transition-colors duration-150">Batal</button>
+      <button id="modal-confirm" class="flex-1 py-2 rounded-[8px] bg-negative/90 text-[12px] text-white font-semibold hover:bg-negative transition-colors duration-150">Ya, keluar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/perbandingan.js"></script>
+<script src="js/theme.js"></script>
+</body>
+</html>

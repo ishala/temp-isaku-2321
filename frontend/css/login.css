@@ -1,0 +1,101 @@
+/* ── Base (html/body overflow tidak bisa di-responsive via Tailwind) ── */
+html, body { height: 100%; overflow: hidden; }
+
+@media (max-width: 860px) {
+  html, body { overflow: auto; }
+}
+
+/* ── Left panel: diagonal clip + accent bar ── */
+.panel-left::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -80px;
+  width: 160px; height: 100%;
+  background: var(--page);
+  transform: skewX(-6deg);
+  z-index: 2;
+}
+
+@media (max-width: 860px) {
+  .panel-left::after { display: none; }
+}
+
+.panel-left::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 15%; bottom: 15%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, #6C63FF, transparent);
+  border-radius: 2px;
+}
+
+/* ── Keyframes ── */
+@keyframes chipFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(.75); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.deco-chip { animation: chipFloat 4s ease-in-out infinite; }
+.chip-dot  { animation: pulse 2s ease-in-out infinite; }
+
+/* ── Button shimmer (::after tidak bisa di Tailwind) ── */
+.btn-login::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(var(--line-rgb) / .15), transparent);
+  transform: skewX(-20deg);
+  transition: left .4s;
+}
+.btn-login:not(:disabled):hover::after { left: 150%; }
+
+/* ── Loading state (JS-toggled via .loading class) ── */
+.btn-spinner                        { display: none; }
+.btn-login.loading .btn-text        { display: none; }
+.btn-login.loading .btn-spinner     { display: block; animation: spin .6s linear infinite; }
+
+/* ── Input error state (JS-toggled via .err class) ── */
+input.err {
+  border-color: #F87171 !important;
+  box-shadow: 0 0 0 3px rgba(248,113,113,.12) !important;
+}
+
+/* ── Field error visibility (JS-toggled via .show class) ── */
+.field-err      { display: none; }
+.field-err.show { display: flex; }
+
+/* ── Alert states (JS-toggled via className swap) ── */
+.alert {
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+.alert.error {
+  background: rgba(248,113,113,.08);
+  border: 0.5px solid rgba(248,113,113,.3);
+  color: #F87171;
+  display: flex;
+}
+.alert.success {
+  background: rgba(74,222,128,.08);
+  border: 0.5px solid rgba(74,222,128,.3);
+  color: #4ADE80;
+  display: flex;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .deco-chip, .chip-dot, .btn-login::after { animation: none; transition: none; }
+}

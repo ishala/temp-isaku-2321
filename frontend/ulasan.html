@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full" style="background:#080810">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Ulasan — Sentimen i.saku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){try{var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.background=(t==="light")?"#F4F5FA":"#080810";}catch(e){}})();</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            page:     'rgb(var(--c-page) / <alpha-value>)',
+            surface:  'rgb(var(--c-surface) / <alpha-value>)',
+            surface2: 'rgb(var(--c-surface2) / <alpha-value>)',
+            surface3: 'rgb(var(--c-surface3) / <alpha-value>)',
+            accent:   '#6C63FF',
+            'accent-dim': 'rgba(108,99,255,0.12)',
+            c1:       'rgb(var(--c-c1) / <alpha-value>)',
+            c2:       'rgb(var(--c-c2) / <alpha-value>)',
+            c3:       'rgb(var(--c-c3) / <alpha-value>)',
+            positive: '#4ADE80',
+            negative: '#F87171',
+            warn:     '#FBBF24',
+            line:     'rgb(var(--line-rgb) / <alpha-value>)',
+            info:     '#60A5FA',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/ulasan.css" />
+</head>
+<body class="h-full font-sans bg-page text-c1 overflow-hidden">
+
+<!-- ─────────────────────────────────────────────── -->
+<!--  APP SHELL                                       -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="app-shell flex h-screen">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════ -->
+  <aside class="sidebar flex flex-col w-[220px] shrink-0 bg-surface border-r border-line/[0.05] z-30">
+    <div class="flex items-center gap-3 px-5 py-[22px] border-b border-line/[0.05]">
+      <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white tracking-[-0.5px] shrink-0">iS</div>
+      <div class="flex flex-col leading-none">
+        <span class="text-[13px] font-semibold text-c1">i.saku Sentiment</span>
+        <span class="text-[9px] text-c3 tracking-[0.08em] uppercase mt-[3px]">Analytics Tool</span>
+      </div>
+    </div>
+    <nav class="flex-1 px-3 py-4 overflow-y-auto">
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2">Menu</div>
+      <a href="dashboard.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.75" y="2.75" width="6" height="6" rx="1.5"/><rect x="11.25" y="2.75" width="6" height="6" rx="1.5"/><rect x="2.75" y="11.25" width="6" height="6" rx="1.5"/><rect x="11.25" y="11.25" width="6" height="6" rx="1.5"/></svg>Dashboard</a>
+      <a href="analisis.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 6v4l2.5 2.5" stroke-linecap="round"/></svg>Analisis Ulasan</a>
+      <a href="perbandingan.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14l5-5 3.5 3.5L17 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Perbandingan Model</a>
+      <a href="laporan.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.75" y="2.75" width="10.5" height="14.5" rx="2"/><path d="M7.5 7h5m-5 3h5m-5 3h3" stroke-linecap="round"/></svg>Laporan</a>
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5">Dataset</div>
+      <a href="ulasan.html" class="nav-item active"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="6" rx="7" ry="2.75"/><path d="M3 6v4c0 1.52 3.134 2.75 7 2.75S17 11.52 17 10V6"/><path d="M3 10v4c0 1.52 3.134 2.75 7 2.75S17 15.52 17 14v-4"/></svg>Data Ulasan</a>
+      <a href="preprocessing.html" class="nav-item"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h12M4 10h8M4 15h10" stroke-linecap="round"/></svg>Preprocessing</a>
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5" id="admin-section">Admin</div>
+      <a href="users.html" class="nav-item" id="nav-pengguna"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6.5" r="2.75"/><path d="M2.5 16c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5"/><circle cx="15" cy="7" r="2.25"/><path d="M13.5 16h4c0-2.485-1.567-4.5-3.5-4.5"/></svg>Pengguna</a>
+      <a href="activity.html" class="nav-item" id="nav-aktivitas"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 5.75V10l2.75 1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Log Aktivitas</a>
+    </nav>
+    <div class="px-3 py-3 border-t border-line/[0.05]">
+      <div class="flex items-center gap-3 px-2 py-2 rounded-[8px] hover:bg-surface2 transition-colors duration-150 cursor-pointer group">
+        <div class="avatar w-7 h-7 rounded-full bg-accent flex items-center justify-center text-[11px] font-semibold text-white shrink-0" id="user-avatar">A</div>
+        <div class="flex flex-col flex-1 min-w-0">
+          <span class="text-[12px] font-medium text-c1 truncate" id="user-name">Admin</span>
+          <span class="text-[10px] text-c3 capitalize" id="user-role">admin</span>
+        </div>
+        <button id="theme-toggle" class="text-c3 hover:text-accent transition-colors duration-150 p-1 shrink-0" title="Ganti tema terang/gelap"><svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+        <button id="logout-btn" class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-c3 hover:text-negative p-1" title="Keluar">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 7V4.75A2 2 0 0 0 11.5 2.75h-7A2 2 0 0 0 2.5 4.75v10.5A2 2 0 0 0 4.5 17.25h7a2 2 0 0 0 2-2V13" stroke-linecap="round"/><path d="M17.5 10h-9m6-3 3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Topbar -->
+    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <div>
+        <h1 class="text-[15px] font-semibold text-c1">Data Ulasan</h1>
+        <p class="text-[11px] text-c3 mt-[2px]">Kelola, setujui, dan koreksi hasil analisis ulasan</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="print-btn" id="btn-print-ulasan" title="Cetak laporan data mentah">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
+          Laporan Data Mentah
+        </button>
+        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+          <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
+          <span class="text-c2">Model aktif</span>
+        </div>
+        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="flex-1 overflow-y-auto px-7 py-6" id="main-content">
+
+      <!-- Scraping panel -->
+      <div class="panel mb-4" id="scrape-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Scraping Ulasan Google Play</div>
+            <div class="panel-sub">Ambil ulasan baru lalu simpan sebagai data mentah</div>
+          </div>
+          <span class="text-[10px] text-c3 uppercase tracking-[0.08em]">Langkah 1 · Data Mentah</span>
+        </div>
+
+        <div class="flex flex-wrap items-end gap-3">
+          <div class="flex flex-col gap-[6px]">
+            <label class="text-[10px] text-c3 uppercase tracking-[0.06em]" for="scrape-year">Tahun</label>
+            <select id="scrape-year" class="filter-select" style="min-width:110px"></select>
+          </div>
+          <div class="flex flex-col gap-[6px]">
+            <label class="text-[10px] text-c3 uppercase tracking-[0.06em]" for="scrape-month">Bulan</label>
+            <select id="scrape-month" class="filter-select" style="min-width:140px">
+              <option value="">Semua Bulan</option>
+              <option value="1">Januari</option><option value="2">Februari</option>
+              <option value="3">Maret</option><option value="4">April</option>
+              <option value="5">Mei</option><option value="6">Juni</option>
+              <option value="7">Juli</option><option value="8">Agustus</option>
+              <option value="9">September</option><option value="10">Oktober</option>
+              <option value="11">November</option><option value="12">Desember</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-[6px] flex-1 min-w-[200px]">
+            <input hidden id="scrape-appid" class="filter-input" type="text" value="com.isaku.app" />
+          </div>
+          <button id="btn-scrape" class="px-4 py-[9px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 active:scale-[0.98] transition-all duration-150 flex items-center gap-2 shrink-0">
+            <svg class="scrape-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.75a7.25 7.25 0 1 0 5.2 12.3l2.55 2.55" stroke-linecap="round"/><path d="M10 6.5v3.5l2.25 1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="scrape-btn-text">Mulai Scraping</span>
+            <div class="scrape-spinner w-[14px] h-[14px] border-2 border-white/30 border-t-white rounded-full" style="display:none;animation:spin .6s linear infinite"></div>
+          </button>
+        </div>
+        <p id="scrape-status" class="text-[11px] mt-3" style="display:none"></p>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar panel mb-4">
+        <div class="relative flex-1 min-w-[180px]">
+          <svg class="filter-search-icon" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.25"/><path d="M14.5 14.5l2.75 2.75" stroke-linecap="round"/></svg>
+          <input type="text" id="filter-search" class="filter-input filter-input-search" placeholder="Cari teks ulasan…" autocomplete="off" />
+        </div>
+        <div class="select-wrap filter-select-wrap">
+          <select id="filter-source" class="filter-select">
+            <option value="">Semua Source</option>
+            <option value="Google Play">Google Play Store</option>
+            <option value="Manual">Manual</option>
+          </select>
+          <svg class="select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="select-wrap filter-select-wrap">
+          <select id="filter-status" class="filter-select">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="disetujui">Disetujui</option>
+            <option value="ditolak">Ditolak</option>
+          </select>
+          <svg class="select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="select-wrap filter-select-wrap">
+          <select id="filter-bintang" class="filter-select">
+            <option value="">Semua Bintang</option>
+            <option value="1">1★</option>
+            <option value="2">2★</option>
+            <option value="3">3★</option>
+            <option value="4">4★</option>
+            <option value="5">5★</option>
+          </select>
+          <svg class="select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="select-wrap filter-select-wrap">
+          <select id="filter-sort" class="filter-select">
+            <option value="terbaru">Terbaru</option>
+            <option value="terlama">Terlama</option>
+            <option value="bintang-desc">Bintang Tertinggi</option>
+            <option value="bintang-asc">Bintang Terendah</option>
+          </select>
+          <svg class="select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <button id="btn-reset-filter" class="filter-reset-btn">
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16" stroke-linecap="round"/></svg>
+          Reset Filter
+        </button>
+      </div>
+
+      <!-- Table panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Daftar Ulasan</div>
+            <div class="panel-sub" id="table-subtitle">Memuat data…</div>
+          </div>
+          <div class="flex items-center gap-2" id="table-header-info">
+            <span class="text-[11px] text-c3" id="selected-count" style="display:none"></span>
+          </div>
+        </div>
+
+        <!-- Data table -->
+        <div class="data-table-wrap">
+          <table class="data-table" id="data-table">
+            <thead>
+              <tr>
+                <th style="width:42px">No</th>
+                <th>Ulasan</th>
+                <th style="width:80px">Bintang</th>
+                <th style="width:100px">Tanggal</th>
+                <th style="width:110px">Prediksi NB</th>
+                <th style="width:110px">Prediksi SVM</th>
+                <th style="width:92px">Status</th>
+                <th style="width:120px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-line/[0.05]">
+          <span class="text-[11px] text-c3" id="pagination-info">Menampilkan 1–10 dari 0 ulasan</span>
+          <div class="pagination" id="pagination">
+            <!-- Buttons injected by JS -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══ MODAL: KOREKSI ═══════════════════════════ -->
+<div id="modal-koreksi" class="modal-overlay hidden">
+  <div class="modal-box w-[460px]">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <div class="text-[15px] font-semibold text-c1">Tolak & Koreksi Label</div>
+        <div class="text-[11px] text-c3 mt-[2px]">Tetapkan label yang benar — status ulasan menjadi Ditolak</div>
+      </div>
+      <button class="modal-close-btn" data-modal="modal-koreksi">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Review text preview -->
+    <div class="mb-4">
+      <div class="modal-field-label">Teks Ulasan</div>
+      <div class="modal-text-preview" id="koreksi-teks">—</div>
+    </div>
+
+    <!-- Current predictions -->
+    <div class="mb-4">
+      <div class="modal-field-label">Prediksi Saat Ini</div>
+      <div class="flex items-center gap-3 mt-2">
+        <div class="flex items-center gap-2">
+          <span class="model-tag">NB</span>
+          <span id="koreksi-nb-badge">—</span>
+        </div>
+        <div class="w-[1px] h-4 bg-line/[0.07]"></div>
+        <div class="flex items-center gap-2">
+          <span class="model-tag accent">SVM</span>
+          <span id="koreksi-svm-badge">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Label selector -->
+    <div class="mb-4">
+      <div class="modal-field-label">Label Baru</div>
+      <div class="label-selector mt-2">
+        <button class="label-opt" data-label="positif">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4.5 4.5 7.5-8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Positif
+        </button>
+        <button class="label-opt" data-label="negatif">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+          Negatif
+        </button>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="mb-5">
+      <label class="modal-field-label" for="koreksi-catatan">Catatan Koreksi <span class="font-normal">(opsional)</span></label>
+      <textarea id="koreksi-catatan" class="modal-textarea mt-2" placeholder="Jelaskan alasan koreksi label…" rows="3"></textarea>
+    </div>
+
+    <div class="flex gap-2">
+      <button class="modal-btn-cancel" data-modal="modal-koreksi">Batal</button>
+      <button class="modal-btn-accent flex-1" id="btn-simpan-koreksi">Tolak & Simpan Koreksi</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: EDIT ═══════════════════════════════ -->
+<div id="modal-edit" class="modal-overlay hidden">
+  <div class="modal-box w-[460px]">
+    <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center gap-2">
+        <div>
+          <div class="text-[15px] font-semibold text-c1">Edit Ulasan</div>
+          <div class="text-[11px] text-c3 mt-[2px]">Ubah data ulasan</div>
+        </div>
+        <span class="badge accent ml-1" style="font-size:8px">Admin</span>
+      </div>
+      <button class="modal-close-btn" data-modal="modal-edit">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <label class="modal-field-label" for="edit-teks">Teks Ulasan</label>
+      <textarea id="edit-teks" class="modal-textarea mt-2" placeholder="Teks ulasan…" rows="5"></textarea>
+    </div>
+
+    <div class="mb-5">
+      <label class="modal-field-label" for="edit-bintang">Bintang</label>
+      <div class="select-wrap mt-2">
+        <select id="edit-bintang" class="filter-select" style="width:100%">
+          <option value="1">1 Bintang</option>
+          <option value="2">2 Bintang</option>
+          <option value="3">3 Bintang</option>
+          <option value="4">4 Bintang</option>
+          <option value="5">5 Bintang</option>
+        </select>
+        <svg class="select-icon" width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+
+    <div class="flex gap-2">
+      <button class="modal-btn-cancel" data-modal="modal-edit">Batal</button>
+      <button class="modal-btn-accent flex-1" id="btn-simpan-edit">Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: HAPUS ══════════════════════════════ -->
+<div id="modal-hapus" class="modal-overlay hidden">
+  <div class="modal-box w-[380px]">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-9 h-9 rounded-[10px] bg-negative/10 border border-negative/20 flex items-center justify-center text-negative flex-shrink-0 mt-[1px]">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4.75h4m-7.25 2h10.5M8.75 8.75v5.5m2.5-5.5v5.5M5.25 6.75l.75 9a1.5 1.5 0 0 0 1.5 1.5h5a1.5 1.5 0 0 0 1.5-1.5l.75-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="text-[15px] font-semibold text-c1">Hapus Ulasan?</div>
+        <p class="text-[12px] text-c2 leading-[1.6] mt-1">Ulasan ini akan dihapus secara permanen dari dataset dan tidak dapat dikembalikan.</p>
+      </div>
+    </div>
+    <div class="bg-surface2 border border-line/[0.05] rounded-[8px] px-3 py-2 mb-5">
+      <p class="text-[11px] text-c3 truncate" id="hapus-teks-preview">—</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="modal-btn-cancel" data-modal="modal-hapus">Batal</button>
+      <button class="modal-btn-danger flex-1" id="btn-konfirm-hapus">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: DETAIL ════════════════════════════ -->
+<div id="modal-detail" class="modal-overlay hidden">
+  <div class="modal-box w-[520px]">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <div class="text-[15px] font-semibold text-c1">Detail Ulasan</div>
+        <div class="text-[11px] text-c3 mt-[2px]">Informasi lengkap ulasan ini</div>
+      </div>
+      <button class="modal-close-btn" data-modal="modal-detail">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Full review text -->
+    <div class="mb-4">
+      <div class="modal-field-label">Teks Ulasan</div>
+      <div class="modal-detail-textbox mt-2" id="detail-teks">—</div>
+    </div>
+
+    <!-- Metadata grid -->
+    <div class="detail-meta-grid mb-4">
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Source</span>
+        <span class="detail-meta-val" id="detail-source">—</span>
+      </div>
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Tanggal</span>
+        <span class="detail-meta-val" id="detail-tanggal">—</span>
+      </div>
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Bintang</span>
+        <span class="detail-meta-val star-display" id="detail-bintang">—</span>
+      </div>
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Status</span>
+        <span id="detail-status">—</span>
+      </div>
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Prediksi NB</span>
+        <span id="detail-nb">—</span>
+      </div>
+      <div class="detail-meta-item">
+        <span class="detail-meta-label">Prediksi SVM</span>
+        <span id="detail-svm">—</span>
+      </div>
+      <div class="detail-meta-item" style="grid-column: 1/-1">
+        <span class="detail-meta-label">Terakhir Dikoreksi Oleh</span>
+        <span class="detail-meta-val" id="detail-corrected-by">—</span>
+      </div>
+    </div>
+
+    <div class="flex justify-end">
+      <button class="modal-btn-cancel" data-modal="modal-detail">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: LOGOUT ════════════════════════════ -->
+<div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
+  <div class="modal-box w-[340px]">
+    <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
+    <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
+    <div class="flex gap-2">
+      <button id="modal-cancel" class="flex-1 py-2 rounded-[8px] bg-surface2 text-[12px] text-c2 font-medium hover:bg-surface3 transition-colors duration-150">Batal</button>
+      <button id="modal-confirm" class="flex-1 py-2 rounded-[8px] bg-negative/90 text-[12px] text-white font-semibold hover:bg-negative transition-colors duration-150">Ya, keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOOLTIP ═══════════════════════════════════ -->
+<div id="tooltip" class="tooltip hidden"></div>
+
+<!-- ═══ PRINT DOCUMENT ═══════════════════════════ -->
+<div id="print-ulasan-doc" class="print-doc">
+  <div class="print-header">
+    <div class="print-logo">iS</div>
+    <div>
+      <h1 class="print-title">Laporan Data Mentah Ulasan</h1>
+      <p class="print-subtitle">i.saku Sentiment Analytics · <span id="print-date-ulasan"></span></p>
+    </div>
+  </div>
+  <h2 class="print-section-title">Data Ulasan i.saku</h2>
+  <table class="print-table" id="print-table">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Teks Ulasan</th>
+        <th>Bintang</th>
+        <th>Tanggal</th>
+        <th>Source</th>
+        <th>Status</th>
+        <th>Prediksi NB</th>
+        <th>Prediksi SVM</th>
+      </tr>
+    </thead>
+    <tbody id="print-table-body">
+      <!-- Injected by JS -->
+    </tbody>
+  </table>
+  <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
+</div>
+
+<script src="js/ulasan.js"></script>
+<script src="js/theme.js"></script>
+</body>
+</html>

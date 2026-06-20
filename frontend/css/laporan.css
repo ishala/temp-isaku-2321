@@ -1,0 +1,473 @@
+/* ═══════════════════════════════════════════════════════
+   laporan.css — i.saku Sentiment Analytics
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Report layout grid ── */
+.report-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ── Filter panel (sticky left column) ── */
+.filter-panel {
+  position: sticky;
+  top: 24px;
+}
+
+/* ── Filter field ── */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+/* ── Filter label ── */
+.filter-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Filter date input ── */
+.filter-input-date {
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / 0.07);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c1);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: dark;
+}
+.filter-input-date:focus {
+  border-color: rgba(108, 99, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+}
+.filter-input-date::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) brightness(0.8);
+  cursor: pointer;
+  opacity: 0.6;
+}
+.filter-input-date::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ── Filter select wrapper ── */
+.filter-select-wrap {
+  position: relative;
+}
+
+/* ── Filter select ── */
+.filter-select-lap {
+  width: 100%;
+  padding: 8px 30px 8px 12px;
+  background: var(--surface2);
+  border: 0.5px solid rgb(var(--line-rgb) / 0.07);
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c1);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.filter-select-lap:focus {
+  border-color: rgba(108, 99, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+}
+.filter-select-lap option {
+  background: var(--surface2);
+  color: var(--c1);
+}
+
+/* ── Select custom chevron icon ── */
+.filter-select-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--c3);
+}
+
+/* ── Apply filter button ── */
+.filter-apply-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 0;
+  background: #6C63FF;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.filter-apply-btn:hover { opacity: 0.9; }
+.filter-apply-btn:active { transform: scale(0.98); }
+
+/* ── Reset link ── */
+.filter-reset-link {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: var(--c3);
+  cursor: pointer;
+  margin-top: 8px;
+  text-decoration: none;
+  transition: color 0.15s;
+  user-select: none;
+}
+.filter-reset-link:hover { color: var(--c2); }
+
+/* ── Filter stats summary ── */
+.filter-stats {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 0.5px solid rgb(var(--line-rgb) / 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Report cards column ── */
+.report-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Report card number badge ── */
+.report-card-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(108, 99, 255, 0.12);
+  border: 0.5px solid rgba(108, 99, 255, 0.25);
+  color: #6C63FF;
+  font-size: 9px;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Report preview area ── */
+.report-preview {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+/* ── Report preview table ── */
+.report-preview-table {
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.report-preview-table th {
+  background: var(--surface3);
+  color: var(--c3);
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.report-preview-table td {
+  color: var(--c2);
+  padding: 4px 8px;
+  border-bottom: 0.5px solid rgb(var(--line-rgb) / 0.04);
+  vertical-align: middle;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.report-preview-table tr:last-child td {
+  border-bottom: none;
+}
+.report-preview-table tr:hover td {
+  background: rgb(var(--line-rgb) / 0.015);
+}
+
+/* ── Per-card print button ── */
+.cetak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 0.5px solid rgb(var(--line-rgb) / 0.1);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: var(--c2);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.cetak-btn:hover {
+  color: var(--c1);
+  background: var(--surface2);
+  border-color: rgb(var(--line-rgb) / 0.16);
+}
+.cetak-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Stat chip ── */
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface3);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: var(--c2);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.4;
+}
+
+/* ── Cetak semua dropdown ── */
+.cetak-semua-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 0.5px solid rgb(var(--line-rgb) / 0.1);
+  border-radius: 10px;
+  padding: 8px;
+  min-width: 240px;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cetak-semua-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 8px 8px;
+  border-bottom: 0.5px solid rgb(var(--line-rgb) / 0.05);
+  margin-bottom: 4px;
+}
+.cetak-semua-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  color: var(--c2);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+.cetak-semua-item:hover {
+  background: var(--surface2);
+  color: var(--c1);
+}
+
+/* ── Print: hide app shell, show only active print-doc ── */
+.print-doc { display: none; }
+
+@media print {
+  body > .app-shell,
+  body > #logout-modal { display: none !important; }
+
+  .print-doc { display: none; }
+  .print-doc.printing { display: block !important; }
+
+  @page {
+    margin: 18mm 16mm;
+    size: A4;
+  }
+
+  /* ── Print header ── */
+  .print-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid #ccc;
+  }
+  .print-logo {
+    width: 36px;
+    height: 36px;
+    background: #6C63FF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    /* Print-safe fallback using border trick */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 3px;
+    font-family: 'Inter', sans-serif;
+  }
+  .print-subtitle {
+    font-size: 11px;
+    color: #666;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Filter badge in print ── */
+  .print-filter-badge {
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 12px;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+  }
+  .print-filter-badge:empty { display: none; }
+
+  /* ── Section title ── */
+  .print-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 18px 0 7px;
+    padding-bottom: 4px;
+    border-bottom: 0.5px solid #ddd;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Print table ── */
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+  .print-table th {
+    background: #f0f0f0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border: 0.5px solid #ccc;
+    white-space: nowrap;
+  }
+  .print-table td {
+    padding: 6px 10px;
+    color: #444;
+    border: 0.5px solid #ddd;
+    vertical-align: top;
+  }
+  .print-table tr:nth-child(even) td {
+    background: #fafafa;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Print stats grid (doc 4) ── */
+  .print-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .print-stat-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-stat-item.positive { border-color: #4ADE80; background: #f0fdf4; }
+  .print-stat-item.warn     { border-color: #FBBF24; background: #fffbeb; }
+  .print-stat-item.negative { border-color: #F87171; background: #fff1f2; }
+  .print-stat-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    display: block;
+    line-height: 1.2;
+    font-family: 'Inter', sans-serif;
+  }
+  .print-stat-label {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-top: 3px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Print body text ── */
+  .print-body {
+    font-size: 11.5px;
+    color: #444;
+    line-height: 1.75;
+    margin: 6px 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Print footer ── */
+  .print-footer {
+    margin-top: 36px;
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    border-top: 0.5px solid #ddd;
+    padding-top: 10px;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .filter-apply-btn,
+  .cetak-btn,
+  .filter-input-date,
+  .filter-select-lap { transition: none; }
+  .cetak-semua-dropdown { animation: none; }
+}

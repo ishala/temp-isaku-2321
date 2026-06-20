@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full" style="background:#080810">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Sentimen i.saku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){try{var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.background=(t==="light")?"#F4F5FA":"#080810";}catch(e){}})();</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            page:     'rgb(var(--c-page) / <alpha-value>)',
+            surface:  'rgb(var(--c-surface) / <alpha-value>)',
+            surface2: 'rgb(var(--c-surface2) / <alpha-value>)',
+            surface3: 'rgb(var(--c-surface3) / <alpha-value>)',
+            accent:   '#6C63FF',
+            'accent-dim': 'rgba(108,99,255,0.12)',
+            c1:       'rgb(var(--c-c1) / <alpha-value>)',
+            c2:       'rgb(var(--c-c2) / <alpha-value>)',
+            c3:       'rgb(var(--c-c3) / <alpha-value>)',
+            positive: '#4ADE80',
+            negative: '#F87171',
+            warn:     '#FBBF24',
+            line:     'rgb(var(--line-rgb) / <alpha-value>)',
+            info:     '#60A5FA',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="h-full font-sans bg-page text-c1 overflow-hidden">
+
+<!-- ─────────────────────────────────────────────── -->
+<!--  APP SHELL                                       -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="app-shell flex h-screen">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════ -->
+  <aside class="sidebar flex flex-col w-[220px] shrink-0 bg-surface border-r border-line/[0.05] z-30">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-[22px] border-b border-line/[0.05]">
+      <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white tracking-[-0.5px] shrink-0">iS</div>
+      <div class="flex flex-col leading-none">
+        <span class="text-[13px] font-semibold text-c1">i.saku Sentiment</span>
+        <span class="text-[9px] text-c3 tracking-[0.08em] uppercase mt-[3px]">Analytics Tool</span>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 overflow-y-auto">
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2">Menu</div>
+
+      <a href="#" class="nav-item active" data-page="dashboard">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.75" y="2.75" width="6" height="6" rx="1.5"/><rect x="11.25" y="2.75" width="6" height="6" rx="1.5"/><rect x="2.75" y="11.25" width="6" height="6" rx="1.5"/><rect x="11.25" y="11.25" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="analisis.html" class="nav-item" data-page="analisis">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 6v4l2.5 2.5" stroke-linecap="round"/></svg>
+        Analisis Ulasan
+      </a>
+      <a href="perbandingan.html" class="nav-item" data-page="perbandingan">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14l5-5 3.5 3.5L17 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Perbandingan Model
+      </a>
+      <a href="laporan.html" class="nav-item" data-page="laporan">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.75" y="2.75" width="10.5" height="14.5" rx="2"/><path d="M7.5 7h5m-5 3h5m-5 3h3" stroke-linecap="round"/></svg>
+        Laporan
+      </a>
+
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5">Dataset</div>
+      <a href="ulasan.html" class="nav-item" data-page="dataset">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="6" rx="7" ry="2.75"/><path d="M3 6v4c0 1.52 3.134 2.75 7 2.75S17 11.52 17 10V6"/><path d="M3 10v4c0 1.52 3.134 2.75 7 2.75S17 15.52 17 14v-4"/></svg>
+        Data Ulasan
+      </a>
+      <a href="preprocessing.html" class="nav-item" data-page="preprocessing">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h12M4 10h8M4 15h10" stroke-linecap="round"/></svg>
+        Preprocessing
+      </a>
+
+      <div class="text-[9px] font-medium tracking-[0.14em] uppercase text-c3 px-2 mb-2 mt-5" id="admin-section">Admin</div>
+      <a href="users.html" class="nav-item" data-page="pengguna" id="nav-pengguna">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6.5" r="2.75"/><path d="M2.5 16c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5"/><circle cx="15" cy="7" r="2.25"/><path d="M13.5 16h4c0-2.485-1.567-4.5-3.5-4.5"/></svg>
+        Pengguna
+      </a>
+      <a href="activity.html" class="nav-item" id="nav-aktivitas">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 5.75V10l2.75 1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Log Aktivitas
+      </a>
+    </nav>
+
+    <!-- User card -->
+    <div class="px-3 py-3 border-t border-line/[0.05]">
+      <div class="flex items-center gap-3 px-2 py-2 rounded-[8px] hover:bg-surface2 transition-colors duration-150 cursor-pointer group">
+        <div class="avatar w-7 h-7 rounded-full bg-accent flex items-center justify-center text-[11px] font-semibold text-white shrink-0" id="user-avatar">A</div>
+        <div class="flex flex-col flex-1 min-w-0">
+          <span class="text-[12px] font-medium text-c1 truncate" id="user-name">Admin</span>
+          <span class="text-[10px] text-c3 capitalize" id="user-role">admin</span>
+        </div>
+        <button id="theme-toggle" class="text-c3 hover:text-accent transition-colors duration-150 p-1 shrink-0" title="Ganti tema terang/gelap"><svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+        <button id="logout-btn" class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-c3 hover:text-negative p-1" title="Keluar">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 7V4.75A2 2 0 0 0 11.5 2.75h-7A2 2 0 0 0 2.5 4.75v10.5A2 2 0 0 0 4.5 17.25h7a2 2 0 0 0 2-2V13" stroke-linecap="round"/><path d="M17.5 10h-9m6-3 3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ══ MAIN ══════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Topbar -->
+    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <div>
+        <h1 class="text-[15px] font-semibold text-c1" id="page-title">Dashboard</h1>
+        <p class="text-[11px] text-c3 mt-[2px]" id="page-subtitle">Ringkasan performa model &amp; distribusi sentimen</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- Panduan -->
+        <button id="btn-panduan" class="flex items-center gap-[6px] bg-accent/[0.12] border border-accent/30 text-accent rounded-full px-3 py-[6px] text-[11px] font-medium hover:bg-accent/[0.2] transition-colors duration-150" title="Cara penggunaan website">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.25"/><path d="M8 7.75a2 2 0 1 1 2.6 1.9c-.6.2-.6.6-.6 1.1m0 2.25h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Panduan
+        </button>
+        <!-- Model badge -->
+        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+          <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
+          <span class="text-c2">Model aktif</span>
+        </div>
+        <!-- Date -->
+        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+      </div>
+    </header>
+
+    <!-- Page content area -->
+    <main class="flex-1 overflow-y-auto px-7 py-6" id="main-content">
+
+      <!-- ══ PAGE: DASHBOARD ══════════════════════ -->
+      <div id="page-dashboard">
+
+        <!-- KPI Row -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+
+          <div class="kpi-card">
+            <div class="flex items-start justify-between mb-3">
+              <div class="kpi-icon bg-accent/10 text-accent">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="10" cy="6" rx="7" ry="2.75"/><path d="M3 6v4c0 1.52 3.134 2.75 7 2.75S17 11.52 17 10V6"/><path d="M3 10v4c0 1.52 3.134 2.75 7 2.75S17 15.52 17 14v-4"/></svg>
+              </div>
+              <span class="kpi-delta positive">+12%</span>
+            </div>
+            <div class="kpi-value" id="kpi-total">—</div>
+            <div class="kpi-label">Total Ulasan</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="flex items-start justify-between mb-3">
+              <div class="kpi-icon bg-positive/10 text-positive">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3.5l1.9 3.85 4.25.62-3.07 3 .72 4.23L10 13.1l-3.8 2 .72-4.23-3.07-3 4.25-.62z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="kpi-delta positive">+5%</span>
+            </div>
+            <div class="kpi-value" id="kpi-pos">—</div>
+            <div class="kpi-label">Sentimen Positif</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="flex items-start justify-between mb-3">
+              <div class="kpi-icon bg-negative/10 text-negative">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M10 6.5v4m0 3h.01" stroke-linecap="round"/></svg>
+              </div>
+              <span class="kpi-delta negative">-2%</span>
+            </div>
+            <div class="kpi-value" id="kpi-neg">—</div>
+            <div class="kpi-label">Sentimen Negatif</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="flex items-start justify-between mb-3">
+              <div class="kpi-icon bg-accent/10 text-accent">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14l5-5 3.5 3.5L17 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="kpi-delta positive">+1.2%</span>
+            </div>
+            <div class="kpi-value">88,11%</div>
+            <div class="kpi-label">Akurasi SVM</div>
+          </div>
+
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-[1fr_300px] gap-4 mb-4">
+
+          <!-- Sentiment trend chart -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Tren Sentimen Bulanan</div>
+                <div class="panel-sub">Jan – Jun 2025 · semua model</div>
+              </div>
+              <div class="flex gap-2">
+                <button class="chip-btn active" data-chart-filter="all">Semua</button>
+                <button class="chip-btn" data-chart-filter="nb">NB</button>
+                <button class="chip-btn" data-chart-filter="svm">SVM</button>
+              </div>
+            </div>
+            <div class="chart-area" id="trend-chart">
+              <canvas id="canvas-trend" class="w-full h-full"></canvas>
+            </div>
+          </div>
+
+          <!-- Donut -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Distribusi Sentimen</div>
+                <div class="panel-sub">Keseluruhan dataset</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-center py-4">
+              <div class="relative">
+                <canvas id="canvas-donut" width="160" height="160"></canvas>
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span id="donut-center-val" class="text-[22px] font-semibold">79%</span>
+                  <span id="donut-center-label" class="text-[10px] mt-0.5">Positif</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 px-1">
+              <div class="legend-row">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-positive shrink-0"></div>
+                  <span class="text-[12px] text-c2">Positif</span>
+                </div>
+                <span class="text-[12px] font-medium text-c1" id="legend-pos">— <span class="text-c3 font-normal">—</span></span>
+              </div>
+              <div class="legend-row">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-negative shrink-0"></div>
+                  <span class="text-[12px] text-c2">Negatif</span>
+                </div>
+                <span class="text-[12px] font-medium text-c1" id="legend-neg">— <span class="text-c3 font-normal">—</span></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom row -->
+        <div class="grid grid-cols-2 gap-4">
+
+          <!-- Model comparison -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Performa Model</div>
+                <div class="panel-sub">Metrik evaluasi terakhir</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 mt-1">
+
+              <div class="metric-group">
+                <div class="flex items-center justify-between mb-[6px]">
+                  <span class="text-[11px] text-c3 uppercase tracking-[0.06em]">Naive Bayes</span>
+                  <span class="text-[11px] text-positive font-medium">81,53%</span>
+                </div>
+                <div class="metric-bar-track">
+                  <div class="metric-bar-fill bg-positive" style="width:81.53%"></div>
+                </div>
+              </div>
+
+              <div class="metric-group mt-1">
+                <div class="flex items-center justify-between mb-[6px]">
+                  <span class="text-[11px] text-c3 uppercase tracking-[0.06em]">SVM</span>
+                  <span class="text-[11px] text-accent font-medium">88,11%</span>
+                </div>
+                <div class="metric-bar-track">
+                  <div class="metric-bar-fill bg-accent" style="width:88.11%"></div>
+                </div>
+              </div>
+
+              <div class="border-t border-line/[0.05] my-1"></div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Precision NB</span>
+                  <span class="mini-stat-val">81,56%</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Precision SVM</span>
+                  <span class="mini-stat-val">88,13%</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Recall NB</span>
+                  <span class="mini-stat-val">81,53%</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Recall SVM</span>
+                  <span class="mini-stat-val">88,11%</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">F1 NB</span>
+                  <span class="mini-stat-val">81,48%</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">F1 SVM</span>
+                  <span class="mini-stat-val">88,10%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent reviews -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Ulasan Terbaru</div>
+                <div class="panel-sub">5 ulasan terakhir diproses</div>
+              </div>
+              <a href="ulasan.html" class="text-[11px] text-accent hover:underline">Lihat semua</a>
+            </div>
+            <div class="flex flex-col gap-[10px] mt-1" id="recent-reviews">
+
+              <div class="review-item">
+                <div class="flex items-start justify-between gap-2 mb-[5px]">
+                  <span class="review-text">"Aplikasinya cepat dan responsif, top!"</span>
+                  <span class="badge positive">Positif</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] text-c3">SVM · 96% keyakinan</span>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="flex items-start justify-between gap-2 mb-[5px]">
+                  <span class="review-text">"Sering gagal transfer di jam sibuk."</span>
+                  <span class="badge negative">Negatif</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] text-c3">NB · 81% keyakinan</span>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="flex items-start justify-between gap-2 mb-[5px]">
+                  <span class="review-text">"Fitur tabungan oke, tapi UI agak membingungkan."</span>
+                  <span class="badge negative">Negatif</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] text-c3">SVM · 74% keyakinan</span>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="flex items-start justify-between gap-2 mb-[5px]">
+                  <span class="review-text">"Promo cashback sangat membantu, terimakasih!"</span>
+                  <span class="badge positive">Positif</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] text-c3">SVM · 92% keyakinan</span>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="flex items-start justify-between gap-2 mb-[5px]">
+                  <span class="review-text">"Verifikasi KTP lama sekali prosesnya."</span>
+                  <span class="badge negative">Negatif</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] text-c3">NB · 78% keyakinan</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /page-dashboard -->
+
+    </main>
+  </div>
+</div>
+
+<!-- Logout confirm modal -->
+<div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
+  <div class="modal-box w-[340px]">
+    <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
+    <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
+    <div class="flex gap-2">
+      <button id="modal-cancel" class="flex-1 py-2 rounded-[8px] bg-surface2 text-[12px] text-c2 font-medium hover:bg-surface3 transition-colors duration-150">Batal</button>
+      <button id="modal-confirm" class="flex-1 py-2 rounded-[8px] bg-negative/90 text-[12px] text-white font-semibold hover:bg-negative transition-colors duration-150">Ya, keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: PANDUAN (pop-up tata cara) ═══ -->
+<div id="guide-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
+  <div class="modal-box w-[460px] max-h-[85vh] overflow-y-auto">
+    <div class="flex items-start justify-between mb-1">
+      <div class="text-[15px] font-semibold text-c1">Tata Cara Penggunaan</div>
+      <button id="guide-close" class="text-c3 hover:text-c1 p-1 -mt-1 -mr-1">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <p class="text-[12px] text-c2 leading-[1.6] mb-4">Alur singkat dari scraping sampai cetak laporan:</p>
+    <ol class="flex flex-col gap-[10px] mb-5">
+      <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shrink-0">1</span><span class="text-[12px] text-c2"><b class="text-c1">Data Ulasan</b> — Scraping (pilih tahun/bulan/App ID) → data mentah masuk DB.</span></li>
+      <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shrink-0">2</span><span class="text-[12px] text-c2"><b class="text-c1">Preprocessing</b> — Jalankan untuk membersihkan teks (clean → slang → stopword → stemming).</span></li>
+      <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shrink-0">3</span><span class="text-[12px] text-c2"><b class="text-c1">Analisis Ulasan</b> — tab Prediksi Dataset → Jalankan Prediksi NB &amp; SVM.</span></li>
+      <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shrink-0">4</span><span class="text-[12px] text-c2"><b class="text-c1">Data Ulasan</b> — verifikasi: Setujui / Tolak / Koreksi label.</span></li>
+      <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center shrink-0">5</span><span class="text-[12px] text-c2"><b class="text-c1">Perbandingan Model &amp; Laporan</b> — lihat metrik, lalu Cetak Halaman / Cetak Semua.</span></li>
+    </ol>
+    <div class="flex gap-2">
+      <button id="guide-cancel" class="flex-1 py-2 rounded-[8px] bg-surface2 text-[12px] text-c2 font-medium hover:bg-surface3 transition-colors duration-150">Tutup</button>
+      <a href="panduan.html" class="flex-1 py-2 rounded-[8px] bg-accent text-[12px] text-white font-semibold text-center hover:opacity-90 transition-opacity duration-150">Buka Panduan Lengkap</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+<script src="js/theme.js"></script>
+</body>
+</html>

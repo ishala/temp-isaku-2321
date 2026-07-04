@@ -127,6 +127,12 @@
         <p class="text-[11px] text-c3 mt-[2px]" id="page-subtitle">Ringkasan performa model &amp; distribusi sentimen</p>
       </div>
       <div class="flex items-center gap-3">
+        <!-- Model filter (mengatur KPI, tren, & distribusi) -->
+        <select id="model-filter" class="bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px] text-c2 cursor-pointer focus:outline-none focus:border-accent/40 transition-colors duration-150" title="Pilih model yang ditampilkan">
+          <option value="both">Semua (NB &amp; SVM sepakat)</option>
+          <option value="nb">Naive Bayes</option>
+          <option value="svm" selected>SVM</option>
+        </select>
         <!-- Panduan -->
         <button id="btn-panduan" class="flex items-center gap-[6px] bg-accent/[0.12] border border-accent/30 text-accent rounded-full px-3 py-[6px] text-[11px] font-medium hover:bg-accent/[0.2] transition-colors duration-150" title="Cara penggunaan website">
           <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.25"/><path d="M8 7.75a2 2 0 1 1 2.6 1.9c-.6.2-.6.6-.6 1.1m0 2.25h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -205,12 +211,7 @@
             <div class="panel-header">
               <div>
                 <div class="panel-title">Tren Sentimen Bulanan</div>
-                <div class="panel-sub">Jan – Jun 2025 · semua model</div>
-              </div>
-              <div class="flex gap-2">
-                <button class="chip-btn active" data-chart-filter="all">Semua</button>
-                <button class="chip-btn" data-chart-filter="nb">NB</button>
-                <button class="chip-btn" data-chart-filter="svm">SVM</button>
+                <div class="panel-sub" id="trend-sub">SVM</div>
               </div>
             </div>
             <div class="chart-area" id="trend-chart">

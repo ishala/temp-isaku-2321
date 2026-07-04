@@ -281,6 +281,8 @@ class ReportStats(BaseModel):
     svm_negative: int
     agreement_count: int
     agreement_rate: float
+    agree_positive: int
+    agree_negative: int
 
 
 # ── Activity Log (Audit Trail, admin) ──────────────────────────────────────────

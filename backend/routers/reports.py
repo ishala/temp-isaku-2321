@@ -82,6 +82,16 @@ def get_stats(
     ).count()
     agreement_rate = (agreement_count / total_analyzed * 100) if total_analyzed > 0 else 0.0
 
+    # Distribusi hanya untuk ulasan yang NB & SVM sepakat (dipakai mode "Semua")
+    agree_positive = abase.filter(
+        AnalysisResult.nb_sentiment == SentimentEnum.positive,
+        AnalysisResult.svm_sentiment == SentimentEnum.positive,
+    ).count()
+    agree_negative = abase.filter(
+        AnalysisResult.nb_sentiment == SentimentEnum.negative,
+        AnalysisResult.svm_sentiment == SentimentEnum.negative,
+    ).count()
+
     total_corrections = db.query(func.count(LabelCorrection.id)).scalar() or 0
 
     return ReportStats(
@@ -97,6 +107,8 @@ def get_stats(
         svm_negative=svm_negative,
         agreement_count=agreement_count,
         agreement_rate=round(agreement_rate, 2),
+        agree_positive=agree_positive,
+        agree_negative=agree_negative,
     )
 
 
@@ -120,6 +132,8 @@ def get_sentiment_trend(
             func.sum(case((AnalysisResult.nb_sentiment == SentimentEnum.negative, 1), else_=0)).label("nb_neg"),
             func.sum(case((AnalysisResult.svm_sentiment == SentimentEnum.positive, 1), else_=0)).label("svm_pos"),
             func.sum(case((AnalysisResult.svm_sentiment == SentimentEnum.negative, 1), else_=0)).label("svm_neg"),
+            func.sum(case(((AnalysisResult.nb_sentiment == SentimentEnum.positive) & (AnalysisResult.svm_sentiment == SentimentEnum.positive), 1), else_=0)).label("agree_pos"),
+            func.sum(case(((AnalysisResult.nb_sentiment == SentimentEnum.negative) & (AnalysisResult.svm_sentiment == SentimentEnum.negative), 1), else_=0)).label("agree_neg"),
         )
         .join(Review, AnalysisResult.review_id == Review.id)
     )
@@ -139,6 +153,8 @@ def get_sentiment_trend(
             "nb_negative": int(r.nb_neg or 0),
             "svm_positive": int(r.svm_pos or 0),
             "svm_negative": int(r.svm_neg or 0),
+            "agree_positive": int(r.agree_pos or 0),
+            "agree_negative": int(r.agree_neg or 0),
         }
         for r in rows
     ]

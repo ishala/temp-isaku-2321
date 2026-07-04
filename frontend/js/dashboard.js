@@ -339,14 +339,13 @@ function hideTooltip() {
     drawTrend(activeFilter, null);
   });
 
-  /* ── filter buttons ── */
-  document.querySelectorAll('[data-chart-filter]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-chart-filter]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.chartFilter;
-      drawTrend(activeFilter, hoveredCol);
-    });
+  /* ── ganti model dari filter atas (Semua/NB/SVM) ── */
+  window.addEventListener('dashboard:model', e => {
+    if (e.detail && e.detail.filter) {
+      activeFilter = e.detail.filter;   // 'all' | 'nb' | 'svm'
+      hoveredCol = null;
+      drawTrend(activeFilter, null);
+    }
   });
 
   /* ── hover interactivity ── */
@@ -606,29 +605,60 @@ function hideTooltip() {
     return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  /* ── Model terpilih dari filter atas ── */
+  let lastStats = null;
+  function currentModel() {
+    const el = document.getElementById('model-filter');
+    return el ? el.value : 'svm';
+  }
+
+  /* Terapkan model ke KPI, donut, tren, & subtitle — tanpa fetch ulang */
+  function applyModel() {
+    const model = currentModel();
+
+    /* KPI positif/negatif + donut */
+    if (lastStats) {
+      const s = lastStats;
+      let pos, neg;
+      if (model === 'nb')        { pos = s.nb_positive || 0;  neg = s.nb_negative || 0; }
+      else if (model === 'both') { pos = s.agree_positive || 0; neg = s.agree_negative || 0; } // hanya ulasan NB & SVM sepakat
+      else                       { pos = s.svm_positive || 0; neg = s.svm_negative || 0; }
+      const t = pos + neg;
+      document.getElementById('kpi-pos').textContent = t ? (pos / t * 100).toFixed(1).replace('.', ',') + '%' : '—';
+      document.getElementById('kpi-neg').textContent = t ? (neg / t * 100).toFixed(1).replace('.', ',') + '%' : '—';
+      window.dispatchEvent(new CustomEvent('dashboard:dist', { detail: { pos, neg } }));
+    }
+
+    /* Tren chart (both→all) + subtitle */
+    const trendFilter = model === 'both' ? 'all' : model;
+    window.dispatchEvent(new CustomEvent('dashboard:model', { detail: { filter: trendFilter, model } }));
+    const sub = document.getElementById('trend-sub');
+    if (sub) sub.textContent = model === 'nb' ? 'Naive Bayes' : model === 'svm' ? 'SVM' : 'NB & SVM sepakat';
+  }
+
   /* ── KPI + distribusi (donut) ── */
   async function loadStats() {
     try {
       const res = await fetch(`${API}/api/reports/stats`, { headers });
       if (!res.ok) throw new Error();
-      const s = await res.json();
-
-      document.getElementById('kpi-total').textContent = (s.total_reviews || 0).toLocaleString('id-ID');
-
-      const pos = s.svm_positive || 0;
-      const neg = s.svm_negative || 0;
-      const t = pos + neg;
-      document.getElementById('kpi-pos').textContent = t ? (pos / t * 100).toFixed(1).replace('.', ',') + '%' : '—';
-      document.getElementById('kpi-neg').textContent = t ? (neg / t * 100).toFixed(1).replace('.', ',') + '%' : '—';
-
-      window.dispatchEvent(new CustomEvent('dashboard:dist', { detail: { pos, neg } }));
+      lastStats = await res.json();
+      document.getElementById('kpi-total').textContent = (lastStats.total_reviews || 0).toLocaleString('id-ID');
+      applyModel();
     } catch (_) {
+      lastStats = null;
       document.getElementById('kpi-total').textContent = '—';
       document.getElementById('kpi-pos').textContent = '—';
       document.getElementById('kpi-neg').textContent = '—';
       window.dispatchEvent(new CustomEvent('dashboard:dist', { detail: { pos: 0, neg: 0 } }));
+      applyModel();   // tetap sinkronkan filter tren + subtitle
     }
   }
+
+  /* Ganti model dari filter atas → hitung ulang dari data yang sudah dimuat */
+  (function () {
+    const sel = document.getElementById('model-filter');
+    if (sel) sel.addEventListener('change', applyModel);
+  })();
 
   /* ── Tren bulanan ── */
   async function loadTrend() {
@@ -641,15 +671,16 @@ function hideTooltip() {
       const months = {};  // "YYYY-MM" → sums
       rows.forEach(r => {
         const key = String(r.date).slice(0, 7);
-        const m = months[key] || (months[key] = { nbP: 0, nbN: 0, svP: 0, svN: 0 });
+        const m = months[key] || (months[key] = { nbP: 0, nbN: 0, svP: 0, svN: 0, agP: 0, agN: 0 });
         m.nbP += r.nb_positive || 0; m.nbN += r.nb_negative || 0;
         m.svP += r.svm_positive || 0; m.svN += r.svm_negative || 0;
+        m.agP += r.agree_positive || 0; m.agN += r.agree_negative || 0;
       });
       const keys = Object.keys(months).sort();
       const pct = (a, b) => (a + b > 0 ? Math.round(a / (a + b) * 100) : 0);
       const labels = keys.map(k => ID_BULAN[parseInt(k.slice(5, 7), 10) - 1]);
       const datasets = {
-        all: { positive: [], negative: [] },
+        all: { positive: [], negative: [] },   // "Semua" = hanya ulasan NB & SVM sepakat
         nb:  { positive: [], negative: [] },
         svm: { positive: [], negative: [] },
       };
@@ -657,8 +688,7 @@ function hideTooltip() {
         const m = months[k];
         datasets.nb.positive.push(pct(m.nbP, m.nbN));   datasets.nb.negative.push(pct(m.nbN, m.nbP));
         datasets.svm.positive.push(pct(m.svP, m.svN));  datasets.svm.negative.push(pct(m.svN, m.svP));
-        datasets.all.positive.push(pct(m.nbP + m.svP, m.nbN + m.svN));
-        datasets.all.negative.push(pct(m.nbN + m.svN, m.nbP + m.svP));
+        datasets.all.positive.push(pct(m.agP, m.agN));  datasets.all.negative.push(pct(m.agN, m.agP));
       });
       window.dispatchEvent(new CustomEvent('dashboard:trend', { detail: { labels, datasets } }));
     } catch (_) {

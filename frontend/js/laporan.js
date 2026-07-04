@@ -97,6 +97,8 @@ const REPORT_METRICS = {
   nb:  { acc: 81.53, prec: 81.56, rec: 81.53, f1: 81.48 },
   svm: { acc: 88.11, prec: 88.13, rec: 88.11, f1: 88.10 },
 };
+/* Dipakai laporan-report.js untuk menyusun narasi Kesimpulan (satu sumber angka) */
+window.REPORT_METRICS = REPORT_METRICS;
 
 /* ── Mini preview chart: canvas-compare-preview (NB vs SVM, semua metrik) ── */
 (function () {
@@ -217,15 +219,20 @@ const REPORT_METRICS = {
     { label: 'Positif',  pct: 78.6, color: '#4ADE80' },
     { label: 'Negatif',  pct: 21.4, color: '#F87171' },
   ];
+  let noData = false;
   window.addEventListener('report:dist', e => {
     const d = e.detail; const t = (d.pos || 0) + (d.neg || 0);
     if (t > 0) {
+      noData = false;
       slices = [
         { label: 'Positif', pct: +(d.pos / t * 100).toFixed(1), color: '#4ADE80' },
         { label: 'Negatif', pct: +(d.neg / t * 100).toFixed(1), color: '#F87171' },
       ];
-      draw();
+    } else {
+      /* Filter tidak menghasilkan data → kosongkan donut */
+      noData = true;
     }
+    draw();
   });
 
   function draw() {
@@ -243,6 +250,22 @@ const REPORT_METRICS = {
     const cy    = SIZE / 2;
     const outer = 74;
     const inner = 48;
+
+    /* Empty state: gambar cincin abu-abu + teks "—" */
+    if (noData) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, outer, 0, Math.PI * 2);
+      ctx.arc(cx, cy, inner, 0, Math.PI * 2, true);
+      ctx.fillStyle = 'rgba(150,150,180,.15)';
+      ctx.fill('evenodd');
+      ctx.fillStyle    = chartChrome().sub;
+      ctx.font         = 'bold 16px Inter,sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('—', cx, cy);
+      ctx.textBaseline = 'alphabetic';
+      return;
+    }
 
     let startAngle = -Math.PI / 2;
 
@@ -295,18 +318,23 @@ const REPORT_METRICS = {
 
   const PAD = { l: 22, r: 8, t: 8, b: 18 };
   let hoveredCol = null;
+  let noData = false;
 
   window.addEventListener('report:trend', e => {
     const d = e.detail;
+    hoveredCol = null;
     if (d && d.labels && d.labels.length) {
+      noData = false;
       labels = d.labels;
       series = [
         { values: d.positive, color: '#4ADE80', label: 'Positif' },
         { values: d.negative, color: '#F87171', label: 'Negatif', dashed: true },
       ];
-      hoveredCol = null;
-      draw();
+    } else {
+      /* Filter tidak menghasilkan data → kosongkan grafik (jangan tampilkan data lama) */
+      noData = true;
     }
+    draw();
   });
 
   /* tooltip (dibuat sekali, dipakai bersama) */
@@ -350,10 +378,22 @@ const REPORT_METRICS = {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, W, H);
 
+    const ck = chartChrome();
+
+    /* Empty state: tidak ada data untuk filter aktif */
+    if (noData) {
+      ctx.fillStyle    = ck.axisDim;
+      ctx.font         = '11px Inter,sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Tidak ada data untuk filter ini', W / 2, H / 2);
+      ctx.textBaseline = 'alphabetic';
+      return;
+    }
+
     const cw = W - PAD.l - PAD.r;
     const ch = H - PAD.t - PAD.b;
     const n  = labels.length;
-    const ck = chartChrome();
 
     function xAt(i)  { return PAD.l + (i / (n - 1)) * cw; }
     function yAt(v)  { return PAD.t + ch - ((v - 0) / 100) * ch; }
@@ -455,6 +495,7 @@ const REPORT_METRICS = {
 
   /* hover interactivity (sama seperti chart tren di dashboard) */
   canvas.addEventListener('mousemove', e => {
+    if (noData) { hideTip(); canvas.style.cursor = ''; return; }
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const cw = rect.width - PAD.l - PAD.r;

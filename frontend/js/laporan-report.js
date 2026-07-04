@@ -25,6 +25,86 @@
     catch (_) { return s; }
   }
 
+  /* ── Narasi dinamis (Kesimpulan / Temuan Kunci / Perubahan Signifikan) ──
+     Disusun dari data nyata; tiap loader mengisi bagiannya ke _ctx lalu
+     memanggil ulang builder. Guard bila data belum/ tidak tersedia. */
+  const _ctx = { stats: null, sources: null, trend: null };
+
+  function buildConclusion() {
+    const el = document.getElementById('pd3-conclusion');
+    if (!el) return;
+    const m = window.REPORT_METRICS;
+    if (!m) { el.textContent = '—'; return; }
+    const better = m.svm.acc >= m.nb.acc ? 'SVM' : 'Naive Bayes';
+    const worse  = better === 'SVM' ? 'Naive Bayes' : 'SVM';
+    const bAcc = (better === 'SVM' ? m.svm : m.nb).acc;
+    const wAcc = (better === 'SVM' ? m.nb : m.svm).acc;
+    const dF1  = Math.abs(m.svm.f1 - m.nb.f1);
+    let txt = `Model ${better} mengungguli ${worse} pada metrik evaluasi, dengan akurasi ${pctStr(bAcc)} berbanding ${pctStr(wAcc)} dan selisih F1 Score ${pctStr(dF1)}.`;
+    if (_ctx.stats && _ctx.stats.agreement_rate != null) {
+      txt += ` Kedua model sepakat pada ${pctStr(_ctx.stats.agreement_rate)} hasil analisis (sesuai filter aktif).`;
+    }
+    txt += ` Rekomendasi: gunakan ${better} sebagai model utama, dengan ${worse} sebagai pembanding validasi.`;
+    el.textContent = txt;
+  }
+
+  function buildChanges() {
+    const el = document.getElementById('pd5-changes');
+    if (!el) return;
+    const t = _ctx.trend;
+    if (!t || !t.labels.length) { el.textContent = 'Tidak ada data tren untuk rentang yang dipilih.'; return; }
+    if (t.labels.length < 2) {
+      el.textContent = `Hanya tersedia data untuk ${t.firstLabel} (positif ${t.firstPos}%, negatif ${100 - t.firstPos}%), sehingga perubahan antarbulan belum dapat dihitung.`;
+      return;
+    }
+    const diff = t.lastPos - t.firstPos;
+    const arah    = diff >= 0 ? 'meningkat' : 'menurun';
+    const arahNeg = diff >= 0 ? 'menurun' : 'meningkat';
+    let txt = `Sentimen positif ${arah} dari ${t.firstPos}% di ${t.firstLabel} menjadi ${t.lastPos}% di ${t.lastLabel}, perubahan sebesar ${Math.abs(diff)} poin persentase. Sentimen negatif ${arahNeg} dari ${100 - t.firstPos}% menjadi ${100 - t.lastPos}% pada periode yang sama.`;
+    if (t.peakLabel) txt += ` Volume ulasan tertinggi terjadi pada ${t.peakLabel} dengan ${fmtNum(t.peakTotal)} ulasan.`;
+    el.textContent = txt;
+  }
+
+  function buildFindings() {
+    const el = document.getElementById('pd4-findings');
+    if (!el) return;
+    const lines = [];
+    let i = 1;
+
+    const s = _ctx.stats;
+    if (s && (s.pos + s.neg) > 0) {
+      const t = s.pos + s.neg;
+      const dom = s.pos >= s.neg ? 'positif' : 'negatif';
+      lines.push(`${i++}. Sentimen ${dom} mendominasi — positif ${pctStr(s.pos / t * 100)} dan negatif ${pctStr(s.neg / t * 100)} dari ${fmtNum(t)} ulasan teranalisis.`);
+    }
+
+    if (_ctx.sources) {
+      const arr = Object.entries(_ctx.sources)
+        .map(([name, b]) => ({ name, p: b.p, n: b.n, tot: b.p + b.n }))
+        .filter(x => x.tot > 0);
+      if (arr.length) {
+        const bestPos = arr.slice().sort((a, b) => (b.p / b.tot) - (a.p / a.tot))[0];
+        const worst   = arr.slice().sort((a, b) => (b.n / b.tot) - (a.n / a.tot))[0];
+        lines.push(`${i++}. Source "${cap(bestPos.name)}" memiliki proporsi positif tertinggi (${pctStr(bestPos.p / bestPos.tot * 100)}), sedangkan "${cap(worst.name)}" proporsi negatif tertinggi (${pctStr(worst.n / worst.tot * 100)}).`);
+      }
+    }
+
+    if (_ctx.trend && _ctx.trend.labels.length >= 2) {
+      const tr = _ctx.trend, diff = tr.lastPos - tr.firstPos;
+      lines.push(`${i++}. Tren sentimen positif ${diff >= 0 ? 'meningkat' : 'menurun'} ${Math.abs(diff)} poin dari ${tr.firstLabel} ke ${tr.lastLabel}.`);
+    }
+
+    const m = window.REPORT_METRICS;
+    if (m) {
+      const better = m.svm.acc >= m.nb.acc ? 'SVM' : 'Naive Bayes';
+      const bAcc = (better === 'SVM' ? m.svm : m.nb).acc;
+      const wAcc = (better === 'SVM' ? m.nb : m.svm).acc;
+      lines.push(`${i++}. Model ${better} memiliki akurasi lebih tinggi (${pctStr(bAcc)}) dibanding ${better === 'SVM' ? 'Naive Bayes' : 'SVM'} (${pctStr(wAcc)}).`);
+    }
+
+    el.innerHTML = lines.length ? lines.join('<br/>') : 'Tidak ada data untuk filter ini.';
+  }
+
   /* Baca nilai filter dari panel kiri → query string + model */
   function getFilters() {
     const v = id => { const el = document.getElementById(id); return el ? el.value : ''; };
@@ -49,9 +129,11 @@
   async function loadStats(qs, model) {
     try {
       const s = await getJSON('/api/reports/stats?' + qs);
-      // Pilih model utk distribusi (default SVM)
-      const pos = model === 'nb' ? (s.nb_positive || 0) : (s.svm_positive || 0);
-      const neg = model === 'nb' ? (s.nb_negative || 0) : (s.svm_negative || 0);
+      // Pilih model utk distribusi. 'both' = hanya ulasan NB & SVM sepakat.
+      let pos, neg;
+      if (model === 'nb')        { pos = s.nb_positive || 0;    neg = s.nb_negative || 0; }
+      else if (model === 'svm')  { pos = s.svm_positive || 0;   neg = s.svm_negative || 0; }
+      else                       { pos = s.agree_positive || 0; neg = s.agree_negative || 0; }
       const t = pos + neg;
 
       set('stat-total', fmtNum(s.total_reviews));
@@ -70,12 +152,19 @@
       setHTML('pd3-tbody',
         `<tr><td>Total Sepakat (NB = SVM)</td><td>${fmtNum(s.agreement_count)}</td><td>${(s.agreement_rate || 0).toString().replace('.', ',')}%</td></tr>`);
 
+      _ctx.stats = { pos, neg, agreement_rate: s.agreement_rate != null ? s.agreement_rate : null };
+      buildConclusion();
+      buildFindings();
+
       window.dispatchEvent(new CustomEvent('report:dist', { detail: { pos, neg } }));
     } catch (_) {
       set('stat-total', '—');
       setHTML('chip-pos', 'Positif —');
       setHTML('chip-neg', 'Negatif —');
       setHTML('pd3-tbody', '<tr><td colspan="3" style="text-align:center">Data tidak tersedia</td></tr>');
+      _ctx.stats = null;
+      buildConclusion();
+      buildFindings();
       window.dispatchEvent(new CustomEvent('report:dist', { detail: { pos: 0, neg: 0 } }));
     }
   }
@@ -109,15 +198,23 @@
       // approval_status dikosongkan agar tidak menyaring 'approved' saja by default
       const rows = await getJSON('/api/reports/analysis-data?approval_status=&limit=1000&' + qs);
 
-      // Distribusi per source (print-doc-4)
-      const useNb = model === 'nb';
+      // Distribusi per source (print-doc-4). 'both' = hanya ulasan NB & SVM sepakat.
       const bySrc = {};
       rows.forEach(r => {
         const s = r.source || '-';
-        const sent = useNb ? r.nb_sentiment : r.svm_sentiment;
         const b = bySrc[s] || (bySrc[s] = { p: 0, n: 0 });
+        let sent;
+        if (model === 'nb')       sent = r.nb_sentiment;
+        else if (model === 'svm') sent = r.svm_sentiment;
+        else {
+          if (r.nb_sentiment !== r.svm_sentiment) return;  // lewati yang tidak sepakat
+          sent = r.svm_sentiment;
+        }
         if (sent === 'negative') b.n++; else if (sent === 'positive') b.p++;
       });
+      _ctx.sources = bySrc;
+      buildFindings();
+
       const srcKeys = Object.keys(bySrc);
       setHTML('pd4-source-tbody', srcKeys.length
         ? srcKeys.map(s => {
@@ -128,19 +225,47 @@
           }).join('')
         : '<tr><td colspan="4" style="text-align:center">Belum ada data</td></tr>');
 
+      /* Kolom mengikuti model terpilih: NB saja, SVM saja, atau keduanya */
+      const showNb  = model !== 'svm';   // 'both' atau 'nb'
+      const showSvm = model !== 'nb';    // 'both' atau 'svm'
+      const confOf  = r => (model === 'nb' ? r.nb_confidence : r.svm_confidence);
+
+      /* ── Card 2 (preview layar) ── */
+      let card2Head = '<th>Teks</th>';
+      if (showNb)  card2Head += '<th>NB</th>';
+      if (showSvm) card2Head += '<th>SVM</th>';
+      card2Head += '<th>Conf.</th>';
+      setHTML('card2-head', card2Head);
+      const card2Cols = 2 + (showNb ? 1 : 0) + (showSvm ? 1 : 0);
+
       setHTML('card2-tbody', rows.length
-        ? rows.slice(0, 3).map(r => `<tr>
-            <td>${cap((r.review_text || '').slice(0, 32))}…</td>
-            <td>${badge(r.nb_sentiment)}</td><td>${badge(r.svm_sentiment)}</td>
-            <td>${r.svm_confidence != null ? r.svm_confidence + '%' : '—'}</td></tr>`).join('')
-        : '<tr><td colspan="4" style="text-align:center;color:var(--c3)">Tidak ada hasil untuk filter ini</td></tr>');
+        ? rows.slice(0, 3).map(r => {
+            let tds = `<td>${cap((r.review_text || '').slice(0, 32))}…</td>`;
+            if (showNb)  tds += `<td>${badge(r.nb_sentiment)}</td>`;
+            if (showSvm) tds += `<td>${badge(r.svm_sentiment)}</td>`;
+            const c = confOf(r);
+            tds += `<td>${c != null ? c + '%' : '—'}</td>`;
+            return `<tr>${tds}</tr>`;
+          }).join('')
+        : `<tr><td colspan="${card2Cols}" style="text-align:center;color:var(--c3)">Tidak ada hasil untuk filter ini</td></tr>`);
+
+      /* ── Print doc 2 ── */
+      let pd2Head = '<th style="width:30px;">No</th><th>Teks Ulasan</th>';
+      if (showNb)  pd2Head += '<th style="width:70px;">NB Label</th><th style="width:60px;">NB Conf.</th>';
+      if (showSvm) pd2Head += '<th style="width:70px;">SVM Label</th><th style="width:65px;">SVM Conf.</th>';
+      pd2Head += '<th style="width:70px;">Status</th>';
+      setHTML('pd2-head', pd2Head);
+      const pd2Cols = 3 + (showNb ? 2 : 0) + (showSvm ? 2 : 0);
+
       setHTML('pd2-tbody', rows.length
-        ? rows.map((r, i) => `<tr>
-            <td>${i + 1}</td><td>${cap(r.review_text || '')}</td>
-            <td>${SENT_TXT[r.nb_sentiment] || '—'}</td><td>${r.nb_confidence != null ? r.nb_confidence + '%' : '—'}</td>
-            <td>${SENT_TXT[r.svm_sentiment] || '—'}</td><td>${r.svm_confidence != null ? r.svm_confidence + '%' : '—'}</td>
-            <td>${STATUS_TXT[r.approval_status] || r.approval_status || '—'}</td></tr>`).join('')
-        : '<tr><td colspan="7" style="text-align:center">Tidak ada data</td></tr>');
+        ? rows.map((r, i) => {
+            let tds = `<td>${i + 1}</td><td>${cap(r.review_text || '')}</td>`;
+            if (showNb)  tds += `<td>${SENT_TXT[r.nb_sentiment] || '—'}</td><td>${r.nb_confidence != null ? r.nb_confidence + '%' : '—'}</td>`;
+            if (showSvm) tds += `<td>${SENT_TXT[r.svm_sentiment] || '—'}</td><td>${r.svm_confidence != null ? r.svm_confidence + '%' : '—'}</td>`;
+            tds += `<td>${STATUS_TXT[r.approval_status] || r.approval_status || '—'}</td>`;
+            return `<tr>${tds}</tr>`;
+          }).join('')
+        : `<tr><td colspan="${pd2Cols}" style="text-align:center">Tidak ada data</td></tr>`);
     } catch (_) {
       setHTML('card2-tbody', '<tr><td colspan="4" style="text-align:center;color:#F87171">Server tidak terhubung</td></tr>');
     }
@@ -152,16 +277,21 @@
       const rows = await getJSON('/api/reports/trend?' + qs);
       if (!rows.length) {
         setHTML('pd5-tbody', '<tr><td colspan="6" style="text-align:center">Tidak ada data untuk filter ini</td></tr>');
+        _ctx.trend = { labels: [] };
+        buildChanges();
+        buildFindings();
         window.dispatchEvent(new CustomEvent('report:trend', { detail: null }));
         return;
       }
-      const useNb = model === 'nb';
+      // 'both' = hanya ulasan NB & SVM sepakat (agree_*)
+      const pKey = model === 'nb' ? 'nb_positive' : model === 'svm' ? 'svm_positive' : 'agree_positive';
+      const nKey = model === 'nb' ? 'nb_negative' : model === 'svm' ? 'svm_negative' : 'agree_negative';
       const months = {};
       rows.forEach(r => {
         const k = String(r.date).slice(0, 7);
         const m = months[k] || (months[k] = { p: 0, n: 0 });
-        m.p += useNb ? (r.nb_positive || 0) : (r.svm_positive || 0);
-        m.n += useNb ? (r.nb_negative || 0) : (r.svm_negative || 0);
+        m.p += r[pKey] || 0;
+        m.n += r[nKey] || 0;
       });
       const keys = Object.keys(months).sort();
       const labels = [], positive = [], negative = [], rowsHtml = [];
@@ -179,6 +309,22 @@
       rowsHtml.push(`<tr style="font-weight:600;"><td>Total</td><td>${fmtNum(tot)}</td><td>${fmtNum(tP)}</td><td>${tot ? Math.round(tP / tot * 100) : 0}%</td><td>${fmtNum(tN)}</td><td>${tot ? Math.round(tN / tot * 100) : 0}%</td></tr>`);
       setHTML('pd5-tbody', rowsHtml.join(''));
       if (keys.length) set('stat-periode', labels[0] + ' – ' + labels[labels.length - 1] + ' ' + keys[keys.length - 1].slice(0, 4));
+
+      /* Ringkasan tren utk narasi (Perubahan Signifikan + Temuan Kunci) */
+      let peakIdx = 0, peakTot = -1;
+      keys.forEach((k, idx) => { const m = months[k]; const t = m.p + m.n; if (t > peakTot) { peakTot = t; peakIdx = idx; } });
+      _ctx.trend = {
+        labels,
+        firstLabel: labels[0] + ' ' + keys[0].slice(0, 4),
+        lastLabel:  labels[labels.length - 1] + ' ' + keys[keys.length - 1].slice(0, 4),
+        firstPos:   positive[0],
+        lastPos:    positive[positive.length - 1],
+        peakLabel:  labels[peakIdx] + ' ' + keys[peakIdx].slice(0, 4),
+        peakTotal:  peakTot,
+      };
+      buildChanges();
+      buildFindings();
+
       window.dispatchEvent(new CustomEvent('report:trend', { detail: { labels, positive, negative } }));
     } catch (_) {
       setHTML('pd5-tbody', '<tr><td colspan="6" style="text-align:center;color:#F87171">Server tidak terhubung</td></tr>');
@@ -234,6 +380,7 @@
 
   /* Muat ulang seluruh laporan sesuai filter aktif */
   function reloadReport() {
+    _ctx.stats = _ctx.sources = _ctx.trend = null;
     const { qs, model } = getFilters();
     loadStats(qs, model);
     loadRaw(qs);

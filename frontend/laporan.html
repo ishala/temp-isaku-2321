@@ -234,7 +234,7 @@
               <label class="filter-label" for="filter-model">Model</label>
               <div class="filter-select-wrap">
                 <select id="filter-model" class="filter-select-lap">
-                  <option value="both">NB + SVM</option>
+                  <option value="both">NB &amp; SVM (sepakat)</option>
                   <option value="nb">Naive Bayes</option>
                   <option value="svm">SVM</option>
                 </select>
@@ -253,15 +253,15 @@
             <div class="filter-stats">
               <div class="mini-stat">
                 <span class="mini-stat-label">Total Ulasan</span>
-                <span class="mini-stat-val" id="stat-total">12.480</span>
+                <span class="mini-stat-val" id="stat-total">—</span>
               </div>
               <div class="mini-stat">
                 <span class="mini-stat-label">Periode</span>
-                <span class="mini-stat-val" id="stat-periode">Jan – Jun 2025</span>
+                <span class="mini-stat-val" id="stat-periode">—</span>
               </div>
               <div class="mini-stat">
                 <span class="mini-stat-label">Source Aktif</span>
-                <span class="mini-stat-val" id="stat-source">3</span>
+                <span class="mini-stat-val" id="stat-source">—</span>
               </div>
             </div>
           </div>
@@ -297,24 +297,7 @@
                   </tr>
                 </thead>
                 <tbody id="card1-tbody">
-                  <tr>
-                    <td>1</td>
-                    <td>Aplikasi sangat membantu, transfer cepat…</td>
-                    <td>⭐⭐⭐⭐⭐</td>
-                    <td><span class="badge positive">Disetujui</span></td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Sering error saat login, tolong diperbaiki…</td>
-                    <td>⭐⭐</td>
-                    <td><span class="badge negative">Ditolak</span></td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Biasa saja, fitur standar seperti app lain…</td>
-                    <td>⭐⭐⭐</td>
-                    <td><span class="badge warn">Pending</span></td>
-                  </tr>
+                  <tr><td colspan="4" style="text-align:center;color:var(--c3)">Memuat…</td></tr>
                 </tbody>
               </table>
             </div>
@@ -339,7 +322,7 @@
             <div class="report-preview">
               <table class="report-preview-table w-full">
                 <thead>
-                  <tr>
+                  <tr id="card2-head">
                     <th>Teks</th>
                     <th>NB</th>
                     <th>SVM</th>
@@ -347,24 +330,7 @@
                   </tr>
                 </thead>
                 <tbody id="card2-tbody">
-                  <tr>
-                    <td>Aplikasi sangat membantu…</td>
-                    <td><span class="badge positive">Positif</span></td>
-                    <td><span class="badge positive">Positif</span></td>
-                    <td>94%</td>
-                  </tr>
-                  <tr>
-                    <td>Sering error saat login…</td>
-                    <td><span class="badge negative">Negatif</span></td>
-                    <td><span class="badge negative">Negatif</span></td>
-                    <td>89%</td>
-                  </tr>
-                  <tr>
-                    <td>Biasa saja, fitur standar…</td>
-                    <td><span class="badge negative">Negatif</span></td>
-                    <td><span class="badge negative">Negatif</span></td>
-                    <td>72%</td>
-                  </tr>
+                  <tr><td colspan="4" style="text-align:center;color:var(--c3)">Memuat…</td></tr>
                 </tbody>
               </table>
             </div>
@@ -525,26 +491,7 @@
       </tr>
     </thead>
     <tbody id="pd1-tbody">
-      <tr><td>1</td><td>Aplikasi sangat membantu, transfer uang jadi lebih mudah dan cepat sekali.</td><td>Google Play</td><td>5</td><td>01 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>2</td><td>Sering error saat mau login, tolong segera diperbaiki ya tim developer.</td><td>Google Play</td><td>2</td><td>03 Jan 2025</td><td>Ditolak</td></tr>
-      <tr><td>3</td><td>Biasa saja, fitur-fiturnya standar seperti aplikasi dompet digital lainnya.</td><td>App Store</td><td>3</td><td>05 Jan 2025</td><td>Pending</td></tr>
-      <tr><td>4</td><td>Mantap banget, top up pulsa dan bayar tagihan listrik jadi gampang.</td><td>Google Play</td><td>5</td><td>08 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>5</td><td>Tampilan UI sudah bagus, tapi performa masih perlu ditingkatkan lagi.</td><td>App Store</td><td>4</td><td>10 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>6</td><td>Lambat banget loadingnya, sudah coba uninstall dan install ulang tetap sama.</td><td>Google Play</td><td>1</td><td>14 Jan 2025</td><td>Ditolak</td></tr>
-      <tr><td>7</td><td>Senang pakai i.saku, promo cashback sering ada dan lumayan besar hasilnya.</td><td>Google Play</td><td>5</td><td>17 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>8</td><td>Tidak bisa bayar BPJS, padahal sebelumnya bisa. Tolong dicek lagi sistemnya.</td><td>App Store</td><td>2</td><td>20 Jan 2025</td><td>Pending</td></tr>
-      <tr><td>9</td><td>OKE lah untuk sehari-hari, fitur split bill lumayan berguna untuk kami.</td><td>Manual</td><td>4</td><td>22 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>10</td><td>Customer service responsif, masalah saya diselesaikan dalam waktu 2 jam.</td><td>Google Play</td><td>5</td><td>25 Jan 2025</td><td>Disetujui</td></tr>
-      <tr><td>11</td><td>Aplikasi crash terus saat buka menu tabungan, sangat mengganggu aktivitas.</td><td>Google Play</td><td>1</td><td>28 Jan 2025</td><td>Ditolak</td></tr>
-      <tr><td>12</td><td>Fitur QRIS-nya praktis banget, tinggal scan langsung bayar tanpa ribet sama sekali.</td><td>App Store</td><td>5</td><td>01 Feb 2025</td><td>Disetujui</td></tr>
-      <tr><td>13</td><td>Limit transfer masih terlalu kecil, perlu ditingkatkan untuk pengguna premium.</td><td>Manual</td><td>3</td><td>04 Feb 2025</td><td>Pending</td></tr>
-      <tr><td>14</td><td>Aplikasi update terbaru malah bikin baterai lebih boros dari sebelumnya.</td><td>Google Play</td><td>2</td><td>07 Feb 2025</td><td>Pending</td></tr>
-      <tr><td>15</td><td>Suka dengan fitur investasi reksadana, mudah dimengerti oleh pemula seperti saya.</td><td>App Store</td><td>5</td><td>10 Feb 2025</td><td>Disetujui</td></tr>
-      <tr><td>16</td><td>Notifikasi transaksi kadang terlambat masuk, membuat saya khawatir keamanannya.</td><td>Google Play</td><td>3</td><td>13 Feb 2025</td><td>Disetujui</td></tr>
-      <tr><td>17</td><td>Proses verifikasi KTP berhasil dalam 5 menit, jauh lebih cepat dari ekspektasi.</td><td>App Store</td><td>5</td><td>16 Feb 2025</td><td>Disetujui</td></tr>
-      <tr><td>18</td><td>Tidak ada fitur cicilan 0%, padahal kompetitor sudah ada dari lama sekali.</td><td>Manual</td><td>3</td><td>19 Feb 2025</td><td>Pending</td></tr>
-      <tr><td>19</td><td>Sangat membantu untuk pembayaran tagihan bulanan, semua bisa diselesaikan disini.</td><td>Google Play</td><td>5</td><td>22 Feb 2025</td><td>Disetujui</td></tr>
-      <tr><td>20</td><td>Antarmuka kurang intuitif untuk pengguna baru, perlu panduan yang lebih jelas lagi.</td><td>App Store</td><td>3</td><td>25 Feb 2025</td><td>Pending</td></tr>
+      <tr><td colspan="6" style="text-align:center">Memuat…</td></tr>
     </tbody>
   </table>
   <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
@@ -563,7 +510,7 @@
   <h2 class="print-section-title">Tabel Prediksi NB &amp; SVM</h2>
   <table class="print-table">
     <thead>
-      <tr>
+      <tr id="pd2-head">
         <th style="width:30px;">No</th>
         <th>Teks Ulasan</th>
         <th style="width:70px;">NB Label</th>
@@ -574,21 +521,7 @@
       </tr>
     </thead>
     <tbody id="pd2-tbody">
-      <tr><td>1</td><td>Aplikasi sangat membantu, transfer cepat dan mudah sekali.</td><td>Positif</td><td>94%</td><td>Positif</td><td>96%</td><td>Disetujui</td></tr>
-      <tr><td>2</td><td>Sering error saat login, tolong segera diperbaiki.</td><td>Negatif</td><td>91%</td><td>Negatif</td><td>93%</td><td>Ditolak</td></tr>
-      <tr><td>3</td><td>Biasa saja, fitur standar seperti app lain pada umumnya.</td><td>Negatif</td><td>74%</td><td>Negatif</td><td>71%</td><td>Pending</td></tr>
-      <tr><td>4</td><td>Mantap banget, top up pulsa jadi sangat gampang sekarang.</td><td>Positif</td><td>92%</td><td>Positif</td><td>95%</td><td>Disetujui</td></tr>
-      <tr><td>5</td><td>Tampilan bagus tapi performa masih perlu ditingkatkan lagi.</td><td>Negatif</td><td>68%</td><td>Positif</td><td>61%</td><td>Disetujui</td></tr>
-      <tr><td>6</td><td>Lambat banget loadingnya, coba reinstall tetap sama saja.</td><td>Negatif</td><td>88%</td><td>Negatif</td><td>91%</td><td>Ditolak</td></tr>
-      <tr><td>7</td><td>Senang pakai i.saku, promo cashback sering ada dan besar.</td><td>Positif</td><td>96%</td><td>Positif</td><td>97%</td><td>Disetujui</td></tr>
-      <tr><td>8</td><td>Tidak bisa bayar BPJS, padahal sebelumnya bisa. Tolong dicek.</td><td>Negatif</td><td>85%</td><td>Negatif</td><td>87%</td><td>Pending</td></tr>
-      <tr><td>9</td><td>OKE untuk sehari-hari, fitur split bill lumayan berguna.</td><td>Positif</td><td>77%</td><td>Positif</td><td>79%</td><td>Disetujui</td></tr>
-      <tr><td>10</td><td>Customer service responsif, masalah diselesaikan dalam 2 jam.</td><td>Positif</td><td>93%</td><td>Positif</td><td>95%</td><td>Disetujui</td></tr>
-      <tr><td>11</td><td>Aplikasi crash terus saat buka menu tabungan, sangat mengganggu.</td><td>Negatif</td><td>90%</td><td>Negatif</td><td>92%</td><td>Ditolak</td></tr>
-      <tr><td>12</td><td>Fitur QRIS-nya praktis, tinggal scan langsung bayar tanpa ribet.</td><td>Positif</td><td>95%</td><td>Positif</td><td>96%</td><td>Disetujui</td></tr>
-      <tr><td>13</td><td>Limit transfer masih kecil, perlu ditingkatkan untuk pengguna premium.</td><td>Negatif</td><td>72%</td><td>Negatif</td><td>65%</td><td>Pending</td></tr>
-      <tr><td>14</td><td>Update terbaru malah bikin baterai lebih boros dari sebelumnya.</td><td>Negatif</td><td>86%</td><td>Negatif</td><td>88%</td><td>Pending</td></tr>
-      <tr><td>15</td><td>Suka fitur reksadana, mudah dimengerti oleh pemula seperti saya.</td><td>Positif</td><td>91%</td><td>Positif</td><td>93%</td><td>Disetujui</td></tr>
+      <tr><td colspan="7" style="text-align:center">Memuat…</td></tr>
     </tbody>
   </table>
   <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
@@ -631,13 +564,11 @@
       </tr>
     </thead>
     <tbody id="pd3-tbody">
-      <tr><td>Positif</td><td>7.842</td><td>94,7%</td></tr>
-      <tr><td>Negatif</td><td>2.140</td><td>92,6%</td></tr>
-      <tr><td><strong>Total Agreement</strong></td><td><strong>9.982</strong></td><td><strong>93,4%</strong></td></tr>
+      <tr><td colspan="3" style="text-align:center">Memuat…</td></tr>
     </tbody>
   </table>
   <h2 class="print-section-title">Kesimpulan</h2>
-  <p class="print-body">Model SVM mengungguli Naive Bayes di semua metrik evaluasi. SVM mencapai akurasi 88,11% dibandingkan 81,53% untuk Naive Bayes, dengan selisih F1 Score sebesar 6,62%. Rekomendasi: gunakan SVM sebagai model utama untuk analisis sentimen i.saku, dengan Naive Bayes sebagai model pembanding untuk validasi.</p>
+  <p class="print-body" id="pd3-conclusion">Memuat…</p>
   <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
 </div>
 
@@ -654,16 +585,16 @@
   <h2 class="print-section-title">Statistik Utama</h2>
   <div class="print-stats-grid">
     <div class="print-stat-item">
-      <div class="print-stat-val" id="pd4-total">10.683</div>
+      <div class="print-stat-val" id="pd4-total">—</div>
       <div class="print-stat-label">Total Ulasan</div>
     </div>
     <div class="print-stat-item positive">
-      <div class="print-stat-val" id="pd4-pos">8.399</div>
-      <div class="print-stat-label" id="pd4-pos-label">Positif (78,6%)</div>
+      <div class="print-stat-val" id="pd4-pos">—</div>
+      <div class="print-stat-label" id="pd4-pos-label">Positif</div>
     </div>
     <div class="print-stat-item negative">
-      <div class="print-stat-val" id="pd4-neg">2.284</div>
-      <div class="print-stat-label" id="pd4-neg-label">Negatif (21,4%)</div>
+      <div class="print-stat-val" id="pd4-neg">—</div>
+      <div class="print-stat-label" id="pd4-neg-label">Negatif</div>
     </div>
   </div>
   <h2 class="print-section-title">Distribusi per Source</h2>
@@ -681,13 +612,7 @@
     </tbody>
   </table>
   <h2 class="print-section-title">Temuan Kunci</h2>
-  <p class="print-body">
-    1. Sentimen positif mendominasi dengan 78,6% dari total ulasan, menunjukkan tingkat kepuasan pengguna yang baik secara keseluruhan.<br/>
-    2. Sentimen negatif sebesar 21,4% perlu menjadi perhatian, terutama terkait isu performa aplikasi dan fitur pembayaran.<br/>
-    3. Google Play memiliki distribusi sentimen positif tertinggi (80,0%), sementara sumber Manual menunjukkan negatif lebih tinggi (30,8%).<br/>
-    4. Tren sentimen positif meningkat 5,6 poin dari Januari ke Juni 2025, menunjukkan perbaikan persepsi pengguna yang konsisten.<br/>
-    5. Model SVM memiliki performa lebih baik (akurasi 88,11%) dibanding Naive Bayes (81,53%) pada seluruh metrik evaluasi.
-  </p>
+  <p class="print-body" id="pd4-findings">Memuat…</p>
   <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
 </div>
 
@@ -714,19 +639,11 @@
       </tr>
     </thead>
     <tbody id="pd5-tbody">
-      <tr><td>Januari 2025</td><td>1.608</td><td>1.166</td><td>72,5%</td><td>442</td><td>27,5%</td></tr>
-      <tr><td>Februari 2025</td><td>1.624</td><td>1.228</td><td>75,6%</td><td>396</td><td>24,4%</td></tr>
-      <tr><td>Maret 2025</td><td>1.806</td><td>1.398</td><td>77,4%</td><td>408</td><td>22,6%</td></tr>
-      <tr><td>April 2025</td><td>1.706</td><td>1.269</td><td>74,4%</td><td>437</td><td>25,6%</td></tr>
-      <tr><td>Mei 2025</td><td>1.904</td><td>1.501</td><td>78,8%</td><td>403</td><td>21,2%</td></tr>
-      <tr><td>Juni 2025</td><td>1.737</td><td>1.357</td><td>78,1%</td><td>380</td><td>21,9%</td></tr>
-      <tr style="font-weight:600;"><td>Total</td><td>10.385</td><td>7.919</td><td>76,3%</td><td>2.466</td><td>23,7%</td></tr>
+      <tr><td colspan="6" style="text-align:center">Memuat…</td></tr>
     </tbody>
   </table>
   <h2 class="print-section-title">Perubahan Signifikan</h2>
-  <p class="print-body">
-    Tren sentimen positif meningkat dari 72,5% di Januari menjadi 78,1% di Juni 2025, peningkatan sebesar 5,6 poin persentase. Sentimen negatif turun dari 27,5% menjadi 21,9% dalam periode yang sama. Puncak ulasan terjadi di bulan Mei 2025 dengan 1.904 ulasan, bersamaan dengan peluncuran fitur QRIS baru.
-  </p>
+  <p class="print-body" id="pd5-changes">Memuat…</p>
   <p class="print-footer">Dicetak dari i.saku Sentiment Analytics · Hanya untuk keperluan internal</p>
 </div>
 

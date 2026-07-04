@@ -363,7 +363,7 @@ document.getElementById('pagination').addEventListener('click', e => {
    8. FILTER & SORT
    ════════════════════════════════════════════════════════ */
 
-function applyFiltersAndSort() {
+function applyFiltersAndSort(preservePage) {
   const search  = (document.getElementById('filter-search').value || '').toLowerCase().trim();
   const source  = document.getElementById('filter-source').value;
   const status  = document.getElementById('filter-status').value;
@@ -387,14 +387,21 @@ function applyFiltersAndSort() {
   });
 
   filteredData = data;
-  currentPage  = 1;
+
+  if (preservePage === true) {
+    /* Clamp to a valid page in case the current page no longer has rows */
+    const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+  } else {
+    currentPage = 1;
+  }
   renderTable();
 }
 
-/* Attach filter listeners */
+/* Attach filter listeners — changing a filter resets to page 1 */
 ['filter-search', 'filter-source', 'filter-status', 'filter-bintang', 'filter-sort'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', applyFiltersAndSort);
+  if (el) el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', () => applyFiltersAndSort(false));
 });
 
 document.getElementById('btn-reset-filter').addEventListener('click', () => {
@@ -438,7 +445,7 @@ async function setApproval(id, approvalStatus) {
   try {
     await apiCall('PATCH', `/api/results/${row.result_id}/approve`, { approval_status: approvalStatus });
     toast(approvalStatus === 'approved' ? 'Ulasan disetujui.' : 'Ulasan ditolak.', 'ok');
-    loadReviews();
+    loadReviews(true);
   } catch (e) {
     toast('Gagal: ' + e.message, 'error');
   }
@@ -492,7 +499,7 @@ document.getElementById('btn-simpan-koreksi').addEventListener('click', async ()
     });
     closeModal('modal-koreksi');
     toast('Ulasan ditolak — label dikoreksi.', 'ok');
-    loadReviews();
+    loadReviews(true);
   } catch (e) {
     toast('Gagal: ' + e.message, 'error');
   }
@@ -522,7 +529,7 @@ document.getElementById('btn-simpan-edit').addEventListener('click', async () =>
     });
     closeModal('modal-edit');
     toast('Ulasan diperbarui.', 'ok');
-    loadReviews();
+    loadReviews(true);
   } catch (e) {
     toast('Gagal: ' + e.message, 'error');
   }
@@ -543,7 +550,7 @@ document.getElementById('btn-konfirm-hapus').addEventListener('click', async () 
     await apiCall('DELETE', `/api/reviews/${activeRowId}`);
     closeModal('modal-hapus');
     toast('Ulasan dihapus.', 'ok');
-    loadReviews();
+    loadReviews(true);
   } catch (e) {
     toast('Gagal: ' + e.message, 'error');
   }
@@ -683,7 +690,7 @@ document.getElementById('btn-print-ulasan').addEventListener('click', () => {
 /* ════════════════════════════════════════════════════════
    17. API CALL + DATA INIT
    ════════════════════════════════════════════════════════ */
-function loadReviews() {
+function loadReviews(preservePage) {
   const token = localStorage.getItem('token');
 
   fetch('http://localhost:8000/api/reviews/table', {
@@ -703,7 +710,7 @@ function loadReviews() {
           bintang:      r.bintang || 0,
           tanggal:      r.tanggal || new Date().toISOString(),
           source:       r.source || '-',
-          nb_label:     r.nb_label,            // null bila belum dianalisis
+          nb_label:     r.nb_label,
           nb_conf:      r.nb_conf,
           svm_label:    r.svm_label,
           svm_conf:     r.svm_conf,
@@ -717,12 +724,12 @@ function loadReviews() {
         dataState = 'empty';
         allData = [];
       }
-      applyFiltersAndSort();
+      applyFiltersAndSort(preservePage);
     })
     .catch(() => {
       dataState = 'error';
       allData = [];
-      applyFiltersAndSort();
+      applyFiltersAndSort(preservePage);
     });
 }
 

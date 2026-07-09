@@ -4,7 +4,7 @@ CRUD ulasan + approval + koreksi label
 """
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload, joinedload
 from sqlalchemy import or_
 
 from core.database import get_db, User, Review, AnalysisResult, LabelCorrection, DataSource
@@ -123,7 +123,12 @@ def list_reviews_table(
     Daftar ulasan diperkaya untuk halaman Data Ulasan: status preprocessing,
     status analisis, dan label NB/SVM terbaru (bila sudah dianalisis).
     """
-    q = db.query(Review)
+    # Eager-load relasi agar tidak terjadi N+1 (1 query per ulasan utk
+    # analysis_results & source). Ini yang bikin halaman lambat tiap aksi.
+    q = db.query(Review).options(
+        selectinload(Review.analysis_results),
+        joinedload(Review.source),
+    )
     if source_id:
         q = q.filter(Review.source_id == source_id)
     if status:

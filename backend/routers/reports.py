@@ -212,7 +212,7 @@ def get_raw_data_for_print(
     date_from: str | None = Query(None),
     date_to: str | None = Query(None),
     source: str | None = Query(None),
-    limit: int = Query(200, le=1000),
+    limit: int = Query(100000, le=100000),
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user),
 ):
@@ -238,7 +238,7 @@ def get_analysis_for_print(
     date_from: str | None = Query(None),
     date_to: str | None = Query(None),
     source: str | None = Query(None),
-    limit: int = Query(200, le=1000),
+    limit: int = Query(100000, le=100000),
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user),
 ):

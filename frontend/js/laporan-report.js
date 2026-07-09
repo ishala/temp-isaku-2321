@@ -172,7 +172,7 @@
   /* ── Data mentah (card 1 + print-doc-1) ── */
   async function loadRaw(qs) {
     try {
-      const rows = await getJSON('/api/reports/raw-data?' + qs);
+      const rows = await getJSON('/api/reports/raw-data?limit=100000&' + qs);
       set('stat-source', new Set(rows.map(r => r.source)).size || 0);
       setHTML('card1-tbody', rows.length
         ? rows.slice(0, 3).map((r, i) => `<tr>
@@ -196,7 +196,7 @@
   async function loadAnalysis(qs, model) {
     try {
       // approval_status dikosongkan agar tidak menyaring 'approved' saja by default
-      const rows = await getJSON('/api/reports/analysis-data?approval_status=&limit=1000&' + qs);
+      const rows = await getJSON('/api/reports/analysis-data?approval_status=&limit=100000&' + qs);
 
       // Distribusi per source (print-doc-4). 'both' = hanya ulasan NB & SVM sepakat.
       const bySrc = {};

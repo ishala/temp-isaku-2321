@@ -313,6 +313,42 @@
     size: A4;
   }
 
+  /* ── Kop surat (banner Indomaret di atas semua laporan) ── */
+  .print-kop {
+    margin-bottom: 16px;
+  }
+  .print-kop img {
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Blok tanda tangan (kanan-bawah, di atas footer) ── */
+  .print-sign {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 42px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .print-sign-inner {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: #333;
+    min-width: 180px;
+  }
+  .print-sign-place {
+    margin: 0;
+  }
+  .print-sign-name {
+    margin: 64px 0 0;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
   /* ── Print header ── */
   .print-header {
     display: flex;

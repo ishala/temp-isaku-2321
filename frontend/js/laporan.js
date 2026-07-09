@@ -642,6 +642,31 @@ window.REPORT_METRICS = REPORT_METRICS;
   updateUI();
 })();
 
+/* ── Kop surat + blok tanda tangan (diinjeksi ke semua print-doc) ──
+   Kop: banner Indomaret (assets/kop-indomaret.png). Tanda tangan: kanan-bawah,
+   "Jakarta, <tanggal>" terisi otomatis saat cetak via .print-date-span. */
+(function () {
+  const KOP_HTML = `
+    <div class="print-kop">
+      <img src="assets/kop-indomaret.png" alt="Kop surat Indomaret" />
+    </div>`;
+
+  const SIGN_HTML = `
+    <div class="print-sign">
+      <div class="print-sign-inner">
+        <p class="print-sign-place">Jakarta, <span class="print-date-span"></span></p>
+        <p class="print-sign-name">Miko Gunawan</p>
+      </div>
+    </div>`;
+
+  document.querySelectorAll('.print-doc').forEach(doc => {
+    doc.insertAdjacentHTML('afterbegin', KOP_HTML);
+    const footer = doc.querySelector('.print-footer');
+    if (footer) footer.insertAdjacentHTML('beforebegin', SIGN_HTML);
+    else doc.insertAdjacentHTML('beforeend', SIGN_HTML);
+  });
+})();
+
 /* ── Print per card ── */
 (function () {
   function fmtDate() {

@@ -432,6 +432,9 @@
      kolom pertama dan garis atas hanya di th, agar tidak dobel. */
   .print-table {
     width: 100%;
+    /* fixed → lebar kolom deterministik (ikut width di th), garis vertikal
+       selalu jatuh di posisi sama & seragam di semua baris/halaman */
+    table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 11px;
@@ -450,29 +453,29 @@
     text-align: left;
     font-weight: 600;
     color: #333;
-    border-top: 0.5px solid #ccc;
-    border-right: 0.5px solid #ccc;
-    border-bottom: 0.5px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     white-space: nowrap;
   }
   .print-table th:first-child {
-    border-left: 0.5px solid #ccc;
+    border-left: 1px solid #ccc;
   }
   .print-table td {
     padding: 6px 10px;
     color: #444;
-    border-right: 0.5px solid #ddd;
-    border-bottom: 0.5px solid #ddd;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     vertical-align: top;
+    overflow-wrap: break-word;
   }
   .print-table td:first-child {
-    border-left: 0.5px solid #ddd;
+    border-left: 1px solid #ccc;
   }
-  .print-table tr:nth-child(even) td {
-    background: #fafafa;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+  /* Catatan: zebra-stripe (background baris genap) sengaja dihapus.
+     Dengan border-collapse: separate, background sel dicat setelah garis
+     sel tetangganya sehingga bisa menimpa garis di posisi sub-piksel —
+     itu penyebab garis tampak putus-putus / tebal-tipis tidak seragam. */
 
   /* ── Print stats grid (doc 4) ── */
   .print-stats-grid {

@@ -336,7 +336,7 @@
     const elPos = document.getElementById('topwords-pos');
     const elNeg = document.getElementById('topwords-neg');
     try {
-      const d = await getJSON('/api/reports/top-words?n=20');
+      const d = await getJSON('/api/reports/top-words?n=30');
       if (!d || !d.available || (!d.positive.length && !d.negative.length)) {
         const msg = '<div class="text-[11px] text-c3">Model belum tersedia</div>';
         if (elPos) elPos.innerHTML = msg;
@@ -366,7 +366,7 @@
       if (elPos) elPos.innerHTML = rowsHtml(d.positive, '#4ADE80');
       if (elNeg) elNeg.innerHTML = rowsHtml(d.negative, '#F87171');
 
-      // Print doc (semua 20)
+      // Print doc (semua 30)
       const tbl = arr => arr.map((w, i) =>
         `<tr><td>${i + 1}</td><td>${cap(w.word)}</td><td>${w.weight.toFixed(4)}</td></tr>`).join('');
       setHTML('pd6-pos-tbody', tbl(d.positive));

@@ -664,6 +664,19 @@ window.REPORT_METRICS = REPORT_METRICS;
     const footer = doc.querySelector('.print-footer');
     if (footer) footer.insertAdjacentHTML('beforebegin', SIGN_HTML);
     else doc.insertAdjacentHTML('beforeend', SIGN_HTML);
+
+    // untuk hapus header footer bawaan browser
+    const wrap = document.createElement('table');
+    wrap.className = 'print-page-table';
+    wrap.innerHTML =
+      '<thead><tr><td><div class="print-space-top"></div></td></tr></thead>' +
+      '<tbody><tr><td class="print-page-cell"></td></tr></tbody>' +
+      '<tfoot><tr><td><div class="print-space-bottom"></div></td></tr></tfoot>';
+    const cell = wrap.querySelector('.print-page-cell');
+    Array.from(doc.childNodes).forEach(node => {
+      if (node !== footer) cell.appendChild(node);
+    });
+    doc.insertBefore(wrap, footer || null);
   });
 })();
 

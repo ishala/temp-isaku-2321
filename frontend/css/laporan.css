@@ -308,10 +308,25 @@
   .print-doc { display: none; }
   .print-doc.printing { display: block !important; }
 
+  /* Untuk menghapus tulisan path direktori di pdf */
   @page {
-    margin: 18mm 16mm;
+    margin: 0 14mm;
     size: A4;
   }
+
+  /* ── Wrapper halaman: thead/tfoot kosong diulang tiap halaman ── */
+  .print-page-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .print-page-table > thead > tr > td,
+  .print-page-table > tbody > tr > td,
+  .print-page-table > tfoot > tr > td {
+    padding: 0;
+    border: none;
+  }
+  .print-space-top    { height: 12mm; }
+  .print-space-bottom { height: 18mm; }
 
   /* ── Kop surat (banner Indomaret di atas semua laporan) ── */
   .print-kop {
@@ -345,8 +360,7 @@
   }
   .print-sign-name {
     margin: 64px 0 0;
-    font-weight: 700;
-    text-decoration: underline;
+    font-weight: 400;
   }
 
   /* ── Print header ── */
@@ -359,7 +373,7 @@
     border-bottom: 1.5px solid #ccc;
   }
   .print-logo {
-    width: 36px;
+    width: 40px;
     height: 36px;
     background: #6C63FF;
     border-radius: 8px;
@@ -367,7 +381,7 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     flex-shrink: 0;
     /* Print-safe fallback using border trick */
@@ -487,14 +501,17 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* ── Print footer ── */
   .print-footer {
-    margin-top: 36px;
+    position: fixed;
+    bottom: 5mm;
+    left: 0;
+    right: 0;
+    margin: 0;
     font-size: 10px;
     color: #999;
     text-align: center;
     border-top: 0.5px solid #ddd;
-    padding-top: 10px;
+    padding-top: 8px;
     font-family: 'Inter', sans-serif;
   }
 }

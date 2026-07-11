@@ -426,12 +426,21 @@
   }
 
   /* ── Print table ── */
+  /* border-collapse: separate (bukan collapse) — garis collapse suka
+     hilang di titik pemotongan halaman saat tabel lebih dari 1 halaman.
+     Tiap sel membawa garis kanan+bawah sendiri; garis kiri hanya di
+     kolom pertama dan garis atas hanya di th, agar tidak dobel. */
   .print-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 11px;
     margin-bottom: 8px;
     font-family: 'Inter', sans-serif;
+  }
+  .print-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .print-table th {
     background: #f0f0f0;
@@ -441,14 +450,23 @@
     text-align: left;
     font-weight: 600;
     color: #333;
-    border: 0.5px solid #ccc;
+    border-top: 0.5px solid #ccc;
+    border-right: 0.5px solid #ccc;
+    border-bottom: 0.5px solid #ccc;
     white-space: nowrap;
+  }
+  .print-table th:first-child {
+    border-left: 0.5px solid #ccc;
   }
   .print-table td {
     padding: 6px 10px;
     color: #444;
-    border: 0.5px solid #ddd;
+    border-right: 0.5px solid #ddd;
+    border-bottom: 0.5px solid #ddd;
     vertical-align: top;
+  }
+  .print-table td:first-child {
+    border-left: 0.5px solid #ddd;
   }
   .print-table tr:nth-child(even) td {
     background: #fafafa;

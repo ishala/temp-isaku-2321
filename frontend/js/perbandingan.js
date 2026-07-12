@@ -233,11 +233,53 @@ async function loadAgreement() {
   if (pk) pk.textContent = kesimpulan;
 }
 
+/* ── Kop surat + blok tanda tangan (diinjeksi ke print-doc) ──
+   Mengikuti format laporan cetak di laporan.html (lihat laporan.js).
+   Kop: banner Indomaret. Tanda tangan: kanan-bawah, "Jakarta, <tanggal>"
+   terisi otomatis saat cetak via .print-date-span. */
+(function () {
+  const KOP_HTML = `
+    <div class="print-kop">
+      <img src="assets/kop-indomaret.png" alt="Kop surat Indomaret" />
+    </div>`;
+
+  const SIGN_HTML = `
+    <div class="print-sign">
+      <div class="print-sign-inner">
+        <p class="print-sign-place">Jakarta, <span class="print-date-span"></span></p>
+        <p class="print-sign-name">Miko Gunawan</p>
+      </div>
+    </div>`;
+
+  document.querySelectorAll('.print-doc').forEach(doc => {
+    doc.insertAdjacentHTML('afterbegin', KOP_HTML);
+    const footer = doc.querySelector('.print-footer');
+    if (footer) footer.insertAdjacentHTML('beforebegin', SIGN_HTML);
+    else doc.insertAdjacentHTML('beforeend', SIGN_HTML);
+
+    // untuk hapus header footer bawaan browser
+    const wrap = document.createElement('table');
+    wrap.className = 'print-page-table';
+    wrap.innerHTML =
+      '<thead><tr><td><div class="print-space-top"></div></td></tr></thead>' +
+      '<tbody><tr><td class="print-page-cell"></td></tr></tbody>' +
+      '<tfoot><tr><td><div class="print-space-bottom"></div></td></tr></tfoot>';
+    const cell = wrap.querySelector('.print-page-cell');
+    Array.from(doc.childNodes).forEach(node => {
+      if (node !== footer) cell.appendChild(node);
+    });
+    doc.insertBefore(wrap, footer || null);
+  });
+})();
+
 /* ── Cetak halaman ── */
 document.getElementById('btn-cetak-compare').addEventListener('click', () => {
+  const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   const dEl = document.getElementById('print-date-compare');
-  if (dEl) dEl.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  if (dEl) dEl.textContent = dateStr;
   const doc = document.getElementById('print-doc-compare');
+  /* Tanggal blok tanda tangan (Jakarta, <tanggal>) */
+  doc.querySelectorAll('.print-date-span').forEach(span => { span.textContent = dateStr; });
   document.querySelectorAll('.print-doc').forEach(d => d.classList.remove('printing'));
   doc.classList.add('printing');
   window.print();

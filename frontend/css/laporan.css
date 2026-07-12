@@ -450,13 +450,16 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     padding: 6px 10px;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     color: #333;
     border-top: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    white-space: nowrap;
+    /* header dibiarkan wrap (bukan nowrap) agar teks panjang
+       turun baris, tidak terpotong garis kolom */
+    white-space: normal;
+    overflow-wrap: break-word;
   }
   .print-table th:first-child {
     border-left: 1px solid #ccc;

@@ -183,8 +183,8 @@
         : '<tr><td colspan="4" style="text-align:center;color:var(--c3)">Tidak ada data untuk filter ini</td></tr>');
       setHTML('pd1-tbody', rows.length
         ? rows.map((r, i) => `<tr>
-            <td>${i + 1}</td><td>${cap(r.original_text || '')}</td>
-            <td>${cap(r.source || '-')}</td><td>${r.star_rating ?? '—'}</td>
+            <td style="text-align:center">${i + 1}</td><td>${cap(r.original_text || '')}</td>
+            <td>${cap(r.source || '-')}</td><td style="text-align:center">${r.star_rating ?? '—'}</td>
             <td>${fmtTgl(r.review_date)}</td><td>Mentah</td></tr>`).join('')
         : '<tr><td colspan="6" style="text-align:center">Tidak ada data</td></tr>');
     } catch (_) {
@@ -250,7 +250,7 @@
         : `<tr><td colspan="${card2Cols}" style="text-align:center;color:var(--c3)">Tidak ada hasil untuk filter ini</td></tr>`);
 
       /* ── Print doc 2 ── */
-      let pd2Head = '<th style="width:30px;">No</th><th>Teks Ulasan</th>';
+      let pd2Head = '<th style="width:56px;">No</th><th>Teks Ulasan</th>';
       if (showNb)  pd2Head += '<th style="width:70px;">NB Label</th><th style="width:60px;">NB Conf.</th>';
       if (showSvm) pd2Head += '<th style="width:70px;">SVM Label</th><th style="width:65px;">SVM Conf.</th>';
       pd2Head += '<th style="width:70px;">Status</th>';
@@ -259,7 +259,7 @@
 
       setHTML('pd2-tbody', rows.length
         ? rows.map((r, i) => {
-            let tds = `<td>${i + 1}</td><td>${cap(r.review_text || '')}</td>`;
+            let tds = `<td style="text-align:center">${i + 1}</td><td>${cap(r.review_text || '')}</td>`;
             if (showNb)  tds += `<td>${SENT_TXT[r.nb_sentiment] || '—'}</td><td>${r.nb_confidence != null ? r.nb_confidence + '%' : '—'}</td>`;
             if (showSvm) tds += `<td>${SENT_TXT[r.svm_sentiment] || '—'}</td><td>${r.svm_confidence != null ? r.svm_confidence + '%' : '—'}</td>`;
             tds += `<td>${STATUS_TXT[r.approval_status] || r.approval_status || '—'}</td>`;
@@ -368,7 +368,7 @@
 
       // Print doc (semua 30)
       const tbl = arr => arr.map((w, i) =>
-        `<tr><td>${i + 1}</td><td>${cap(w.word)}</td><td>${w.weight.toFixed(4)}</td></tr>`).join('');
+        `<tr><td style="text-align:center">${i + 1}</td><td>${cap(w.word)}</td><td>${w.weight.toFixed(4)}</td></tr>`).join('');
       setHTML('pd6-pos-tbody', tbl(d.positive));
       setHTML('pd6-neg-tbody', tbl(d.negative));
     } catch (_) {

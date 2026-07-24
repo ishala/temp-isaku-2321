@@ -133,6 +133,14 @@ class MLPipeline:
         Bangun kamus normalisasi (tidak_baku → baku) dari beberapa sumber,
         persis seperti pipeline di data_new.ipynb, lalu lowercase semua.
         """
+        compiled = DATA_DIR / "kamus_compiled.json"
+        if compiled.exists():
+            with open(compiled, "r", encoding="utf-8") as f:
+                self.kamus = json.load(f)
+            logger.info(f"Kamus dimuat dari kamus_compiled.json ({len(self.kamus)} entri)")
+            return
+
+        # Fallback: Gagal load kamus prebuild
         import pandas as pd
 
         # 1. Excel kamuskatabaku.xlsx (kolom: tidak_baku, kata_baku)

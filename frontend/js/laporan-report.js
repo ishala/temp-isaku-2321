@@ -4,7 +4,7 @@
    (dimuat setelah laporan.js)
    ═══════════════════════════════════════════════════════ */
 (function () {
-  const API = 'http://localhost:8000';
+  const API = window.location.origin;
   const headers = { Authorization: 'Bearer ' + localStorage.getItem('token') };
   const ID_BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
   const fmtNum = n => (n || 0).toLocaleString('id-ID');

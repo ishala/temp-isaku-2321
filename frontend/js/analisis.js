@@ -150,7 +150,7 @@
   }
 
   async function callPredict(text, saveToDb) {
-    const res = await fetch('http://localhost:8000/api/predict/', {
+    const res = await fetch('/api/predict/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -230,7 +230,7 @@
 
 /* ── Prediksi Dataset (dari data hasil preprocessing di DB) ── */
 (function () {
-  const API     = 'http://localhost:8000';
+  const API     = window.location.origin;
   const tbody   = document.getElementById('ds-tbody');
   const emptyEl = document.getElementById('ds-empty');
   const subEl   = document.getElementById('ds-sub');
@@ -266,7 +266,7 @@
       emptyEl.style.display = 'block';
       emptyEl.textContent =
         dataState === 'error'
-          ? 'Tidak dapat terhubung ke server backend (http://localhost:8000).'
+          ? `Tidak dapat terhubung ke server backend (${window.location.origin}).`
           : 'Belum ada data preprocessed yang menunggu prediksi. Jalankan Preprocessing terlebih dahulu.';
       subEl.textContent = dataState === 'error' ? 'Server tidak terhubung' : 'Tidak ada antrean';
       btnRun.disabled = true;

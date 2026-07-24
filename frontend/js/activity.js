@@ -4,7 +4,7 @@
    Log Aktivitas (admin only)
    ════════════════════════════════════════════════════════ */
 
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 const PAGE_SIZE = 25;
 
 /* ── Utilities ── */
@@ -259,7 +259,7 @@ function renderTable(items) {
 
   if (!items.length) {
     let msg;
-    if (state === 'error')      msg = 'Tidak dapat terhubung ke server backend (http://localhost:8000).';
+    if (state === 'error')      msg = `Tidak dapat terhubung ke server backend (${window.location.origin}).`;
     else if (totalRows === 0)   msg = 'Belum ada aktivitas yang tercatat.';
     else                        msg = 'Tidak ada aktivitas yang sesuai filter.';
     tbody.innerHTML = `

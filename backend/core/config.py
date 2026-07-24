@@ -12,20 +12,20 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # Database
-    db_host: str = os.getenv('DB_HOST')
-    db_port: int = os.getenv('DB_PORT')
-    db_user: str = os.getenv('DB_USER')
-    db_password: str = os.getenv('DB_PASSWORD')
-    db_name: str = os.getenv('DB_NAME')
+    db_host: str = os.getenv('DB_HOST', '127.0.0.1')
+    db_port: int = os.getenv('DB_PORT', '3306')
+    db_user: str = os.getenv('DB_USER', 'root')
+    db_password: str = os.getenv('DB_PASSWORD', '')
+    db_name: str = os.getenv('DB_NAME', 'isaku')
 
     # JWT
     secret_key: str = os.getenv('SECRET_KEY')
-    algorithm: str = os.getenv('ALGORITHM')
-    access_token_expire_minutes: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+    algorithm: str = os.getenv('ALGORITHM', 'HS256')
+    access_token_expire_minutes: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', '400')
 
     # App
-    app_env: str = os.getenv('APP_ENV')
-    log_level: str = os.getenv('LOG_LEVEL')
+    app_env: str = os.getenv('APP_ENV', 'production')
+    log_level: str = os.getenv('LOG_LEVEL', 'INFO')
 
     # Scraping (Google Play) — bisa di-override via .env atau form di UI
     scrape_app_id: str = os.getenv('SCRAPE_APP_ID', 'com.bcp.isaku')

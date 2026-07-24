@@ -132,7 +132,7 @@ let usersState = 'loading';   // 'loading' | 'ok' | 'error'
 /** Muat daftar pengguna dari backend */
 async function loadUsers() {
   try {
-    const res = await fetch('http://localhost:8000/api/users/', {
+    const res = await fetch('/api/users/', {
       headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
     });
     if (!res.ok) throw new Error();
@@ -157,7 +157,7 @@ async function loadUsers() {
 
 /** Helper panggilan API /api/users */
 async function userApi(method, path, body) {
-  const res = await fetch('http://localhost:8000/api/users' + path, {
+  const res = await fetch('/api/users' + path, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ function renderTable(users) {
   if (!users.length) {
     let msg;
     if (usersState === 'loading')    msg = 'Memuat data pengguna…';
-    else if (usersState === 'error') msg = 'Tidak dapat terhubung ke server backend (http://localhost:8000).';
+    else if (usersState === 'error') msg = `Tidak dapat terhubung ke server backend (${window.location.origin}).`;
     else if (!allUsers.length)       msg = 'Belum ada pengguna di database.';
     else                             msg = 'Tidak ada pengguna yang sesuai filter.';
     tbody.innerHTML = `

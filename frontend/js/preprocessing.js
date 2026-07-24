@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    preprocessing.js — tahap data mentah → preprocessing → DB
    ═══════════════════════════════════════════════════════ */
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 
 /* ── Auth guard ── */
 (function () {
@@ -104,7 +104,7 @@ function renderPending() {
     empty.style.display = 'block';
     empty.textContent =
       dataState === 'error'
-        ? 'Tidak dapat terhubung ke server backend (http://localhost:8000).'
+        ? `Tidak dapat terhubung ke server backend (${window.location.origin}).`
         : 'Tidak ada data mentah yang menunggu. Lakukan scraping di halaman Data Ulasan terlebih dahulu.';
     sub.textContent = dataState === 'error' ? 'Server tidak terhubung' : 'Tidak ada antrean';
     return;

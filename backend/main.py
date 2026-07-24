@@ -6,11 +6,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from core.config import get_settings
 from core.logger import setup_logger, logger
 from core.database import init_db
 from core.ml_pipeline import get_pipeline
+from pathlib import Path
 
 from routers.auth import router as auth_router, router_users
 from routers.predict import router as predict_router
@@ -101,6 +103,10 @@ def health_check():
         "database": "connected",
     }
 
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+if FRONTEND_DIR.exists():
+    app.mount('/', StaticFiles(directory=str(FRONTEND_DIR), html=True),
+            name='frontend')
 
 if __name__ == "__main__":
     import uvicorn

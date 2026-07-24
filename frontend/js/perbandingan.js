@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    perbandingan.js — Perbandingan Model NB vs SVM
    ═══════════════════════════════════════════════════════ */
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 
 /* ── Auth guard ── */
 (function () {

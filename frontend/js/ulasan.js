@@ -37,7 +37,7 @@ function statusBadge(status) {
 }
 
 /* ── API helpers ── */
-const API_BASE = 'http://localhost:8000';
+const API_BASE = window.location.origin;
 function authHeaders(json) {
   const h = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
   if (json) h['Content-Type'] = 'application/json';
@@ -265,7 +265,7 @@ function renderTable() {
   if (pageRows.length === 0) {
     let msg;
     if (dataState === 'loading')      msg = 'Memuat data dari server…';
-    else if (dataState === 'error')   msg = 'Tidak dapat terhubung ke server backend. Pastikan API berjalan di http://localhost:8000.';
+    else if (dataState === 'error')   msg = `Tidak dapat terhubung ke server backend. Pastikan API berjalan di ${window.location.origin}.`;
     else if (allData.length === 0)    msg = 'Belum ada data ulasan di database. Lakukan scraping terlebih dahulu pada panel di atas.';
     else                              msg = 'Tidak ada ulasan yang sesuai filter.';
     tbody.innerHTML = `<tr><td colspan="8">
@@ -693,7 +693,7 @@ document.getElementById('btn-print-ulasan').addEventListener('click', () => {
 function loadReviews(preservePage) {
   const token = localStorage.getItem('token');
 
-  fetch('http://localhost:8000/api/reviews/table', {
+  fetch('/api/reviews/table', {
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + token },
   })
@@ -771,7 +771,7 @@ function loadReviews(preservePage) {
     showStatus('Mengambil ulasan dari Google Play… (bisa beberapa saat)', 'info');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8000/api/scrape/', {
+      const res = await fetch('/api/scrape/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ year, month, app_id }),

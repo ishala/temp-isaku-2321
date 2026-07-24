@@ -21,8 +21,8 @@ settings = get_settings()
 engine = create_engine(
     settings.database_url,
     poolclass=QueuePool,
-    pool_size=10,
-    max_overflow=20,
+    pool_size=3,
+    max_overflow=2,
     pool_pre_ping=True,          # cek koneksi sebelum dipakai
     pool_recycle=3600,           # recycle koneksi setiap 1 jam
     echo=(settings.app_env == "development"),

@@ -38,6 +38,7 @@
   </script>
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body class="h-full font-sans bg-page text-c1 overflow-hidden">
 
@@ -121,8 +122,11 @@
   <div class="flex-1 flex flex-col overflow-hidden">
 
     <!-- Topbar -->
-    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
-      <div>
+    <header class="topbar flex items-center justify-between flex-wrap gap-y-2 px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <button id="btn-menu" class="text-c2 hover:bg-surface2 transition-colors duration-150" aria-label="Buka menu">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg>
+      </button>
+      <div class="mr-auto">
         <h1 class="text-[15px] font-semibold text-c1" id="page-title">Dashboard</h1>
         <p class="text-[11px] text-c3 mt-[2px]" id="page-subtitle">Ringkasan performa model &amp; distribusi sentimen</p>
       </div>
@@ -136,26 +140,26 @@
         <!-- Panduan -->
         <button id="btn-panduan" class="flex items-center gap-[6px] bg-accent/[0.12] border border-accent/30 text-accent rounded-full px-3 py-[6px] text-[11px] font-medium hover:bg-accent/[0.2] transition-colors duration-150" title="Cara penggunaan website">
           <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.25"/><path d="M8 7.75a2 2 0 1 1 2.6 1.9c-.6.2-.6.6-.6 1.1m0 2.25h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Panduan
+          <span class="hide-sm">Panduan</span>
         </button>
         <!-- Model badge -->
-        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+        <div class="hide-sm flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
           <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
           <span class="text-c2">Model aktif</span>
         </div>
         <!-- Date -->
-        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+        <div class="hide-sm text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
       </div>
     </header>
 
     <!-- Page content area -->
-    <main class="flex-1 overflow-y-auto px-7 py-6" id="main-content">
+    <main class="flex-1 overflow-y-auto px-4 py-4 sm:px-7 sm:py-6" id="main-content">
 
       <!-- ══ PAGE: DASHBOARD ══════════════════════ -->
       <div id="page-dashboard">
 
         <!-- KPI Row -->
-        <div class="grid grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
           <div class="kpi-card">
             <div class="flex items-start justify-between mb-3">
@@ -204,7 +208,7 @@
         </div>
 
         <!-- Charts Row -->
-        <div class="grid grid-cols-[1fr_300px] gap-4 mb-4">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 mb-4">
 
           <!-- Sentiment trend chart -->
           <div class="panel">
@@ -257,7 +261,7 @@
         </div>
 
         <!-- Bottom row -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
           <!-- Model comparison -->
           <div class="panel">
@@ -291,7 +295,7 @@
 
               <div class="border-t border-line/[0.05] my-1"></div>
 
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="mini-stat">
                   <span class="mini-stat-label">Precision NB</span>
                   <span class="mini-stat-val">81,56%</span>
@@ -394,7 +398,7 @@
 
 <!-- Logout confirm modal -->
 <div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
-  <div class="modal-box w-[340px]">
+  <div class="modal-box w-full max-w-[340px]">
     <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
     <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
     <div class="flex gap-2">
@@ -406,7 +410,7 @@
 
 <!-- ═══ MODAL: PANDUAN (pop-up tata cara) ═══ -->
 <div id="guide-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
-  <div class="modal-box w-[460px] max-h-[85vh] overflow-y-auto">
+  <div class="modal-box w-full max-w-[460px] max-h-[85vh] overflow-y-auto">
     <div class="flex items-start justify-between mb-1">
       <div class="text-[15px] font-semibold text-c1">Tata Cara Penggunaan</div>
       <button id="guide-close" class="text-c3 hover:text-c1 p-1 -mt-1 -mr-1">
@@ -428,6 +432,9 @@
   </div>
 </div>
 
+<div id="nav-overlay"></div>
+
+<script src="js/nav-mobile.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/theme.js"></script>
 </body>

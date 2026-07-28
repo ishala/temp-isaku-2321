@@ -37,7 +37,8 @@
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/users.css" />
-  <link rel="stylesheet" href="css/activity.css" />
+  <link rel="stylesheet" href="css/activity.css?v=3" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body class="h-full font-sans bg-page text-c1 overflow-hidden">
 
@@ -85,20 +86,23 @@
 
     <!-- Topbar -->
     <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
-      <div>
+      <button id="btn-menu" class="bg-surface2 border border-line/[0.05] text-c2" aria-label="Buka menu">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg>
+      </button>
+      <div class="mr-auto">
         <h1 class="text-[15px] font-semibold text-c1">Log Aktivitas</h1>
         <p class="text-[11px] text-c3 mt-[2px]">Audit trail aktivitas seluruh pengguna sistem</p>
       </div>
       <div class="flex items-center gap-2">
         <button id="btn-refresh" class="flex items-center gap-[6px] px-3 py-[7px] bg-surface2 border border-line/[0.05] hover:bg-surface3 transition-colors rounded-[8px] text-[12px] font-medium text-c2">
           <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 6a7 7 0 1 0 1.5 4" stroke-linecap="round"/><path d="M16.5 3v3.5H13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Muat Ulang
+          <span class="hide-sm">Muat Ulang</span>
         </button>
-        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+        <div class="hide-sm flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
           <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
           <span class="text-c2">Model aktif</span>
         </div>
-        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+        <div class="hide-sm text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
       </div>
     </header>
 
@@ -106,7 +110,7 @@
     <main class="flex-1 overflow-y-auto px-7 py-6" id="main-content">
 
       <!-- KPI row -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="kpi-card">
           <div class="flex items-center justify-between mb-3">
             <div class="kpi-icon bg-accent/10 border border-accent/20">
@@ -155,7 +159,7 @@
         </div>
 
         <!-- Filter bar -->
-        <div class="search-bar mb-4 flex-wrap">
+        <div id="activity-filter-bar" class="search-bar mb-4 flex-wrap">
           <div class="search-icon-wrap" style="min-width:200px">
             <span class="search-icon-pos">
               <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.25"/><path d="M14.5 14.5l2.75 2.75" stroke-linecap="round"/></svg>
@@ -195,7 +199,7 @@
                 <th style="width:150px">Waktu</th>
                 <th style="width:160px">Pengguna</th>
                 <th style="width:120px">Aksi</th>
-                <th style="width:100px">Entitas</th>
+                <th style="width:100px" class="col-optional">Entitas</th>
                 <th>Deskripsi</th>
                 <th style="width:90px">Status</th>
               </tr>
@@ -225,7 +229,7 @@
 
 <!-- ═══ MODAL: LOGOUT ════════════════════════════ -->
 <div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] hidden">
-  <div class="modal-box w-[340px]">
+  <div class="modal-box w-full max-w-[340px]">
     <div class="text-[15px] font-semibold text-c1 mb-1">Keluar dari sistem?</div>
     <p class="text-[12px] text-c2 leading-[1.6] mb-6">Sesi kamu akan diakhiri. Token login akan dihapus.</p>
     <div class="flex gap-2">
@@ -238,7 +242,10 @@
 <!-- ═══ TOAST ══════════════════════════════════════ -->
 <div id="toast-container" class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
 
+<script src="js/nav-mobile.js"></script>
 <script src="js/activity.js"></script>
 <script src="js/theme.js"></script>
+
+<div id="nav-overlay"></div>
 </body>
 </html>

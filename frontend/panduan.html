@@ -22,11 +22,12 @@
   </script>
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body class="h-full font-sans bg-page text-c1 overflow-y-auto">
 
 <!-- Topbar -->
-<header class="sticky top-0 z-20 flex items-center justify-between px-6 py-[14px] border-b border-line/[0.06] bg-surface">
+<header class="sticky top-0 z-20 flex items-center flex-wrap gap-y-2 justify-between px-6 py-[14px] border-b border-line/[0.06] bg-surface">
   <div class="flex items-center gap-3">
     <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-[13px] font-bold text-white shrink-0">iS</div>
     <div class="flex flex-col leading-none">
@@ -40,12 +41,12 @@
     </button>
     <a href="dashboard.html" class="flex items-center gap-[6px] px-3 py-[8px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 transition-opacity">
       <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.5 5l-5 5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Kembali ke Dashboard
+      <span class="hide-sm">Kembali ke Dashboard</span>
     </a>
   </div>
 </header>
 
-<main class="max-w-[820px] mx-auto px-6 py-10">
+<main class="max-w-[820px] mx-auto px-4 py-6 sm:px-6 sm:py-10">
 
   <div class="mb-8">
     <h1 class="text-[24px] font-semibold text-c1 mb-2">Cara Menggunakan i.saku Sentiment</h1>
@@ -86,7 +87,7 @@
     { n: 8, t: 'Cetak Laporan Lengkap', d: 'Buka <b>Laporan</b>, atur <b>filter</b> (rentang tanggal, source, status, model) lalu <b>Terapkan Filter</b>. Cetak per kartu dengan <b>Cetak Halaman Ini</b>, atau semua sekaligus lewat <b>Cetak Semua</b>.', page: 'laporan.html', link: 'Buka Laporan' },
   ];
   document.getElementById('guide-steps').innerHTML = STEPS.map(s => `
-    <div class="panel flex gap-4 items-start">
+    <div class="panel flex gap-3 sm:gap-4 items-start">
       <div class="w-9 h-9 rounded-[10px] bg-accent text-white flex items-center justify-center text-[14px] font-bold shrink-0">${s.n}</div>
       <div class="flex-1">
         <div class="text-[14px] font-semibold text-c1 mb-1">${s.t}</div>

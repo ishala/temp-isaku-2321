@@ -294,7 +294,7 @@ function renderTable(items) {
         </div>
       </td>
       <td>${actionChip(it.action)}</td>
-      <td>${entity}</td>
+      <td class="col-optional">${entity}</td>
       <td><div class="act-desc">${esc(it.description || '—')}</div></td>
       <td><span class="status-badge ${statusCls}"><span class="st-dot"></span>${statusTxt}</span></td>
     </tr>`;

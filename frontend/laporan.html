@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/laporan.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body class="h-full font-sans bg-page text-c1 overflow-hidden">
 
@@ -122,8 +123,11 @@
   <div class="flex-1 flex flex-col overflow-hidden">
 
     <!-- Topbar -->
-    <header class="topbar flex items-center justify-between px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
-      <div>
+    <header class="topbar flex items-center justify-between flex-wrap px-7 py-[15px] border-b border-line/[0.05] bg-surface shrink-0">
+      <button id="btn-menu" class="text-c2 hover:text-c1 transition-colors duration-150" aria-label="Buka menu">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke-linecap="round"/></svg>
+      </button>
+      <div class="mr-auto">
         <h1 class="text-[15px] font-semibold text-c1">Laporan</h1>
         <p class="text-[11px] text-c3 mt-[2px]">Generate dan cetak laporan sentimen dalam berbagai format</p>
       </div>
@@ -132,7 +136,7 @@
         <div class="relative" id="cetak-semua-wrap">
           <button id="btn-cetak-semua" class="flex items-center gap-[6px] px-3 py-[7px] bg-accent text-white text-[12px] font-semibold rounded-[8px] hover:opacity-90 active:scale-[0.98] transition-all duration-150">
             <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5.75 7.25V3.75h8.5v3.5"/><path d="M5.75 14.75H3.75a1 1 0 0 1-1-1V8.75a1 1 0 0 1 1-1h12.5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"/><rect x="5.75" y="11.75" width="8.5" height="4.5" rx="0.5"/><circle cx="15" cy="10" r="0.75" fill="currentColor" stroke="none"/></svg>
-            Pilih Semua
+            <span class="hide-sm">Pilih Semua</span>
             <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <!-- Dropdown -->
@@ -165,17 +169,17 @@
           </div>
         </div>
         <!-- Model aktif chip -->
-        <div class="flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
+        <div class="hide-sm flex items-center gap-[6px] bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px] text-[11px]">
           <div class="w-[6px] h-[6px] rounded-full bg-positive chip-dot shrink-0"></div>
           <span class="text-c2">Model aktif</span>
         </div>
         <!-- Date display -->
-        <div class="text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
+        <div class="hide-sm text-[11px] text-c3 bg-surface2 border border-line/[0.05] rounded-full px-3 py-[6px]" id="date-display"></div>
       </div>
     </header>
 
     <!-- Page content area -->
-    <main class="flex-1 overflow-y-auto px-7 py-6">
+    <main class="flex-1 overflow-y-auto px-4 py-4 sm:px-7 sm:py-6">
 
       <div class="report-layout">
 
@@ -428,7 +432,7 @@
             </div>
             <p class="text-[12px] text-c3 leading-[1.6] mb-3">Kosakata yang paling kuat menentukan sebuah ulasan tergolong positif atau negatif, diperingkat berdasarkan bobotnya pada model.</p>
             <div class="report-preview">
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <div class="text-[11px] font-semibold text-positive mb-2 flex items-center gap-[6px]">
                     <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ADE80;"></span>
@@ -463,6 +467,8 @@
 
 </div>
 <!-- /app-shell -->
+
+<div id="nav-overlay"></div>
 
 <!-- ═══════════════════════════════════════════════════════
      PRINTABLE DOCUMENTS (hidden on screen)
@@ -689,6 +695,7 @@
   </div>
 </div>
 
+<script src="js/nav-mobile.js"></script>
 <script src="js/laporan.js"></script>
 <script src="js/laporan-report.js"></script>
 <script src="js/theme.js"></script>

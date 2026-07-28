@@ -6,6 +6,7 @@
 }
 .pp-table {
   width: 100%;
+  min-width: 480px;
   border-collapse: collapse;
   font-size: 12px;
 }
@@ -76,3 +77,10 @@
   word-break: break-word;
 }
 .pp-step-text.muted { color: var(--c3); font-style: italic; }
+
+/* ── Responsif (<640px): kolom teks tidak boleh mendorong tabel terlalu lebar ── */
+@media (max-width: 639px) {
+  .pp-table .col-teks {
+    max-width: 160px;
+  }
+}

@@ -30,6 +30,14 @@
 }
 .tab-btn.active svg { stroke: #6C63FF; }
 
+@media (max-width: 639px) {
+  .tab-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-btn { flex-shrink: 0; }
+}
+
 /* ── Toggle switch ── */
 .toggle-switch {
   position: relative;
@@ -87,6 +95,11 @@
 .result-model-card.positive-result { border-color: rgba(74,222,128,.2); }
 .result-model-card.negative-result { border-color: rgba(248,113,113,.2); }
 .result-model-card.warn-result     { border-color: rgba(251,191,36,.2); }
+
+@media (max-width: 639px) {
+  #result-panel { padding: 14px; }
+  .result-model-card { padding: 10px; }
+}
 
 /* ── Model label tag ── */
 .model-label-tag {
@@ -429,6 +442,7 @@
 }
 .preview-table {
   width: 100%;
+  min-width: 560px;
   border-collapse: collapse;
   font-size: 12px;
 }

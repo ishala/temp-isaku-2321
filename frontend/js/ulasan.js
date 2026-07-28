@@ -237,9 +237,9 @@ function buildRow(row, index) {
   return `<tr data-id="${row.id}">
     <td class="col-no">${index}</td>
     <td class="col-ulasan" data-action="detail" data-id="${row.id}" title="${esc(row.teks)}">${esc(truncate(row.teks, 60))}</td>
-    <td>${starsHtml(row.bintang)}</td>
-    <td class="text-[11px]">${esc(fmtDate(row.tanggal))}</td>
-    <td>${badgeHtml(row.nb_label)}</td>
+    <td class="col-optional">${starsHtml(row.bintang)}</td>
+    <td class="col-optional text-[11px]">${esc(fmtDate(row.tanggal))}</td>
+    <td class="col-optional">${badgeHtml(row.nb_label)}</td>
     <td>${badgeHtml(row.svm_label)}</td>
     <td>${statusBadge(row.status)}</td>
     <td class="col-aksi">

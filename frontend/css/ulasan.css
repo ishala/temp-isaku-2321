@@ -137,6 +137,7 @@
 
 .data-table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
   font-size: 12px;
 }
@@ -560,6 +561,27 @@
   display: block;
   margin: 0 auto 10px;
   opacity: 0.4;
+}
+
+/* ── Mobile (<640px) ── */
+@media (max-width: 639px) {
+  /* Scraping panel: tombol jadi lebar penuh */
+  #btn-scrape { width: 100%; justify-content: center; }
+
+  /* Filter bar: setiap kontrol tumpuk 1 per baris */
+  .filter-bar > .relative,
+  .filter-bar > .filter-select-wrap,
+  .filter-bar > .filter-reset-btn {
+    flex: 1 1 100%;
+  }
+  .filter-select,
+  .filter-input {
+    min-width: 0;
+  }
+  .filter-reset-btn { justify-content: center; }
+
+  /* Target sentuh tombol aksi tabel minimal 36×36px */
+  .action-btn { width: 36px; height: 36px; }
 }
 
 /* ── Print styles ── */

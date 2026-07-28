@@ -113,6 +113,51 @@
 .page-btn:hover:not(:disabled) { background: var(--surface3); color: var(--c1); }
 .page-btn:disabled { opacity: .4; cursor: not-allowed; }
 
+/* ── Filter bar (7 kontrol): grid 2 kolom di <1024px, 1 kolom di <640px ──
+   `.search-bar`/`.select-wrap-users`/`.filter-sel-users` (users.css) dipakai
+   bersama users.html; perilaku grid ini khusus activity (kontrol lebih
+   banyak), jadi dibedakan lewat id `#activity-filter-bar`, bukan mengubah
+   class bersama. ID mengalahkan aturan `.search-bar { flex-wrap }` dari
+   responsive.css apa pun urutan tautannya. */
+@media (max-width: 1023px) {
+  #activity-filter-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  #activity-filter-bar > * { width: 100%; min-width: 0; }
+
+  /* `.sel-chevron` diposisikan absolute di tepi kanan `.select-wrap-users`.
+     Melebarkan pembungkusnya saja membuat panah terlepas dari select yang
+     masih selebar `min-width:130px`, jadi kontrol di dalam pembungkus
+     wajib ikut 100%. */
+  #activity-filter-bar .filter-sel-users,
+  #activity-filter-bar .search-input-users { width: 100%; min-width: 0; }
+
+  /* Pencarian = kontrol utama (satu baris penuh), Reset = baris aksi penutup.
+     Sisanya 6 kontrol → tepat 3 baris berpasangan, tanpa sel kosong. */
+  #activity-filter-bar .search-icon-wrap,
+  #activity-filter-bar #btn-reset-filter { grid-column: 1 / -1; }
+
+  /* Ikon kalender native berada DI DALAM content box, jadi ikut terdorong
+     `padding-right:28px` milik `.filter-sel-users` — ±19px lebih ke kiri
+     daripada `.sel-chevron` (absolute, `right:9px`). Padding kanan input
+     tanggal disamakan ke 9px dan ikonnya dibuat 11px, sama seperti chevron,
+     supaya keduanya berbagi pita kanan yang sama saat kontrol sekolom. */
+  #activity-filter-bar input[type="date"].filter-sel-users { padding-right: 9px; }
+  #activity-filter-bar input[type="date"].filter-sel-users::-webkit-calendar-picker-indicator {
+    width: 11px;
+    height: 11px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  #activity-filter-bar { grid-template-columns: 1fr; }
+}
+
 /* date input look-alike with selects */
 input[type="date"].filter-sel-users {
   color: var(--c2);

@@ -1,0 +1,204 @@
+/* ============================================================
+   responsive.css — utilitas responsif bersama
+   Breakpoint proyek HANYA dua: 640 (sm) dan 1024 (lg).
+   Ditautkan SETELAH css halaman.
+   ============================================================ */
+
+/* ── Shell: scroll halaman di bawah lg ───────────────────────
+   Desktop memakai scroll internal <main>. Di bawah 1024px
+   biarkan dokumen yang scroll agar konten panjang tetap terbaca.
+   Selector `body[class]` dipakai supaya menang atas utilitas
+   Tailwind `.overflow-hidden` yang terpasang di <body> 8 halaman. */
+@media (max-width: 1023px) {
+  html,
+  body[class] { overflow: auto; }
+}
+
+/* ── Sidebar off-canvas (<1024px) ───────────────────────────
+   Nama class wajib apa adanya: .sidebar dan .sidebar.open.
+   PENTING: <aside> membawa utilitas Tailwind `z-30`. Specificity-nya
+   sama dengan `.sidebar` (0,1,0), jadi `.sidebar { z-index }` bisa kalah
+   dan drawer tertimbun #nav-overlay (selector ID, 1,0,0). Karena itu
+   semua aturan stacking drawer memakai `aside.sidebar` (0,1,1). */
+@media (max-width: 1023px) {
+  .app-shell { position: relative; }
+
+  aside.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform .25s cubic-bezier(.16, 1, .3, 1);
+    will-change: transform;
+  }
+
+  aside.sidebar.open { transform: translateX(0); }
+}
+
+@media (min-width: 1024px) {
+  aside.sidebar { transform: none; }
+}
+
+/* ── Overlay di belakang drawer ─────────────────────────────────
+   Tangga stacking: konten (z-30) < overlay (40) < modal (z-50) < drawer (60).
+   Overlay sengaja DI BAWAH modal supaya dialog apa pun tetap terbaca. */
+#nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, .5);
+}
+
+@media (max-width: 1023px) {
+  #nav-overlay.open { display: block; }
+}
+
+/* ── Tombol tutup di dalam drawer (disisipkan nav-mobile.js) ──
+   Hamburger di topbar tertutup drawer saat terbuka, jadi drawer
+   perlu tombol tutupnya sendiri. */
+.sidebar-close { display: none; }
+
+@media (max-width: 1023px) {
+  .sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+    border-radius: 8px;
+    color: rgb(var(--c-c3));
+    cursor: pointer;
+  }
+
+  .sidebar-close:hover { color: rgb(var(--c-c1)); }
+}
+
+/* Jangan pernah tampil di desktop, apa pun state-nya. */
+@media (min-width: 1024px) {
+  #nav-overlay { display: none !important; }
+}
+
+/* ── Tombol hamburger ───────────────────────────────────────── */
+#btn-menu { display: none; }
+
+@media (max-width: 1023px) {
+  #btn-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+}
+
+/* ── Topbar: jarak antar baris saat grup aksi turun ─────────────
+   Sebagian topbar (mis. users.html) memakai `flex-wrap`, jadi tombol
+   aksi bisa pindah ke baris kedua dan menempel ke subjudul. `row-gap`
+   hanya berlaku ketika benar-benar wrap, sehingga topbar yang masih
+   muat satu baris — termasuk desktop — tidak berubah sama sekali. */
+@media (max-width: 1023px) {
+  .topbar { row-gap: 10px; }
+}
+
+/* ── Utilitas sembunyi (<640px) ─────────────────────────────── */
+@media (max-width: 639px) {
+  .hide-sm,
+  .col-optional { display: none !important; }
+}
+
+/* ── Pembungkus tabel yang sudah ada di repo ────────────────── */
+.table-wrap,
+.data-table-wrap,
+.user-table-wrap,
+.pp-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Modal ──────────────────────────────────────────────────── */
+@media (max-width: 639px) {
+  .modal-box {
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
+
+/* ── panel-header (dipakai banyak halaman): tumpuk saat sempit ── */
+@media (max-width: 639px) {
+  .panel-header {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+}
+
+/* ── perbandingan.html: report-preview & tabel metrik ───────────
+   `.report-preview` (laporan.css) memakai overflow:hidden untuk
+   membulatkan sudut; ganti jadi overflow-x:auto supaya tabel
+   metrik 4 kolom tidak terpotong di layar sempit. Tidak berdampak
+   di desktop karena konten sudah muat, tidak ada scrollbar. */
+.report-preview { overflow-x: auto; }
+.report-preview-table { min-width: 420px; }
+
+/* ── laporan.html: report-layout tumpuk 1 kolom di <lg ──────────
+   `.filter-panel` (laporan.css) memakai position:sticky untuk
+   kolom kiri 280px; saat layout jadi 1 kolom, sticky membuat
+   panel filter menutupi kartu laporan di bawahnya saat scroll,
+   jadi dimatikan bersamaan dengan perubahan grid. */
+@media (max-width: 1023px) {
+  .report-layout { grid-template-columns: 1fr; }
+
+  .filter-panel {
+    position: static;
+    top: auto;
+  }
+}
+
+/* ── laporan.html: dropdown "Cetak Semua" jangan keluar viewport
+   di layar sempit — `.cetak-semua-dropdown` (laporan.css) posisi
+   absolute + min-width:240px, dibatasi lebar maksimum layar. ── */
+@media (max-width: 639px) {
+  .cetak-semua-dropdown {
+    right: 0;
+    left: auto;
+    min-width: 0;
+    width: min(240px, calc(100vw - 32px));
+  }
+}
+
+/* ── users.html: search bar wraps, select penuh lebar (<640px) ──
+   `.search-bar` (users.css, dipakai users+activity) default flex
+   tanpa wrap; `.select-wrap-users` punya flex-shrink:0. Di layar
+   sempit, kolom pencarian & dua select ditumpuk agar tidak gepeng. */
+@media (max-width: 639px) {
+  .search-bar { flex-wrap: wrap; }
+  .search-icon-wrap { flex: 1 1 100%; }
+  .select-wrap-users { flex: 1 1 100%; }
+  .filter-sel-users { width: 100%; }
+}
+
+/* ── users.html: tabel pengguna jangan gepeng saat discroll ──── */
+.user-table { min-width: 640px; }
+
+/* ── users.html: toast jangan mepet tepi layar sempit ──────────
+   `#toast-container` (Tailwind fixed bottom-5 right-5) + `.toast`
+   (users.css) min-width:240px/max-width:340px bisa melebihi layar
+   <380px lebar; batasi lewat id selector agar tidak mengubah
+   class Tailwind di HTML. */
+@media (max-width: 639px) {
+  #toast-container { left: 12px; right: 12px; bottom: 12px; }
+  .toast { min-width: 0; max-width: none; width: 100%; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar { transition: none; }
+}

@@ -15,13 +15,27 @@ function esc(str) {
 }
 
 /**
+ * Parse timestamp dari server. Backend memakai datetime.utcnow() (naive UTC)
+ * tanpa penanda zona, sehingga harus diperlakukan sebagai UTC — jika tidak,
+ * browser menafsirkannya sebagai waktu lokal dan muncul selisih beberapa jam.
+ */
+function parseServerDate(isoStr) {
+  if (!isoStr) return new Date(NaN);
+  let s = String(isoStr);
+  if (!/[zZ]$|[+-]\d{2}:?\d{2}$/.test(s)) s += 'Z';   // tambahkan 'Z' bila belum ada zona
+  return new Date(s);
+}
+
+/**
  * Returns relative date string in Indonesian.
  * @param {string} isoStr  ISO 8601 date string
- * @returns {string}  "Baru saja" | "N menit lalu" | "N jam lalu" | "N hari lalu"
+ * @returns {string}  "Belum pernah" | "Baru saja" | "N menit lalu" | "N jam lalu" | "N hari lalu"
  */
 function formatRelativeDate(isoStr) {
   try {
-    const diff = Date.now() - new Date(isoStr).getTime();
+    const ts = parseServerDate(isoStr).getTime();
+    if (!Number.isFinite(ts)) return 'Belum pernah';
+    const diff = Date.now() - ts;
     if (diff < 0) return 'Baru saja';
     const minutes = Math.floor(diff / 60000);
     if (minutes < 2)  return 'Baru saja';

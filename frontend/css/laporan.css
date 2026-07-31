@@ -326,7 +326,7 @@
     border: none;
   }
   .print-space-top    { height: 12mm; }
-  .print-space-bottom { height: 18mm; }
+  .print-space-bottom { height: 14mm; }
 
   /* ── Kop surat (banner Indomaret di atas semua laporan) ── */
   .print-kop {
@@ -344,7 +344,7 @@
   .print-sign {
     display: flex;
     justify-content: flex-end;
-    margin-top: 42px;
+    margin-top: 24px;
     page-break-inside: avoid;
     break-inside: avoid;
   }

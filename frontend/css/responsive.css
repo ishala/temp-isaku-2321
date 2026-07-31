@@ -28,6 +28,11 @@
   body[class].nav-open { overflow: hidden; }
 }
 
+/* ── Shell desktop: pakai tinggi viewport yang terlihat ───────── */
+@media screen and (min-width: 1024px) {
+  div.app-shell { height: 100dvh; }
+}
+
 @media print {
   html,
   body[class] { overflow: visible !important; }

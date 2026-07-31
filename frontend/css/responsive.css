@@ -4,22 +4,36 @@
    Ditautkan SETELAH css halaman.
    ============================================================ */
 
-/* ── Shell: scroll halaman di bawah lg ───────────────────────
-   Desktop memakai scroll internal <main>. Di bawah 1024px
-   biarkan dokumen yang scroll agar konten panjang tetap terbaca.
-   Selector `body[class]` dipakai supaya menang atas utilitas
-   Tailwind `.overflow-hidden` yang terpasang di <body> 8 halaman. */
-@media (max-width: 1023px) {
+@media screen and (max-width: 1023px) {
   html,
-  body[class] { overflow: auto; }
+  body[class] { overflow: visible; }
+
+  div.app-shell {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .app-shell > div,
+  .app-shell main { overflow: visible; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
 }
 
-/* ── Sidebar off-canvas (<1024px) ───────────────────────────
-   Nama class wajib apa adanya: .sidebar dan .sidebar.open.
-   PENTING: <aside> membawa utilitas Tailwind `z-30`. Specificity-nya
-   sama dengan `.sidebar` (0,1,0), jadi `.sidebar { z-index }` bisa kalah
-   dan drawer tertimbun #nav-overlay (selector ID, 1,0,0). Karena itu
-   semua aturan stacking drawer memakai `aside.sidebar` (0,1,1). */
+@media screen and (max-width: 1023px) {
+  body[class].nav-open { overflow: hidden; }
+}
+
+@media print {
+  html,
+  body[class] { overflow: visible !important; }
+}
+
+/* ── Sidebar off-canvas (<1024px) ─────────────────────────── */
 @media (max-width: 1023px) {
   .app-shell { position: relative; }
 
@@ -41,9 +55,7 @@
   aside.sidebar { transform: none; }
 }
 
-/* ── Overlay di belakang drawer ─────────────────────────────────
-   Tangga stacking: konten (z-30) < overlay (40) < modal (z-50) < drawer (60).
-   Overlay sengaja DI BAWAH modal supaya dialog apa pun tetap terbaca. */
+/* ── Overlay di belakang drawer ───────────────────────────────── */
 #nav-overlay {
   display: none;
   position: fixed;
@@ -56,9 +68,7 @@
   #nav-overlay.open { display: block; }
 }
 
-/* ── Tombol tutup di dalam drawer (disisipkan nav-mobile.js) ──
-   Hamburger di topbar tertutup drawer saat terbuka, jadi drawer
-   perlu tombol tutupnya sendiri. */
+/* ── Tombol tutup di dalam drawer (disisipkan nav-mobile.js) ── */
 .sidebar-close { display: none; }
 
 @media (max-width: 1023px) {
@@ -76,6 +86,11 @@
   }
 
   .sidebar-close:hover { color: rgb(var(--c-c1)); }
+}
+
+/* ── Tombol Keluar jangan bergantung hover (<1024px) ───────── */
+@media (max-width: 1023px) {
+  #logout-btn { opacity: 1; }
 }
 
 /* Jangan pernah tampil di desktop, apa pun state-nya. */

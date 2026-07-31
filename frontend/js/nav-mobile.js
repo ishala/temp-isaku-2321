@@ -41,6 +41,7 @@
     function open() {
       sidebar.classList.add('open');
       if (overlay) overlay.classList.add('open');
+      document.body.classList.add('nav-open');
       btn.setAttribute('aria-expanded', 'true');
       closeBtn.focus();
     }
@@ -48,6 +49,7 @@
     function close() {
       sidebar.classList.remove('open');
       if (overlay) overlay.classList.remove('open');
+      document.body.classList.remove('nav-open');
       btn.setAttribute('aria-expanded', 'false');
     }
 
